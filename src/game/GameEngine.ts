@@ -95,7 +95,6 @@ export class GameEngine {
 
     this.stats.end();
 
-    // setTimeout(() => this._animate());
     requestAnimationFrame(this._animate);
   };
 
