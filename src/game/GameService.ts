@@ -37,7 +37,10 @@ export class GameService {
   }
 
   start() {
-    this.engine.setUpdate(this.update);
+    let engine = this;
+    this.engine.setUpdate(function gameServiceUpdate(delta: number) {
+      engine.update(delta);
+    });
     this.input.onKeyDown(({ key }) => {
       if (key === KEY.PLUS) {
         this.options.gameSpeed = this.options.gameSpeed + 1;
