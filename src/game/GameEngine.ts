@@ -82,8 +82,6 @@ export class GameEngine {
   };
 
   _animate = () => {
-    requestAnimationFrame(this._animate);
-
     this.stats.begin();
 
     this.handleCameraMovement();
@@ -96,6 +94,9 @@ export class GameEngine {
     this.renderer.render(this.scene, this.camera);
 
     this.stats.end();
+
+    // setTimeout(() => this._animate());
+    requestAnimationFrame(this._animate);
   };
 
   handleCameraMovement() {
