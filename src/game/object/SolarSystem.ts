@@ -1,4 +1,4 @@
-import { Material, Mesh, Sphere, Vector3 } from 'three';
+import { Line, Material, Mesh, Sphere, Vector3 } from 'three';
 import { Star } from './Star';
 import { Planet } from './Planet';
 
@@ -6,9 +6,9 @@ export class SolarSystem {
   readonly star: Star;
   readonly planets: Planet[];
   radius: number;
-  private readonly ring: Mesh;
+  private readonly ring: Line;
 
-  constructor(radius: number, star: Star, ring: Mesh) {
+  constructor(radius: number, star: Star, ring: Line) {
     this.radius = radius;
     this.star = star;
     this.star.solarSystem = this;

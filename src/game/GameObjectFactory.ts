@@ -36,9 +36,8 @@ export class GameObjectFactory {
   }
 
   createSolarSystem(star: Star, radius: number): SolarSystem {
-    let ring = this.objectFactory.createRing(radius);
+    let ring = this.objectFactory.createCircle(radius, star.color);
     ring.onBeforeRender = scaleToCameraDefault();
-    ring.visible = true;
     return new SolarSystem(radius, star, ring);
   }
 

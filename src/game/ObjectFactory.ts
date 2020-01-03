@@ -3,7 +3,7 @@ import {
   BufferGeometry,
   CircleGeometry,
   Color,
-  DoubleSide,
+  FrontSide,
   Geometry,
   Line,
   LineBasicMaterial,
@@ -35,10 +35,10 @@ export class ObjectFactory {
   }
 
   createRing(radius: number) {
-    const geometry = new RingGeometry(radius - 10, radius + 10, 32, 32);
+    const geometry = new RingGeometry(radius - 10, radius + 10, 16, 16);
     const material = new MeshBasicMaterial({
       color: 0xff0000,
-      side: DoubleSide,
+      side: FrontSide,
     });
     const mesh = new Mesh(geometry, material);
     this.scene.add(mesh);
