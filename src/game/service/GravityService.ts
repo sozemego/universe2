@@ -1,4 +1,4 @@
-import { Vector2 } from 'three';
+import { Vector2, Clock } from 'three';
 // @ts-ignore
 import GravityWorker from '../worker/gravity.worker';
 import { Universe } from '../Universe';
@@ -10,6 +10,8 @@ import { IGameService } from './index';
 export class GravityService implements IGameService {
   private universe: Universe;
   private gravityWorker: Worker;
+  private currentUpdate: number = 0;
+  private nextUpdate: number = 0;
 
   constructor(universe: Universe) {
     this.universe = universe;
@@ -23,13 +25,20 @@ export class GravityService implements IGameService {
   }
 
   update(delta: number) {
+    if (this.nextUpdate !== this.currentUpdate) {
+      return;
+    }
     this.gravityWorker.postMessage({
       type: 'gravityCalc',
       data: this.prepareData(),
     });
+    this.currentUpdate += 1;
   }
 
-  applyResult(result: ResultData) {
+  applyResult(resultData: ResultData) {
+    let clock = new Clock();
+    clock.start();
+    let { result, frame } = resultData;
     for (const solarSystem of this.universe.solarSystems) {
       const { star } = solarSystem;
       const starAcceleration = result[solarSystem.star.id];
@@ -50,14 +59,20 @@ export class GravityService implements IGameService {
         planet.accelerate(new Vector2(acceleration.x, acceleration.y));
       }
     }
+    clock.stop();
+    console.log(`Took ${clock.getElapsedTime()}s to apply gravity results for frame = ${frame}`);
+    this.nextUpdate += 1;
   }
 
   prepareData() {
+    let clock = new Clock();
+    clock.start();
     const data: CalcData = {
       centerStar: null,
       stars: [],
       planets: {},
       freePlanets: [],
+      frame: this.currentUpdate
     };
     const centerStar = this.universe.centerStar;
     data.centerStar = centerStar ? this.prepareStarData(centerStar) : null;
@@ -76,6 +91,9 @@ export class GravityService implements IGameService {
     for (const planet of this.universe.freePlanets) {
       data.freePlanets.push(this.preparePlanetData(planet));
     }
+    clock.stop();
+    console.log(`Took ${clock.getElapsedTime()}s to call prepareData for frame = ${data.frame}`);
+    this.nextUpdate = this.currentUpdate;
     return data;
   }
 

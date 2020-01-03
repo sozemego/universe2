@@ -3,6 +3,7 @@ export interface CalcData {
   stars: StarData[];
   planets: Record<string, PlanetData[]>;
   freePlanets: PlanetData[];
+  frame: number;
 }
 
 export interface StarData {
@@ -27,4 +28,7 @@ export interface AccelerationData {
   y: number;
 }
 
-export type ResultData = Record<string, AccelerationData>;
+export type ResultData = {
+  result: Record<string, AccelerationData>;
+  frame: number;
+};

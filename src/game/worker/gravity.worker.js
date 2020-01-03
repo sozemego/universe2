@@ -54,7 +54,7 @@ onmessage = function(e) {
     }
 
     // @ts-ignore
-    this.postMessage({ type: 'gravityCalcResult', result });
+    this.postMessage({ type: 'gravityCalcResult', result : { result, frame: data.frame }});
   }
 };
 
