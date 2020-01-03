@@ -5,12 +5,20 @@ Game performance:
     ✔ Get object from the pool @done (20-01-03 15:54)
     ✔ Release object to the pool @done (20-01-03 15:54)
     ✔ Reset the object (by step 2?) @done (20-01-03 15:54)
- ✔ Create a POOL object which will be a map of PoolType -> Pool @done (20-01-03 15:54)
- ☐ Measure performance before implementing those Pools
- ✔ Check if pools (static access to some class) can be used in Web Workers @done (20-01-03 19:45)
- ✔ Write tests for Pools @done (20-01-03 15:54)
- ✘ Create poolable interface @cancelled (20-01-03 15:55)
- ✘ Extend Vector2 class which implements Poolable @cancelled (20-01-03 15:55)
- ✘ Create Vector3 class which implements Poolable @cancelled (20-01-03 15:55)
- ☐ Use those pools in the code
- ☐ Check if performance is better
+  ✔ Create a POOL object which will be a map of PoolType -> Pool @done (20-01-03 15:54)
+  ☐ Measure performance before implementing those Pools
+  ✔ Check if pools (static access to some class) can be used in Web Workers @done (20-01-03 19:45)
+  ✔ Write tests for Pools @done (20-01-03 15:54)
+  ✘ Create poolable interface @cancelled (20-01-03 15:55)
+  ✘ Extend Vector2 class which implements Poolable @cancelled (20-01-03 15:55)
+  ✘ Create Vector3 class which implements Poolable @cancelled (20-01-03 15:55)
+  ☐ Use those pools in the code
+  ☐ Check if performance is better
+
+
+Game performance 2:
+  ☐ Have as little GC as possible
+  ☐ Measure frame time and try to keep it as consistent as possible 
+
+Startup performance:
+  ✔ Try to increase startup performance - it is now at 4 seconds, but it does not do much to justify it @done (20-01-04 00:22)
