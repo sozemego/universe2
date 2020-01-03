@@ -14,7 +14,3 @@ Game performance:
  ✘ Create Vector3 class which implements Poolable @cancelled (20-01-03 15:55)
  ☐ Use those pools in the code
  ☐ Check if performance is better
-
-
-Electron:
-  ☐ Get rid of electron, play the game in the browser
