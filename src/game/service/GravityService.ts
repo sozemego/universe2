@@ -38,7 +38,7 @@ export class GravityService implements IGameService {
   applyResult(resultData: ResultData) {
     let clock = new Clock();
     clock.start();
-    let { result, frame } = resultData;
+    let result = resultData;
     for (const solarSystem of this.universe.solarSystems) {
       const { star } = solarSystem;
       const starAcceleration = result[solarSystem.star.id];
@@ -60,7 +60,6 @@ export class GravityService implements IGameService {
       }
     }
     clock.stop();
-    // console.log(`Took ${clock.getElapsedTime()}s to apply gravity results for frame = ${frame}`);
     this.nextUpdate += 1;
   }
 
@@ -72,7 +71,6 @@ export class GravityService implements IGameService {
       stars: [],
       planets: {},
       freePlanets: [],
-      frame: this.currentUpdate
     };
     const centerStar = this.universe.centerStar;
     data.centerStar = centerStar ? this.prepareStarData(centerStar) : null;
@@ -92,7 +90,6 @@ export class GravityService implements IGameService {
       data.freePlanets.push(this.preparePlanetData(planet));
     }
     clock.stop();
-    // console.log(`Took ${clock.getElapsedTime()}s to call prepareData for frame = ${data.frame}`);
     this.nextUpdate = this.currentUpdate;
     return data;
   }
