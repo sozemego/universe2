@@ -1,4 +1,4 @@
-import { Vector2, Clock } from 'three';
+import { Vector2 } from 'three';
 // @ts-ignore
 import GravityWorker from '../worker/gravity.worker';
 import { Universe } from '../Universe';
@@ -36,8 +36,6 @@ export class GravityService implements IGameService {
   }
 
   applyResult(resultData: ResultData) {
-    let clock = new Clock();
-    clock.start();
     let result = resultData;
     for (const solarSystem of this.universe.solarSystems) {
       const { star } = solarSystem;
@@ -59,13 +57,10 @@ export class GravityService implements IGameService {
         planet.accelerate(new Vector2(acceleration.x, acceleration.y));
       }
     }
-    clock.stop();
     this.nextUpdate += 1;
   }
 
   prepareData() {
-    let clock = new Clock();
-    clock.start();
     const data: CalcData = {
       centerStar: null,
       stars: [],
@@ -89,7 +84,6 @@ export class GravityService implements IGameService {
     for (const planet of this.universe.freePlanets) {
       data.freePlanets.push(this.preparePlanetData(planet));
     }
-    clock.stop();
     this.nextUpdate = this.currentUpdate;
     return data;
   }
