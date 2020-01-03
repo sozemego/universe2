@@ -60,7 +60,7 @@ export class GravityService implements IGameService {
       }
     }
     clock.stop();
-    console.log(`Took ${clock.getElapsedTime()}s to apply gravity results for frame = ${frame}`);
+    // console.log(`Took ${clock.getElapsedTime()}s to apply gravity results for frame = ${frame}`);
     this.nextUpdate += 1;
   }
 
@@ -92,7 +92,7 @@ export class GravityService implements IGameService {
       data.freePlanets.push(this.preparePlanetData(planet));
     }
     clock.stop();
-    console.log(`Took ${clock.getElapsedTime()}s to call prepareData for frame = ${data.frame}`);
+    // console.log(`Took ${clock.getElapsedTime()}s to call prepareData for frame = ${data.frame}`);
     this.nextUpdate = this.currentUpdate;
     return data;
   }
