@@ -1,0 +1,61 @@
+{
+  "name": "universe2",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.1.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.25",
+    "@types/react-redux": "^7.1.5",
+    "@types/uuid": "^3.4.6",
+    "antd": "^3.26.3",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.1.3",
+    "react-scripts": "3.3.0",
+    "redux": "^4.0.4",
+    "stats-js": "^1.0.1",
+    "three": "^0.111.0",
+    "typescript": "^3.7.4",
+    "uuid": "^3.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "react-start": "react-app-rewired start",
+    "pack": "build --dir",
+    "dist": "npm run build && build"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "homepage": "./",
+  "main": "src/start.js",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "react-app-rewired": "^2.1.5",
+    "worker-loader": "^2.0.0"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true,
+    "printWidth": 100
+  }
+}

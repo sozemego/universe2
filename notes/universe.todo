@@ -1,0 +1,20 @@
+Game performance:
+  ✔ Think about making object pools @done (20-01-03 14:18)
+  ✔ Do we even need to have subclasses of Pool<T> class? Can we just pass the constructor to the pool to create a new object? @done (20-01-03 15:54)
+    The pools need to achieve the following:
+    ✔ Get object from the pool @done (20-01-03 15:54)
+    ✔ Release object to the pool @done (20-01-03 15:54)
+    ✔ Reset the object (by step 2?) @done (20-01-03 15:54)
+ ✔ Create a POOL object which will be a map of PoolType -> Pool @done (20-01-03 15:54)
+ ☐ Measure performance before implementing those Pools
+ ☐ Check if pools (static access to some class) can be used in Web Workers
+ ✔ Write tests for Pools @done (20-01-03 15:54)
+ ✘ Create poolable interface @cancelled (20-01-03 15:55)
+ ✘ Extend Vector2 class which implements Poolable @cancelled (20-01-03 15:55)
+ ✘ Create Vector3 class which implements Poolable @cancelled (20-01-03 15:55)
+ ☐ Use those pools in the code
+ ☐ Check if performance is better
+
+
+Electron:
+  ☐ Get rid of electron, play the game in the browser

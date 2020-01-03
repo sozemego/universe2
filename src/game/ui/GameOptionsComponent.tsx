@@ -1,0 +1,93 @@
+import React from 'react';
+import { Checkbox, Icon, Slider } from 'antd';
+import {
+  useGetFollowSelected,
+  useGetGameOptions,
+  useGetGameSpeed,
+  useGetMoveToSelectionService,
+  useGetSelectionCycleService,
+  useGetShowDebugLines,
+  useShowDebugOrbits,
+} from '../state/selectors';
+
+export function GameOptionsComponent() {
+  const gameSpeed = useGetGameSpeed();
+  const showDebugLines = useGetShowDebugLines();
+  const showDebugOrbits = useShowDebugOrbits();
+  const followSelected = useGetFollowSelected();
+  const gameOptions = useGetGameOptions();
+  const moveToSelectionService = useGetMoveToSelectionService();
+  const selectionCycleService = useGetSelectionCycleService();
+
+  return (
+    <div style={{ width: '100%', padding: '4px' }}>
+      <div>Options</div>
+      <div>
+        <div>Game speed [{gameSpeed}]</div>
+        <Slider
+          value={gameSpeed}
+          onChange={val => (gameOptions.gameSpeed = val as number)}
+          max={10}
+        />
+      </div>
+      <div onClick={() => (gameOptions.showDebugLines = !gameOptions.showDebugLines)}>
+        <Checkbox
+          checked={showDebugLines}
+          onChange={() => (gameOptions.showDebugLines = !gameOptions.showDebugLines)}
+        />
+        <span>Show debug lines</span>
+      </div>
+      <div onClick={() => (gameOptions.showDebugOrbits = !gameOptions.showDebugOrbits)}>
+        <Checkbox
+          checked={showDebugOrbits}
+          onChange={() => (gameOptions.showDebugOrbits = !gameOptions.showDebugOrbits)}
+        />
+        <span>Show debug orbits</span>
+      </div>
+      <div onClick={() => (gameOptions.followSelected = !gameOptions.followSelected)}>
+        <Checkbox
+          checked={followSelected}
+          onChange={() => (gameOptions.followSelected = !gameOptions.followSelected)}
+        />
+        <span>Follow selected</span>
+      </div>
+      <div style={{ cursor: 'pointer' }}>
+        <Icon
+          type="step-backward"
+          onClick={() => {
+            selectionCycleService.cycleStars(-1);
+            moveToSelectionService.showSelection(true);
+          }}
+        />
+        <Icon
+          type="fast-backward"
+          onClick={() => {
+            selectionCycleService.cyclePlanets(-1);
+            moveToSelectionService.showSelection(true);
+          }}
+        />
+        <Icon type="shrink" onClick={() => moveToSelectionService.showSelection(false)} />
+        <Icon
+          type="vertical-align-middle"
+          onClick={() => moveToSelectionService.showSelection(true)}
+        />
+        <Icon
+          type="fast-forward"
+          onClick={() => {
+            selectionCycleService.cyclePlanets(1);
+            moveToSelectionService.showSelection(true);
+          }}
+        />
+        <Icon
+          type="step-forward"
+          onClick={() => {
+            selectionCycleService.cycleStars(1);
+            moveToSelectionService.showSelection(true);
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export interface GameOptionsComponentProps {}
