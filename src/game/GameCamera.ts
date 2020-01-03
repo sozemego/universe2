@@ -1,5 +1,4 @@
 import { PerspectiveCamera, Vector2 } from 'three';
-import { Vector2Pool } from './util/Pools';
 import { BaseObject } from './object/BaseObject';
 import { clampAbs } from '../mathUtils';
 import { Universe } from './Universe';
@@ -11,7 +10,7 @@ export class GameCamera extends PerspectiveCamera {
   }
 
   moveToObject(object: BaseObject) {
-    this.moveTo(Vector2Pool.obtain().set(object.position.x, object.position.y));
+    this.moveTo(new Vector2(object.position.x, object.position.y));
     this.position.z = 5000;
   }
 

@@ -7,7 +7,7 @@ Game performance:
     ✔ Reset the object (by step 2?) @done (20-01-03 15:54)
  ✔ Create a POOL object which will be a map of PoolType -> Pool @done (20-01-03 15:54)
  ☐ Measure performance before implementing those Pools
- ☐ Check if pools (static access to some class) can be used in Web Workers
+ ✔ Check if pools (static access to some class) can be used in Web Workers @done (20-01-03 19:45)
  ✔ Write tests for Pools @done (20-01-03 15:54)
  ✘ Create poolable interface @cancelled (20-01-03 15:55)
  ✘ Extend Vector2 class which implements Poolable @cancelled (20-01-03 15:55)
@@ -17,4 +17,4 @@ Game performance:
 
 
 Electron:
-  ☐ Get rid of electron, play the game in the browser
+  ✔ Get rid of electron, play the game in the browser @done (20-01-03 19:45)

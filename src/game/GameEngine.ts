@@ -73,7 +73,7 @@ export class GameEngine {
 
   _resize = () => {
     this.renderer.setSize(window.innerWidth - 17, window.innerHeight);
-    this.camera.aspect = (window.innerWidth - 17) / (window.innerHeight);
+    this.camera.aspect = (window.innerWidth - 17) / window.innerHeight;
     this.camera.updateProjectionMatrix();
   };
 

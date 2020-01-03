@@ -1,5 +1,4 @@
 import { Sphere, Vector2, Vector3 } from 'three';
-import { Vector2Pool } from './game/util/Pools';
 
 export function random(num1: number): number;
 export function random(num1: number, num2: number): number;
@@ -22,31 +21,22 @@ export function randomAngleRad(): number {
 
 export function randomPointInSphere(sphere: Sphere): Vector3;
 export function randomPointInSphere(sphere: Sphere, minDistance: number): Vector3;
-export function randomPointInSphere(sphere: Sphere, minDistance: number, vector: Vector3): Vector3;
 
-export function randomPointInSphere(
-  sphere: Sphere,
-  minDistance?: number,
-  vector?: Vector3
-): Vector3 {
+export function randomPointInSphere(sphere: Sphere, minDistance?: number): Vector3 {
   const angle = randomAngleRad();
   const distance = random(minDistance ? minDistance : 0, sphere.radius);
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
   const x = cos * distance + sphere.center.x;
   const y = sin * distance + sphere.center.y;
-  if (vector) {
-    return vector.set(x, y, 0);
-  }
   return new Vector3(x, y, 0);
 }
 
 export function angleBetween(vector1: Vector2, vector2: Vector2): number {
-  let tempVector = Vector2Pool.obtain();
-  tempVector.set(vector1.x, vector1.y);
-  let angle = tempVector.sub(vector2).angle();
-  Vector2Pool.free(tempVector);
-  return angle;
+  return vector1
+    .clone()
+    .sub(vector2)
+    .angle();
 }
 
 /**
