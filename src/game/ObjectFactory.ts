@@ -17,7 +17,7 @@ import {
   Sphere,
   SphereGeometry,
   Sprite,
-  SpriteMaterial,
+  SpriteMaterial, Texture,
   TextureLoader,
   Vector2,
 } from 'three';
@@ -27,6 +27,7 @@ import { SelectionRectangle } from './object/primitive/SelectionRectangle';
 export class ObjectFactory {
   private readonly scene: Scene;
   private readonly textureLoader: TextureLoader;
+  private readonly textureCache: Record<string, Texture> = {};
 
   constructor(scene: Scene) {
     this.scene = scene;
@@ -75,7 +76,7 @@ export class ObjectFactory {
   }
 
   createCircleFilled(radius: number, textureName: string) {
-    const texture = this.textureLoader.load(textureName);
+    const texture = this.getTexture(textureName);
     const geometry = new CircleGeometry(radius, 32);
     const material = new MeshBasicMaterial({ color: 0xffff00, map: texture });
     const circle = new Mesh(geometry, material);
@@ -84,7 +85,7 @@ export class ObjectFactory {
   }
 
   createSprite(textureName: string, position: Vector2, width: number, height: number) {
-    const texture = this.textureLoader.load(textureName);
+    const texture = this.getTexture(textureName);
     const spriteMaterial = new SpriteMaterial({
       map: texture,
       color: 0xffffff,
@@ -133,5 +134,14 @@ export class ObjectFactory {
     let rectangle = new SelectionRectangle(geometryPoints, new LineBasicMaterial({ color }));
     this.scene.add(rectangle);
     return rectangle;
+  }
+
+  getTexture(textureName: string): Texture {
+    let texture = this.textureCache[textureName];
+    if (!texture) {
+      texture = this.textureLoader.load(textureName);
+      this.textureCache[textureName] = texture;
+    }
+    return texture;
   }
 }
