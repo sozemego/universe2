@@ -42,24 +42,25 @@ export class GravityService implements IGameService {
   applyResult(resultData: ResultData) {
     // console.log(`applying result for frame ${this.currentUpdate}`)
     let result = resultData;
+    let vector = new Vector2();
     for (const solarSystem of this.universe.solarSystems) {
       const { star } = solarSystem;
       const starAcceleration = result[solarSystem.star.id];
       if (starAcceleration) {
-        star.accelerate(new Vector2(starAcceleration.x, starAcceleration.y));
+        star.accelerate(vector.set(starAcceleration.x, starAcceleration.y));
       }
       const { planets } = solarSystem;
       for (const planet of planets) {
         const planetAcceleration = result[planet.id];
         if (planetAcceleration) {
-          planet.accelerate(new Vector2(planetAcceleration.x, planetAcceleration.y));
+          planet.accelerate(vector.set(planetAcceleration.x, planetAcceleration.y));
         }
       }
     }
     for (const planet of this.universe.freePlanets) {
       const acceleration = result[planet.id];
       if (acceleration) {
-        planet.accelerate(new Vector2(acceleration.x, acceleration.y));
+        planet.accelerate(vector.set(acceleration.x, acceleration.y));
       }
     }
     this.nextUpdate += 1;
