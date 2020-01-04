@@ -1,4 +1,4 @@
-import { Line, Material, Mesh, Sphere, Vector3 } from 'three';
+import { Line, Material, Sphere, Vector3 } from 'three';
 import { Star } from './Star';
 import { Planet } from './Planet';
 
