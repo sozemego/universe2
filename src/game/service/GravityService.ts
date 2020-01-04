@@ -6,12 +6,15 @@ import { Star } from '../object/Star';
 import { Planet } from '../object/Planet';
 import { CalcData, ResultData } from '../worker';
 import { IGameService } from './index';
+import { FLAGS } from '../../flags';
 
 export class GravityService implements IGameService {
   private universe: Universe;
   private gravityWorker: Worker;
   private currentUpdate: number = 0;
   private nextUpdate: number = 0;
+  private lastResultApplied: number = Date.now();
+  private differences: number[] = [];
 
   constructor(universe: Universe) {
     this.universe = universe;
@@ -28,6 +31,7 @@ export class GravityService implements IGameService {
     if (this.nextUpdate !== this.currentUpdate) {
       return;
     }
+    // console.log(`sending data for frame ${this.currentUpdate}`)
     this.gravityWorker.postMessage({
       type: 'gravityCalc',
       data: this.prepareData(),
@@ -36,6 +40,7 @@ export class GravityService implements IGameService {
   }
 
   applyResult(resultData: ResultData) {
+    // console.log(`applying result for frame ${this.currentUpdate}`)
     let result = resultData;
     for (const solarSystem of this.universe.solarSystems) {
       const { star } = solarSystem;
@@ -58,6 +63,22 @@ export class GravityService implements IGameService {
       }
     }
     this.nextUpdate += 1;
+    if (FLAGS.GRAVITY_WORKER_PERF) {
+      let now = Date.now();
+      let timeDiff = now - this.lastResultApplied;
+      this.differences.push(timeDiff);
+      while (this.differences.length > 200) {
+        this.differences.shift();
+      }
+      let average =
+        this.differences.reduce((curr, next) => {
+          return curr + next;
+        }, 0) / this.differences.length;
+      console.log(
+        `Time difference of ${timeDiff} ms between last and current applyResult. Average difference is now = ${average}`
+      );
+      this.lastResultApplied = now;
+    }
   }
 
   prepareData() {
