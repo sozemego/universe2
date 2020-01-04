@@ -1,24 +1,31 @@
 import { Vector2, Vector3 } from 'three';
 import { Universe } from '../Universe';
 
+let gravityCalcs = 0;
+
 onmessage = function(e) {
   if (e.data.type === 'gravityCalc') {
+    gravityCalcs = 0;
     const data = e.data.data;
 
     const stars = data.stars;
     const result = {};
-    for (const star1 of stars) {
-      for (const star2 of stars) {
-        if (star1 === star2) continue;
-        const acceleration = calcAttraction(star1, star2);
-        result[star2.id] = accelerationToResult(acceleration);
+
+    for (let i = 0; i < stars.length; i++) {
+      for (let j = i + 1; j < stars.length; j++) {
+        const star1 = stars[i];
+        const star2 = stars[j];
+        const [accelerationA, accelerationB] = calcAttraction(star1, star2);
+        addResult(accelerationA, star2.id, result);
+        addResult(accelerationB, star1.id, result);
       }
     }
+
     const { centerStar } = data;
     if (centerStar) {
       for (const star of stars) {
-        const acceleration = calcAttraction(centerStar, star);
-        result[star.id] = accelerationToResult(acceleration);
+        const [accelerationA] = calcAttraction(centerStar, star);
+        addResult(accelerationA, star.id, result);
       }
     }
 
@@ -26,21 +33,24 @@ onmessage = function(e) {
     for (const star of stars) {
       const planets = planetData[star.id];
       const starAttractor = new Vector3(star.position.x, star.position.y, star.mass);
-      for (const planet1 of planets) {
+      for (let i = 0; i < planets.length; i++) {
+        const planet1 = planets[i];
         const planetAttractee = new Vector3(planet1.position.x, planet1.position.y, planet1.mass);
-        const accelerationToStar = calcAccelerationDueToGravity(starAttractor, planetAttractee);
-        for (const planet2 of planets) {
-          if (planet1 === planet2) continue;
+        const [accelerationToStar] = calcAccelerationDueToGravity(starAttractor, planetAttractee);
+        addResult(accelerationToStar, planet1.id, result);
+        for (let j = i + 1; j < planets.length; j++) {
+          const planet2 = planets[j];
           const secondPlanetAttractee = new Vector3(
             planet2.position.x,
             planet2.position.y,
             planet2.mass
           );
-          const accelerationToPlanet = calcAccelerationDueToGravity(
+          const [accelerationToPlanetA, accelerationToPlanetB] = calcAccelerationDueToGravity(
             planetAttractee,
             secondPlanetAttractee
           );
-          result[planet1.id] = accelerationToResult(accelerationToStar.add(accelerationToPlanet));
+          addResult(accelerationToPlanetA, planet1.id, result);
+          addResult(accelerationToPlanetB, planet2.id, result);
         }
       }
     }
@@ -49,10 +59,13 @@ onmessage = function(e) {
       for (let star of stars) {
         let starAttractor = new Vector3(star.position.x, star.position.y, star.mass);
         let planetAttractee = new Vector3(planet.position.x, planet.position.y, planet.mass);
-        result[planet.id] = calcAccelerationDueToGravity(starAttractor, planetAttractee);
+        const [acceleration] = calcAccelerationDueToGravity(starAttractor, planetAttractee);
+        addResult(acceleration, planet.id, result);
       }
     }
 
+    console.log(`Gravity calcs = ${gravityCalcs}`);
+    gravityCalcs = 0;
     // @ts-ignore
     this.postMessage({ type: 'gravityCalcResult', result });
   }
@@ -70,17 +83,19 @@ function calcAccelerationDueToGravity(attractor, attractee) {
   const radians = new Vector2(attractor.x, attractor.y).sub(attractee).angle();
   const cos = Math.cos(radians);
   const sin = Math.sin(radians);
-  const acceleration = (attractor.z / (distancePx * distancePx)) * Universe.SCALE_INSIDE_SYSTEM;
-  return new Vector2(cos * acceleration, sin * acceleration);
-}
-
-function accelerationToResult(acceleration) {
-  return { x: acceleration.x, y: acceleration.y };
+  const distanceSquared = distancePx * distancePx;
+  const accelerationA = (attractor.z / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM;
+  const accelerationB = (attractee.z / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM;
+  gravityCalcs++;
+  return [
+    new Vector2(cos * accelerationA, sin * accelerationA),
+    new Vector2(cos * accelerationB, sin * accelerationB),
+  ];
 }
 
 function addResult(acceleration, id, result) {
   let previousResult = result[id];
-  if(previousResult) {
+  if (previousResult) {
     previousResult.x += acceleration.x;
     previousResult.y += acceleration.y;
   } else {
