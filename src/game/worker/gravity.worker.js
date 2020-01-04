@@ -28,7 +28,7 @@ onmessage = function(e) {
       for (let j = i + 1; j < stars.length; j++) {
         const star1 = stars[i];
         const star2 = stars[j];
-        const [accelerationA, accelerationB] = calcAttraction(star1, star2);
+        const [accelerationA, accelerationB] = calcAccelerationDueToGravity(star1, star2);
         addResult(accelerationA, star2.id, result);
         addResult(accelerationB, star1.id, result);
       }
@@ -37,7 +37,7 @@ onmessage = function(e) {
     const { centerStar } = data;
     if (centerStar) {
       for (const star of stars) {
-        const [accelerationA] = calcAttraction(centerStar, star);
+        const [accelerationA] = calcAccelerationDueToGravity(centerStar, star);
         addResult(accelerationA, star.id, result);
       }
     }
@@ -92,15 +92,11 @@ onmessage = function(e) {
   }
 };
 
-function calcAttraction(star1, star2) {
-  return calcAccelerationDueToGravity(star1, star2);
-}
-
 function calcAccelerationDueToGravity(attractor, attractee) {
-  const distancePx = vector2A.set(attractor.x, attractor.y).distanceTo(attractee);
+  const distancePx = vector2A.set(attractor.position.x, attractor.position.y).distanceTo(vector2B.set(attractee.position.x, attractee.position.y));
   const radians = vector2B
-    .set(attractor.x, attractor.y)
-    .sub(attractee)
+    .set(attractor.position.x, attractor.position.y)
+    .sub(vector2A.set(attractee.position.x, attractee.position.y))
     .angle();
   const cos = Math.cos(radians);
   const sin = Math.sin(radians);
