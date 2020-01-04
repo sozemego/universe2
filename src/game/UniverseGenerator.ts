@@ -21,6 +21,7 @@ export class UniverseGenerator {
     let solarSystems = this.generateSolarSystems();
     solarSystems.forEach(this.generatePlanetsForSolarSystem);
     let background = this.generateBackground();
+    console.log('Generated universe');
     return new Universe(centerBlackHole, solarSystems, [], background, this.bounds.clone());
   }
 
@@ -75,7 +76,6 @@ export class UniverseGenerator {
       );
 
       let solarSystem = this.gameObjectFactory.createSolarSystem(star, radius);
-      console.log('generated', solarSystem);
       solarSystems.push(solarSystem);
 
       let cosAcc = Math.cos(angle + (90 * Math.PI) / 180);
@@ -86,7 +86,6 @@ export class UniverseGenerator {
   }
 
   generatePlanetsForSolarSystem = (solarSystem: SolarSystem) => {
-    console.log('Generating planets for ', solarSystem);
     let maxPlanets = 8;
 
     let { radius } = solarSystem;
@@ -124,7 +123,6 @@ export class UniverseGenerator {
         )
       );
       planet.accelerate(solarSystem.star.acceleration);
-      console.log('Generated planet', planet);
       solarSystem.addPlanet(planet);
     }
   };
