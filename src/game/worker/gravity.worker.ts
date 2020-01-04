@@ -59,8 +59,8 @@ ctx.addEventListener("message", (e: MessageEvent) => {
               planet1,
               planet2
           );
-          addResult(accelerationToPlanetA, planet1.id, result);
-          addResult(accelerationToPlanetB, planet2.id, result);
+          addResult(accelerationToPlanetA, planet2.id, result);
+          addResult(accelerationToPlanetB, planet1.id, result);
         }
       }
     }
