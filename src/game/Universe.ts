@@ -5,9 +5,9 @@ import { calcDistance } from './util/utils';
 import { Planet } from './object/Planet';
 
 export class Universe {
-  static UNIVERSE_RADIUS = 5000000;
+  static UNIVERSE_RADIUS = 2500000;
   static SCALE_INSIDE_SYSTEM = 10000;
-  static MAX_CAMERA_Z = 5000000;
+  static MAX_CAMERA_Z = 2500000;
   solarSystems: SolarSystem[] = [];
   freePlanets: Planet[] = [];
   centerStar: Star | null;

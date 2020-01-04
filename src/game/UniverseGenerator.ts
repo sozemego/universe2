@@ -36,7 +36,7 @@ export class UniverseGenerator {
   }
 
   generateSolarSystems(): SolarSystem[] {
-    let systems = 250;
+    let systems = 50;
     console.log('Generating', systems, 'systems');
     let minRadius = 2500;
     let maxRadius = 15000;
