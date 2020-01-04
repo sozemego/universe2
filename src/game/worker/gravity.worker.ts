@@ -1,13 +1,17 @@
 import { Vector2, Clock } from 'three';
 import { FLAGS } from "../../flags";
 import { Universe } from '../Universe';
+import { ResultData } from "./index";
 
 let gravityCalcs = 0;
-let calcResultTimes = [];
+let calcResultTimes: number[] = [];
 const vector2A = new Vector2();
 const vector2B = new Vector2();
 
-onmessage = function(e) {
+// eslint-disable-next-line no-restricted-globals
+const ctx: Worker = self as any;
+
+ctx.addEventListener("message", (e: MessageEvent) => {
   if (e.data.type === 'gravityCalc') {
     let clock = null;
     if (FLAGS.GRAVITY_WORKER_PERF) {
@@ -22,7 +26,7 @@ onmessage = function(e) {
     const data = e.data.data;
 
     const stars = data.stars;
-    const result = {};
+    const result: ResultData = {};
 
     for (let i = 0; i < stars.length; i++) {
       for (let j = i + 1; j < stars.length; j++) {
@@ -52,8 +56,8 @@ onmessage = function(e) {
         for (let j = i + 1; j < planets.length; j++) {
           const planet2 = planets[j];
           const [accelerationToPlanetA, accelerationToPlanetB] = calcAccelerationDueToGravity(
-            planet1,
-            planet2
+              planet1,
+              planet2
           );
           addResult(accelerationToPlanetA, planet1.id, result);
           addResult(accelerationToPlanetB, planet2.id, result);
@@ -69,30 +73,30 @@ onmessage = function(e) {
     }
 
     if (FLAGS.GRAVITY_WORKER_PERF) {
-      clock.stop();
-      let time = clock.getElapsedTime();
+      clock!.stop();
+      let time = clock!.getElapsedTime();
       calcResultTimes.push(time);
       while (calcResultTimes.length > 200) {
         calcResultTimes.shift();
       }
       let average =
-        calcResultTimes.reduce((curr, next) => {
-          return curr + next;
-        }, 0) / calcResultTimes.length;
+          calcResultTimes.reduce((curr, next) => {
+            return curr + next;
+          }, 0) / calcResultTimes.length;
       console.log(
-        `Gravity calcs = ${gravityCalcs} in ${(time * 1000).toFixed(2)}ms, average = ${(
-          average * 1000
-        ).toFixed(2)}`
+          `Gravity calcs = ${gravityCalcs} in ${(time * 1000).toFixed(2)}ms, average = ${(
+              average * 1000
+          ).toFixed(2)}`
       );
       gravityCalcs = 0;
     }
 
     // @ts-ignore
-    this.postMessage({ type: 'gravityCalcResult', result });
+    ctx.postMessage({ type: 'gravityCalcResult', result });
   }
-};
+});
 
-function calcAccelerationDueToGravity(attractor, attractee) {
+function calcAccelerationDueToGravity(attractor: any, attractee: any) {
   const distancePx = vector2A.set(attractor.position.x, attractor.position.y).distanceTo(vector2B.set(attractee.position.x, attractee.position.y));
   const radians = vector2B
     .set(attractor.position.x, attractor.position.y)
@@ -112,7 +116,7 @@ function calcAccelerationDueToGravity(attractor, attractee) {
   ];
 }
 
-function addResult(acceleration, id, result) {
+function addResult(acceleration: any, id: string, result: ResultData) {
   let previousResult = result[id];
   if (previousResult) {
     previousResult.x += acceleration.x;

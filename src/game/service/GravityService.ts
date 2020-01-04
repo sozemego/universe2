@@ -1,6 +1,7 @@
 import { Vector2 } from 'three';
 // @ts-ignore
-import GravityWorker from '../worker/gravity.worker';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-webpack-loader-syntax
+import GravityWorker from 'worker-loader!../worker/gravity.worker';
 import { Universe } from '../Universe';
 import { Star } from '../object/Star';
 import { Planet } from '../object/Planet';
