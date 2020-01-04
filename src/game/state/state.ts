@@ -13,6 +13,7 @@ import { SelectionRectangleService } from '../service/SelectionRectangleService'
 import { DebugOrbitService } from '../service/DebugOrbitService';
 import { Universe } from '../Universe';
 import { GameOptions } from "../GameOptions";
+import { MainThreadGravityService } from "../service/MainThreadGravityService";
 
 const initialState = {
   selected: null,
@@ -63,7 +64,7 @@ export const {
 } = gameSlice.actions;
 
 export interface GameServices {
-  gravityService: GravityService;
+  gravityService: GravityService | MainThreadGravityService;
   accelerationService: AccelerationService;
   debugLineService: DebugLineService;
   mouseSelectionService: MouseSelectionService;

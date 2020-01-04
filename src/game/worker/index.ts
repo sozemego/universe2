@@ -27,4 +27,10 @@ export interface AccelerationData {
   y: number;
 }
 
+export interface GravityObject {
+  id: string;
+  mass: number;
+  position: PositionData
+}
+
 export type ResultData = Record<string, AccelerationData>;

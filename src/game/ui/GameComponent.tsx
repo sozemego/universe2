@@ -25,6 +25,8 @@ import { DebugOrbitService } from '../service/DebugOrbitService';
 import { SelectionContainer } from '../SelectionContainer';
 import { SelectionService } from '../service/SelectionService';
 import { GameServices, setServices } from '../state/state';
+import { MainThreadGravityService } from '../service/MainThreadGravityService';
+import { FLAGS } from "../../flags";
 
 export function GameComponent() {
   const dispatch = useDispatch();
@@ -53,7 +55,9 @@ export function GameComponent() {
     const selectionContainer = new SelectionContainer(dispatch);
     const selectionService = new SelectionService(selectionContainer, objectList);
 
-    const gravityService = new GravityService(universe);
+    const gravityService = FLAGS.GRAVITY_MAIN_THREAD
+      ? new MainThreadGravityService(universe)
+      : new GravityService(universe);
     const accelerationService = new AccelerationService(objectList);
     const debugLineService = new DebugLineService(objectList, objectFactory, input, gameOptions);
     const mouseSelectionService = new MouseSelectionService(
