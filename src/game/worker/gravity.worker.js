@@ -1,5 +1,5 @@
-import { Universe } from '../Universe';
 import { Vector2, Vector3 } from 'three';
+import { Universe } from '../Universe';
 
 onmessage = function(e) {
   if (e.data.type === 'gravityCalc') {
