@@ -1,12 +1,15 @@
 import React from 'react';
 import { useRealClock } from '../util/useRealClock';
 import { Star } from '../object/Star';
+import { SolarSystem } from '../object/SolarSystem';
 
 export function SelectedStar({ star }: SelectedStarProps) {
   useRealClock({ interval: 1000 });
 
   const position = `x: ${star.position.x.toFixed(0)}, y: ${star.position.y.toFixed(0)}`;
   const acceleration = `x: ${star.acceleration.x.toFixed(2)}, y: ${star.acceleration.y.toFixed(2)}`;
+  const solarSystem = star.solarSystem;
+  const planetCount = solarSystem?.planets.length || 0;
 
   return (
     <div>
@@ -22,6 +25,7 @@ export function SelectedStar({ star }: SelectedStarProps) {
         <div>Acceleration</div>
         <div>{acceleration}</div>
       </div>
+      <div>Planets: {planetCount}</div>
     </div>
   );
 }
