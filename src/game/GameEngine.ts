@@ -30,7 +30,7 @@ export class GameEngine {
     this.scene = scene;
 
     this.renderer = new WebGLRenderer();
-    this.renderer.setSize(window.innerWidth - 17, window.innerHeight);
+    this.renderer.setSize(window.innerWidth - 5, window.innerHeight - 5);
 
     window.addEventListener('resize', this._resize);
 
@@ -72,8 +72,8 @@ export class GameEngine {
   }
 
   _resize = () => {
-    this.renderer.setSize(window.innerWidth - 17, window.innerHeight);
-    this.camera.aspect = (window.innerWidth - 17) / window.innerHeight;
+    this.renderer.setSize(window.innerWidth - 5, window.innerHeight - 5);
+    this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
   };
 
