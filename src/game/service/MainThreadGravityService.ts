@@ -11,19 +11,21 @@ export class MainThreadGravityService implements IGameService {
 
     private readonly universe: Universe;
     private gravityCalcs: number = 0;
+    private delta: number = 0;
 
     constructor(universe: Universe) {
         this.universe = universe;
     }
 
     update(delta: number) {
+        this.delta = delta;
         let clock = null;
         if (FLAGS.GRAVITY_WORKER_PERF) {
             this.gravityCalcs = 0;
             clock = new Clock();
             clock.start();
         }
-        let { solarSystems, centerStar } = this.universe;
+        let { solarSystems, centerStar, freePlanets } = this.universe;
         for (let i = 0; i < solarSystems.length; i++) {
             for (let j = i + 1; j < solarSystems.length; j++) {
                 let star1 = solarSystems[i].star;
@@ -57,7 +59,23 @@ export class MainThreadGravityService implements IGameService {
                 }
             }
         }
-        if (FLAGS.GRAVITY_WORKER_PERF) {
+
+        if (centerStar) {
+            for (let freePlanet of freePlanets) {
+                let [accelerationToCenter] = this.calcAccelerationDueToGravity(centerStar, freePlanet);
+                freePlanet.accelerate(accelerationToCenter);
+            }
+        }
+
+        for (let solarSystem of solarSystems) {
+            let star = solarSystem.star;
+            for (let freePlanet of freePlanets) {
+                let [accelerationToStar] = this.calcAccelerationDueToGravity(star, freePlanet);
+                freePlanet.accelerate(accelerationToStar);
+            }
+        }
+
+            if (FLAGS.GRAVITY_WORKER_PERF) {
             clock!.stop();
             let time = clock!.getElapsedTime();
             console.log(`gravityCalcs = ${this.gravityCalcs}. Took ${(time * 1000).toFixed(2)}ms`);
@@ -73,8 +91,8 @@ export class MainThreadGravityService implements IGameService {
         let cos = Math.cos(radians);
         let sin = Math.sin(radians);
         let distanceSquared = distancePx * distancePx;
-        let accelerationA = (attractor.mass / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM;
-        let accelerationB = (attractee.mass / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM;
+        let accelerationA = (attractor.mass / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM * this.delta;
+        let accelerationB = (attractee.mass / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM * this.delta;
         if (FLAGS.GRAVITY_WORKER_PERF) {
             this.gravityCalcs++;
         }
