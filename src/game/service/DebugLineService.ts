@@ -14,7 +14,7 @@ export class DebugLineService implements IGameService {
   private options: GameOptions;
   private pointMap: Record<string, Line>;
   private nextPointMap: Record<string, Line>;
-  private lastPointStoreTime: number;
+  private timer: number = 0;
   private readonly storeEveryMs: number;
 
   constructor(
@@ -41,16 +41,14 @@ export class DebugLineService implements IGameService {
     });
     this.pointMap = {};
     this.nextPointMap = {};
-    this.lastPointStoreTime = Date.now();
     this.storeEveryMs = 1000;
   }
 
   update(delta: number) {
-    const now = Date.now();
-    const timeElapsed = now - this.lastPointStoreTime;
-    const storePoints = timeElapsed >= this.storeEveryMs;
+    this.timer += delta * 1000;
+    const storePoints = this.timer >= this.storeEveryMs;
     if (storePoints) {
-      this.lastPointStoreTime = now;
+      this.timer = 0;
     }
     this.objectList.allObjects.forEach(obj => {
       if (obj instanceof BaseObject) {
