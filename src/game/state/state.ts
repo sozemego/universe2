@@ -19,6 +19,7 @@ const initialState = {
   selected: null,
   mouseOver: null,
   gameSpeed: 1,
+  gameSpeedScale: 1,
   showDebugLines: false,
   followSelected: false,
   showDebugOrbits: false,
@@ -47,6 +48,9 @@ export const gameSlice = createSlice<GameState, any>({
     setShowDebugOrbits: (state: GameState, action: PayloadAction<boolean>) => {
       state.showDebugOrbits = action.payload;
     },
+    setGameSpeedScale: (state: GameState, action: PayloadAction<number>) => {
+      state.gameSpeedScale = action.payload;
+    },
     setServices: (state: GameState, action: PayloadAction<GameServices>) => {
       state.services = action.payload;
     },
@@ -61,6 +65,7 @@ export const {
   setFollowSelected,
   setShowDebugOrbits,
   setServices,
+  setGameSpeedScale
 } = gameSlice.actions;
 
 export interface GameServices {
@@ -84,6 +89,7 @@ export interface GameState {
   selected: string | null;
   mouseOver: string | null;
   gameSpeed: number;
+  gameSpeedScale: number;
   showDebugLines: boolean;
   followSelected: boolean;
   showDebugOrbits: boolean;

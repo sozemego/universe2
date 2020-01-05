@@ -60,3 +60,11 @@ export function useGetMoveToSelectionService() {
 export function useGetSelectionCycleService() {
   return useSelector((state: AppState) => state.game.services!.selectionCycleService);
 }
+
+export function useGetGameSpeedScale(state? : AppState) {
+  if (state) {
+    return state.game.gameSpeedScale;
+  }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  return useSelector((state: AppState) => state.game.gameSpeedScale);
+}

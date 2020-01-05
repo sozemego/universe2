@@ -1,17 +1,18 @@
 import React from 'react';
 import { Checkbox, Icon, Slider } from 'antd';
 import {
-  useGetFollowSelected,
-  useGetGameOptions,
-  useGetGameSpeed,
-  useGetMoveToSelectionService,
-  useGetSelectionCycleService,
-  useGetShowDebugLines,
-  useShowDebugOrbits,
+    useGetFollowSelected,
+    useGetGameOptions,
+    useGetGameSpeed, useGetGameSpeedScale,
+    useGetMoveToSelectionService,
+    useGetSelectionCycleService,
+    useGetShowDebugLines,
+    useShowDebugOrbits,
 } from '../state/selectors';
 
 export function GameOptionsComponent() {
   const gameSpeed = useGetGameSpeed();
+  const gameSpeedScale = useGetGameSpeedScale();
   const showDebugLines = useGetShowDebugLines();
   const showDebugOrbits = useShowDebugOrbits();
   const followSelected = useGetFollowSelected();
@@ -23,11 +24,11 @@ export function GameOptionsComponent() {
     <div style={{ width: '100%', padding: '4px' }}>
       <div>Options</div>
       <div>
-        <div>Game speed [{gameSpeed}]</div>
+        <div>Game speed scale [{gameSpeedScale}]</div>
         <Slider
-          value={gameSpeed}
-          onChange={val => (gameOptions.gameSpeed = val as number)}
-          max={10}
+          value={gameSpeedScale * 100}
+          onChange={val => (gameOptions.gameSpeedScale = val as number / 100)}
+          max={500}
         />
       </div>
       <div onClick={() => (gameOptions.showDebugLines = !gameOptions.showDebugLines)}>
