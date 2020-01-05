@@ -1,17 +1,16 @@
 import React from 'react';
 import { Checkbox, Icon, Slider } from 'antd';
 import {
-    useGetFollowSelected,
-    useGetGameOptions,
-    useGetGameSpeed, useGetGameSpeedScale,
-    useGetMoveToSelectionService,
-    useGetSelectionCycleService,
-    useGetShowDebugLines,
-    useShowDebugOrbits,
+  useGetFollowSelected,
+  useGetGameOptions,
+  useGetGameSpeedScale,
+  useGetMoveToSelectionService,
+  useGetSelectionCycleService,
+  useGetShowDebugLines,
+  useShowDebugOrbits,
 } from '../state/selectors';
 
 export function GameOptionsComponent() {
-  const gameSpeed = useGetGameSpeed();
   const gameSpeedScale = useGetGameSpeedScale();
   const showDebugLines = useGetShowDebugLines();
   const showDebugOrbits = useShowDebugOrbits();
@@ -27,7 +26,7 @@ export function GameOptionsComponent() {
         <div>Game speed scale [{gameSpeedScale}]</div>
         <Slider
           value={gameSpeedScale * 100}
-          onChange={val => (gameOptions.gameSpeedScale = val as number / 100)}
+          onChange={val => (gameOptions.gameSpeedScale = (val as number) / 100)}
           max={500}
         />
       </div>
