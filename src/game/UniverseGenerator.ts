@@ -80,7 +80,7 @@ export class UniverseGenerator {
 
       let cosAcc = Math.cos(angle + (90 * Math.PI) / 180);
       let sinAcc = Math.sin(angle + (90 * Math.PI) / 180);
-      star.accelerate(new Vector2(cosAcc * 2.5, sinAcc * 2.5));
+      star.accelerate(new Vector2(cosAcc * 20.5, sinAcc * 20.5));
     }
     return solarSystems;
   }
@@ -88,8 +88,8 @@ export class UniverseGenerator {
   generatePlanetsForSolarSystem = (solarSystem: SolarSystem) => {
     let maxPlanets = 8;
 
-    let { radius } = solarSystem;
-    let planetsToGenerate = Math.ceil(maxPlanets * (radius / 15000));
+    let { radius: solarSystemRadius } = solarSystem;
+    let planetsToGenerate = Math.ceil(maxPlanets * (solarSystemRadius / 15000));
 
     let minRadius = 25;
     let maxRadius = 75;
@@ -116,10 +116,11 @@ export class UniverseGenerator {
         new Vector2(position.x, position.y),
         new Vector2(solarSystem.sphere.center.x, solarSystem.sphere.center.y)
       );
+      let percentageOfDistance = 1 - (position.distanceTo(solarSystem.sphere.center) / solarSystemRadius);
       planet.accelerate(
         new Vector2(
-          Math.cos(angleRad + (90 * Math.PI) / 180) * 2.5,
-          Math.sin(angleRad + (90 * Math.PI) / 180) * 2.5
+          Math.cos(angleRad + (90 * Math.PI) / 180) * 50 * percentageOfDistance,
+          Math.sin(angleRad + (90 * Math.PI) / 180) * 50 * percentageOfDistance
         )
       );
       planet.accelerate(solarSystem.star.acceleration);
