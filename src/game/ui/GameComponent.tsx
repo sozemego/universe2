@@ -26,7 +26,7 @@ import { SelectionContainer } from '../SelectionContainer';
 import { SelectionService } from '../service/SelectionService';
 import { GameServices, setServices } from '../state/state';
 import { MainThreadGravityService } from '../service/MainThreadGravityService';
-import { FLAGS } from "../../flags";
+import { FLAGS } from '../../flags';
 
 export function GameComponent() {
   const dispatch = useDispatch();
