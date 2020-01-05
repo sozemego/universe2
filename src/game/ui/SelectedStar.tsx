@@ -17,6 +17,10 @@ export function SelectedStar({ star }: SelectedStarProps) {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <img alt={'star'} src={star.texture} style={{ width: 64, height: 64 }} />
       </div>
+      <div>
+        <span>Id:</span>
+        <span style={{ fontSize: '0.75em', marginLeft: "4px" }}>{star.id}</span>
+      </div>
       <div>Mass: {mass.toFixed(0)}</div>
       <div>
         <div>Position</div>

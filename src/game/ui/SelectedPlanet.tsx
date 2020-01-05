@@ -12,6 +12,10 @@ export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   return (
     <div>
       <div>
+        <div>
+          <span>Id:</span>
+          <span style={{ fontSize: '0.75em', marginLeft: '4px' }}>{planet.id}</span>
+        </div>
         <div>Acceleration</div>
         <div>{acceleration}</div>
       </div>
