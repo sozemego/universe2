@@ -36,11 +36,11 @@ export class UniverseGenerator {
   }
 
   generateSolarSystems(): SolarSystem[] {
-    let systems = 50;
+    let systems = 20;
     console.log('Generating', systems, 'systems');
     let minRadius = 2500;
     let maxRadius = 15000;
-    let minDistanceFromCenter = 25000;
+    let minDistanceFromCenter = 15000;
     let minStarRadius = 256;
     let maxStarRadius = 256 * 3;
 
@@ -66,7 +66,7 @@ export class UniverseGenerator {
       }
 
       let starRadius = random(minStarRadius, maxStarRadius);
-      let mass = random(1, 15);
+      let mass = random(40, 60);
       let star = this.gameObjectFactory.createStar(
         starRadius,
         'textures/white_star_1.png',
@@ -86,7 +86,7 @@ export class UniverseGenerator {
   }
 
   generatePlanetsForSolarSystem = (solarSystem: SolarSystem) => {
-    let maxPlanets = 8;
+    let maxPlanets = 10;
 
     let { radius: solarSystemRadius } = solarSystem;
     let planetsToGenerate = Math.ceil(maxPlanets * (solarSystemRadius / 15000));
