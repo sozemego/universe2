@@ -41,8 +41,8 @@ export class UniverseGenerator {
     let minRadius = 2500;
     let maxRadius = 15000;
     let minDistanceFromCenter = 15000;
-    let minStarRadius = 256;
-    let maxStarRadius = 256 * 3;
+    let minStarRadius = 128;
+    let maxStarRadius = minStarRadius * 3;
 
     let solarSystems: SolarSystem[] = [];
     let tries = 0;
@@ -91,8 +91,8 @@ export class UniverseGenerator {
     let { radius: solarSystemRadius } = solarSystem;
     let planetsToGenerate = Math.ceil(maxPlanets * (solarSystemRadius / 15000));
 
-    let minRadius = 25;
-    let maxRadius = 75;
+    let minRadius = 12.5;
+    let maxRadius = minRadius * 3;
     let minDistanceFromCenter = 500;
     let minMass = 0.005;
     let maxMass = 0.05;
