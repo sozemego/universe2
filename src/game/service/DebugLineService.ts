@@ -74,17 +74,27 @@ export class DebugLineService implements IGameService {
     if (!storePoints) {
       return;
     }
-    let points = line.userData.points;
     const attributes = (line.geometry as BufferGeometry).attributes;
     const positions = attributes.position.array as Array<number>;
-    positions[points++] = obj.position.x;
-    positions[points++] = obj.position.y;
-    positions[points++] = obj.position.z;
-    if (points > DebugLineService.MAX_POINTS * 3) {
-      points = 0;
+
+    let points = line.userData.points;
+    if (points <= DebugLineService.MAX_POINTS * 3) {
+      positions[points++] = obj.position.x;
+      positions[points++] = obj.position.y;
+      positions[points++] = obj.position.z;
+    } else {
+      for (let i = 0; i < positions.length; i += 3) {
+        positions[i] = positions[i + 3];
+        positions[i + 1] = positions[i + 4];
+        positions[i + 2] = positions[i + 5];
+      }
+      positions[positions.length - 3] = obj.position.x;
+      positions[positions.length - 2] = obj.position.y;
+      positions[positions.length - 1] = obj.position.z;
     }
+
     line.userData.points = points;
-    (line.geometry as BufferGeometry).setDrawRange(0, Math.ceil(points / 3));
+    (line.geometry as BufferGeometry).setDrawRange(0, Math.min(DebugLineService.MAX_POINTS, Math.ceil(points / 3)));
 
     this.pointMap[obj.id] = line;
     (attributes.position as BufferAttribute).needsUpdate = true;
