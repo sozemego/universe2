@@ -1,5 +1,5 @@
 import { GameObjectFactory } from '../GameObjectFactory';
-import { Universe } from './';
+import { Universe } from './Universe';
 import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { angleBetween, random, randomPointInSphere } from '../../mathUtils';
 import { SolarSystem } from '../object/SolarSystem';
