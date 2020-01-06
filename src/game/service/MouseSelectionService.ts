@@ -58,7 +58,7 @@ export class MouseSelectionService implements IGameService {
       if (selected && !nextSelected) {
         this.selectionContainer.selected = null;
       }
-      if (!selected && nextSelected) {
+      if (nextSelected && selected !== nextSelected.object.userData.objectId) {
         this.selectionContainer.selected = nextSelected.object.userData.objectId;
       }
     });
