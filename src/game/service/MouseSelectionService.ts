@@ -45,7 +45,7 @@ export class MouseSelectionService implements IGameService {
       if (mouseOver && !nextMouseOver) {
         this.selectionContainer.mouseOver = null;
       }
-      if (!mouseOver && nextMouseOver) {
+      if (nextMouseOver && mouseOver !== nextMouseOver.object.userData.objectId) {
         this.selectionContainer.mouseOver = nextMouseOver.object.userData.objectId;
       }
     });
