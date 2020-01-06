@@ -1,4 +1,4 @@
-import { Universe } from './Universe';
+import { Universe } from './universe/Universe';
 import { ObjectList } from './ObjectList';
 import { GameEngine } from './GameEngine';
 import { InputHandler, KEY } from './InputHandler';

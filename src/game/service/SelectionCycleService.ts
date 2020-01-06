@@ -1,7 +1,7 @@
 import { Star } from '../object/Star';
 import { Planet } from '../object/Planet';
 import { next } from '../util/utils';
-import { Universe } from '../Universe';
+import { Universe } from '../universe/Universe';
 import { SelectionContainer } from '../SelectionContainer';
 import { InputHandler, KeyEvent } from '../InputHandler';
 import { ObjectList } from '../ObjectList';

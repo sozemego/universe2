@@ -11,7 +11,7 @@ import { CollisionService } from '../service/CollisionService';
 import { SelectionCycleService } from '../service/SelectionCycleService';
 import { SelectionRectangleService } from '../service/SelectionRectangleService';
 import { DebugOrbitService } from '../service/DebugOrbitService';
-import { Universe } from '../Universe';
+import { Universe } from '../universe/Universe';
 import { GameOptions } from "../GameOptions";
 import { MainThreadGravityService } from "../service/MainThreadGravityService";
 

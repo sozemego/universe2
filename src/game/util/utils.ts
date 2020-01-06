@@ -10,7 +10,7 @@ import {
   WebGLRenderer,
 } from 'three';
 import { clampAbs } from '../../mathUtils';
-import { Universe } from '../Universe';
+import { Universe } from '../universe/Universe';
 import { BaseObject } from '../object/BaseObject';
 
 export function scaleToCamera(maxScale: number) {

@@ -1,8 +1,8 @@
-import { GameObjectFactory } from './GameObjectFactory';
-import { Universe } from './Universe';
+import { GameObjectFactory } from '../GameObjectFactory';
+import { Universe } from './';
 import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
-import { angleBetween, random, randomPointInSphere } from '../mathUtils';
-import { SolarSystem } from './object/SolarSystem';
+import { angleBetween, random, randomPointInSphere } from '../../mathUtils';
+import { SolarSystem } from '../object/SolarSystem';
 
 export class UniverseGenerator {
   private readonly gameObjectFactory: GameObjectFactory;

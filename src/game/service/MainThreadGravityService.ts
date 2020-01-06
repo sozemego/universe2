@@ -1,6 +1,6 @@
 import { Vector2, Clock } from 'three';
 import { IGameService } from './index';
-import { Universe } from '../Universe';
+import { Universe } from '../universe/Universe';
 import { FLAGS } from '../../flags';
 import { BaseObject } from '../object/BaseObject';
 

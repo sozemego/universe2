@@ -1,4 +1,4 @@
-import { Universe } from '../Universe';
+import { Universe } from '../universe/Universe';
 import { ObjectFactory } from '../ObjectFactory';
 import { Line, Vector2 } from 'three';
 import { InputHandler, KEY } from '../InputHandler';

@@ -1,8 +1,8 @@
 import { Points, Sphere } from 'three';
-import { SolarSystem } from './object/SolarSystem';
-import { Star } from './object/Star';
-import { calcDistance } from './util/utils';
-import { Planet } from './object/Planet';
+import { SolarSystem } from '../object/SolarSystem';
+import { Star } from '../object/Star';
+import { calcDistance } from '../util/utils';
+import { Planet } from '../object/Planet';
 
 export class Universe {
   static UNIVERSE_RADIUS = 100000;

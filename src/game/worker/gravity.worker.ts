@@ -1,6 +1,6 @@
 import { Vector2, Clock } from 'three';
 import { FLAGS } from "../../flags";
-import { Universe } from '../Universe';
+import { Universe } from '../universe/Universe';
 import { ResultData } from "./index";
 
 let gravityCalcs = 0;

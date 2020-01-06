@@ -1,4 +1,4 @@
-import { Universe } from '../Universe';
+import { Universe } from '../universe/Universe';
 import { SelectionContainer } from '../SelectionContainer';
 import { IGameService } from './index';
 

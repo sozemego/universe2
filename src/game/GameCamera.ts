@@ -1,7 +1,7 @@
 import { PerspectiveCamera, Vector2 } from 'three';
 import { BaseObject } from './object/BaseObject';
 import { clampAbs } from '../mathUtils';
-import { Universe } from './Universe';
+import { Universe } from './universe/Universe';
 
 export class GameCamera extends PerspectiveCamera {
   moveTo(position: Vector2) {
