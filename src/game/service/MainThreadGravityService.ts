@@ -26,12 +26,14 @@ export class MainThreadGravityService implements IGameService {
     }
     let { solarSystems, centerStar, freePlanets } = this.universe;
     for (let i = 0; i < solarSystems.length; i++) {
+      let solarSystem1 = solarSystems[i];
       for (let j = i + 1; j < solarSystems.length; j++) {
-        let star1 = solarSystems[i].star;
-        let star2 = solarSystems[j].star;
+        let solarSystem2 = solarSystems[j];
+        let star1 = solarSystem1.star;
+        let star2 = solarSystem2.star;
         let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(star1, star2);
-        star2.accelerate(accelerationA);
-        star1.accelerate(accelerationB);
+        solarSystem2.accelerate(accelerationA);
+        solarSystem1.accelerate(accelerationB);
       }
     }
 
@@ -39,7 +41,7 @@ export class MainThreadGravityService implements IGameService {
       for (let solarSystem of solarSystems) {
         let star = solarSystem.star;
         let [accelerationA] = this.calcAccelerationDueToGravity(centerStar, star);
-        star.accelerate(accelerationA);
+        solarSystem.accelerate(accelerationA);
       }
     }
 

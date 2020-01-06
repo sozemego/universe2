@@ -1,4 +1,4 @@
-import { Line, Material, Sphere, Vector3 } from 'three';
+import { Line, Material, Sphere, Vector2, Vector3 } from 'three';
 import { Star } from './Star';
 import { Planet } from './Planet';
 
@@ -51,5 +51,10 @@ export class SolarSystem {
     if (index > -1) {
       this.planets.splice(index, 1);
     }
+  }
+
+  accelerate(acceleration: Vector2) {
+    this.star.accelerate(acceleration);
+    this.planets.forEach(planet => planet.accelerate(acceleration));
   }
 }
