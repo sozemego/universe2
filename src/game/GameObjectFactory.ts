@@ -20,7 +20,7 @@ export class GameObjectFactory {
   }
 
   createStar(radius: number, texture: string, position: Vector2, mass: number, name: string): Star {
-    let sprite = this.objectFactory.createSprite(texture, position, radius, radius);
+    let sprite = this.objectFactory.createSprite(texture, position, radius * 2, radius * 2);
     sprite.onBeforeRender = scaleToCameraDistance(50);
 
     let star = new Star(
@@ -49,7 +49,7 @@ export class GameObjectFactory {
 
   createPlanet(position: Vector2, radius: number, texture: string, mass: number) {
     let sphere = new Sphere(new Vector3(position.x, position.y, 0), radius);
-    let sprite = this.objectFactory.createSprite(texture, position, radius, radius);
+    let sprite = this.objectFactory.createSprite(texture, position, radius * 2, radius * 2);
     sprite.scale.x = radius;
     sprite.scale.y = radius;
     sprite.onBeforeRender = scaleToCameraDistance(750);
