@@ -14,8 +14,9 @@ import { DebugOrbitService } from '../service/DebugOrbitService';
 import { Universe } from '../universe/Universe';
 import { GameOptions } from "../GameOptions";
 import { MainThreadGravityService } from "../service/MainThreadGravityService";
+import { ObjectBoundsService } from "../service/ObjectBoundsService";
 
-const initialState = {
+const initialState: GameState = {
   selected: null,
   mouseOver: null,
   gameSpeed: 1,
@@ -23,6 +24,7 @@ const initialState = {
   showDebugLines: false,
   followSelected: false,
   showDebugOrbits: false,
+  showDebugSphereBounds: false,
   services: null,
 };
 
@@ -51,6 +53,9 @@ export const gameSlice = createSlice<GameState, any>({
     setGameSpeedScale: (state: GameState, action: PayloadAction<number>) => {
       state.gameSpeedScale = action.payload;
     },
+    setShowDebugSphereBounds: (state: GameState, action: PayloadAction<boolean>) => {
+      state.showDebugSphereBounds = action.payload;
+    },
     setServices: (state: GameState, action: PayloadAction<GameServices>) => {
       state.services = action.payload;
     },
@@ -65,7 +70,8 @@ export const {
   setFollowSelected,
   setShowDebugOrbits,
   setServices,
-  setGameSpeedScale
+  setGameSpeedScale,
+  setShowDebugSphereBounds
 } = gameSlice.actions;
 
 export interface GameServices {
@@ -81,6 +87,7 @@ export interface GameServices {
   objectList: ObjectList;
   selectionService: SelectionService;
   moveToSelectionService: MoveToSelectionService;
+  objectBoundsService: ObjectBoundsService;
   universe: Universe;
   gameOptions: GameOptions;
 }
@@ -93,5 +100,6 @@ export interface GameState {
   showDebugLines: boolean;
   followSelected: boolean;
   showDebugOrbits: boolean;
+  showDebugSphereBounds: boolean;
   services: GameServices | null;
 }

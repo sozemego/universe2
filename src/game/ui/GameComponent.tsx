@@ -27,6 +27,7 @@ import { SelectionService } from '../service/SelectionService';
 import { GameServices, setServices } from '../state/state';
 import { MainThreadGravityService } from '../service/MainThreadGravityService';
 import { FLAGS } from '../../flags';
+import { ObjectBoundsService } from '../service/ObjectBoundsService';
 
 export function GameComponent() {
   const dispatch = useDispatch();
@@ -90,6 +91,7 @@ export function GameComponent() {
       objectFactory
     );
     const debugOrbitService = new DebugOrbitService(universe, objectFactory, input, gameOptions);
+    const objectBoundsService = new ObjectBoundsService(objectList, objectFactory, input, gameOptions);
 
     const gameServices: GameServices = {
       gravityService,
@@ -104,6 +106,7 @@ export function GameComponent() {
       objectList,
       selectionService,
       moveToSelectionService,
+      objectBoundsService,
       universe,
       gameOptions,
     };
@@ -122,6 +125,7 @@ export function GameComponent() {
       collisionService,
       selectionRectangleService,
       debugOrbitService,
+      objectBoundsService,
     ];
 
     const game = new GameService(

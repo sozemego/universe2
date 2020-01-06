@@ -5,19 +5,23 @@ import {
   useGetGameOptions,
   useGetGameSpeedScale,
   useGetMoveToSelectionService,
+  useGetObjectBoundsService,
   useGetSelectionCycleService,
   useGetShowDebugLines,
   useShowDebugOrbits,
+  useShowDebugSphereBounds,
 } from '../state/selectors';
 
 export function GameOptionsComponent() {
   const gameSpeedScale = useGetGameSpeedScale();
   const showDebugLines = useGetShowDebugLines();
   const showDebugOrbits = useShowDebugOrbits();
+  const showDebugSphereBounds = useShowDebugSphereBounds();
   const followSelected = useGetFollowSelected();
   const gameOptions = useGetGameOptions();
   const moveToSelectionService = useGetMoveToSelectionService();
   const selectionCycleService = useGetSelectionCycleService();
+  const objectBoundsService = useGetObjectBoundsService();
 
   return (
     <div style={{ width: '100%', padding: '4px' }}>
@@ -43,6 +47,19 @@ export function GameOptionsComponent() {
           onChange={() => (gameOptions.showDebugOrbits = !gameOptions.showDebugOrbits)}
         />
         <span>Show debug orbits</span>
+      </div>
+      <div
+        onClick={() =>
+          objectBoundsService.setVisibilityOfSphereBounds(!gameOptions.showDebugSphereBounds)
+        }
+      >
+        <Checkbox
+          checked={showDebugSphereBounds}
+          onChange={() =>
+            objectBoundsService.setVisibilityOfSphereBounds(!gameOptions.showDebugSphereBounds)
+          }
+        />
+        <span>Show debug sphere bounds</span>
       </div>
       <div onClick={() => (gameOptions.followSelected = !gameOptions.followSelected)}>
         <Checkbox

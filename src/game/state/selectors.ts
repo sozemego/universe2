@@ -61,10 +61,22 @@ export function useGetSelectionCycleService() {
   return useSelector((state: AppState) => state.game.services!.selectionCycleService);
 }
 
+export function useGetObjectBoundsService() {
+  return useSelector((state: AppState) => state.game.services!.objectBoundsService);
+}
+
 export function useGetGameSpeedScale(state? : AppState) {
   if (state) {
     return state.game.gameSpeedScale;
   }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return useSelector((state: AppState) => state.game.gameSpeedScale);
+}
+
+export function useShowDebugSphereBounds(state?: AppState) {
+  if (state) {
+    return state.game.showDebugSphereBounds;
+  }
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  return useSelector((state: AppState) => state.game.showDebugSphereBounds);
 }
