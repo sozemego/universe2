@@ -60,7 +60,23 @@ export class Universe {
         }
       }
     }
+    let freePlanetsReunited: [Planet, SolarSystem][] = [];
     this.freePlanets.forEach(planet => planet.update(delta));
+    for (let freePlanet of this.freePlanets) {
+      for (let solarSystem of this.solarSystems) {
+        let distance = calcDistance(solarSystem.star, freePlanet);
+        if (distance < solarSystem.radius * 0.75) {
+          freePlanetsReunited.push([freePlanet, solarSystem]);
+        }
+      }
+    }
+    for (let [planet, solarSystem] of freePlanetsReunited) {
+      let index = this.freePlanets.findIndex(p => p === planet);
+      if (index > -1) {
+        this.freePlanets.splice(index, 1);
+      }
+      solarSystem.addPlanet(planet);
+    }
     solarSystemsToRemove.forEach(solarSystem => {
       let index = this.solarSystems.findIndex(system => system === solarSystem);
       if (index > -1) {
