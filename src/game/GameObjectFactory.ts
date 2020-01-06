@@ -6,14 +6,17 @@ import uuid from 'uuid/v4';
 import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { SolarSystem } from './object/SolarSystem';
 import { Planet } from './object/Planet';
+import { SelectionContainer } from "./SelectionContainer";
 
 export class GameObjectFactory {
   private readonly objectList: ObjectList;
   private readonly objectFactory: ObjectFactory;
+  private readonly selectionContainer: SelectionContainer;
 
-  constructor(objectList: ObjectList, objectFactory: ObjectFactory) {
+  constructor(objectList: ObjectList, objectFactory: ObjectFactory, selectionContainer: SelectionContainer) {
     this.objectList = objectList;
     this.objectFactory = objectFactory;
+    this.selectionContainer = selectionContainer;
   }
 
   createStar(radius: number, texture: string, position: Vector2, mass: number, name: string): Star {
@@ -31,6 +34,9 @@ export class GameObjectFactory {
     this.objectList.addObject(star);
     star.addEventListener('remove', event => {
       this.objectList.removeObject(star);
+      if (this.selectionContainer.selected === star.id) {
+        this.selectionContainer.selected = null;
+      }
     });
     return star;
   }
@@ -52,6 +58,9 @@ export class GameObjectFactory {
     this.objectList.addObject(planet);
     planet.addEventListener('remove', event => {
       this.objectList.removeObject(planet);
+      if (this.selectionContainer.selected === planet.id) {
+        this.selectionContainer.selected = null;
+      }
     });
     return planet;
   }

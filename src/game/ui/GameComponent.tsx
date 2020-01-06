@@ -47,13 +47,12 @@ export function GameComponent() {
     const objectList = new ObjectList();
     const scene = new Scene();
     const objectFactory = new ObjectFactory(scene);
-    const gameObjectFactory = new GameObjectFactory(objectList, objectFactory);
+    const selectionContainer = new SelectionContainer(dispatch);
+    const selectionService = new SelectionService(selectionContainer, objectList);
+    const gameObjectFactory = new GameObjectFactory(objectList, objectFactory, selectionContainer);
     const engine = new GameEngine(container, scene, input, camera);
     const universe = new UniverseGenerator(gameObjectFactory).generateUniverse();
     const gameOptions = new GameOptions(dispatch);
-
-    const selectionContainer = new SelectionContainer(dispatch);
-    const selectionService = new SelectionService(selectionContainer, objectList);
 
     const gravityService = FLAGS.GRAVITY_MAIN_THREAD
       ? new MainThreadGravityService(universe)
