@@ -10,9 +10,9 @@ export class Universe {
   static MAX_CAMERA_Z = 2500000;
   solarSystems: SolarSystem[] = [];
   freePlanets: Planet[] = [];
-  centerStar: Star | null;
+  centerStar: Star;
   private bounds: Sphere;
-  background: Points | null;
+  background: Points;
 
   constructor(
     centerStar: Star,

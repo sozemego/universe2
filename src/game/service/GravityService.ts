@@ -90,8 +90,7 @@ export class GravityService implements IGameService {
       planets: {},
       freePlanets: [],
     };
-    const centerStar = this.universe.centerStar;
-    data.centerStar = centerStar ? this.prepareStarData(centerStar) : null;
+    data.centerStar = this.prepareStarData(this.universe.centerStar);
     for (const solarSystem of this.universe.solarSystems) {
       data.stars.push(this.prepareStarData(solarSystem.star));
     }

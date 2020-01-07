@@ -51,7 +51,7 @@ export class GameService {
     });
 
     this.engine.start();
-    this.selectionService.selected = this.universe.centerStar ? this.universe.centerStar : null;
+    this.selectionService.selected = this.universe.centerStar;
     this.input.pressKey(']');
     this.input.pressKey(']');
     this.input.pressKey('O');
