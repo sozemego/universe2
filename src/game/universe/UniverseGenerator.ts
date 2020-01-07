@@ -1,7 +1,7 @@
 import { GameObjectFactory } from '../GameObjectFactory';
 import { Universe } from './Universe';
 import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
-import { angleBetween, random, randomPointInSphere } from '../../mathUtils';
+import { angleBetween, clampAbs, random, randomPointInSphere } from '../../mathUtils';
 import { SolarSystem } from '../object/SolarSystem';
 
 export class UniverseGenerator {
@@ -80,7 +80,8 @@ export class UniverseGenerator {
 
       let cosAcc = Math.cos(angle + (90 * Math.PI) / 180);
       let sinAcc = Math.sin(angle + (90 * Math.PI) / 180);
-      star.accelerate(new Vector2(cosAcc * 20.5, sinAcc * 20.5));
+      let percentageOfDistance = clampAbs(1 - (distance / this.bounds.radius), 0.5, 1);
+      star.accelerate(new Vector2(cosAcc * 100 * percentageOfDistance, sinAcc * 100 * percentageOfDistance));
     }
     return solarSystems;
   }
