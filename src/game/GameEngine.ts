@@ -4,6 +4,7 @@ import Stats from 'stats-js';
 import { GameService } from './GameService';
 import { InputHandler, KEY } from './InputHandler';
 import { GameCamera } from './GameCamera';
+import { Universe } from './universe/Universe';
 
 export class GameEngine {
   private readonly inputHandler: InputHandler;
@@ -52,7 +53,7 @@ export class GameEngine {
 
     this.camera.position.x = 5000000 / 2;
     this.camera.position.y = 5000000 / 2;
-    this.camera.position.z = 5000000;
+    this.camera.position.z = Universe.MAX_CAMERA_Z;
 
     this.pressedKeys = new Set();
 
