@@ -21,7 +21,7 @@ export class GameObjectFactory {
 
   createStar(radius: number, texture: string, position: Vector2, mass: number, name: string): Star {
     let sprite = this.objectFactory.createSprite(texture, position, radius * 2, radius * 2);
-    sprite.onBeforeRender = scaleToCameraDistance(50);
+    sprite.onBeforeRender = scaleToCameraDistance(2);
 
     let star = new Star(
       uuid(),
@@ -43,7 +43,7 @@ export class GameObjectFactory {
 
   createSolarSystem(star: Star, radius: number): SolarSystem {
     let ring = this.objectFactory.createCircle(radius, star.color);
-    ring.onBeforeRender = scaleToCameraDefault();
+    ring.onBeforeRender = scaleToCameraDistance(1);
     return new SolarSystem(radius, star, ring);
   }
 
@@ -52,7 +52,7 @@ export class GameObjectFactory {
     let sprite = this.objectFactory.createSprite(texture, position, radius * 2, radius * 2);
     sprite.scale.x = radius;
     sprite.scale.y = radius;
-    sprite.onBeforeRender = scaleToCameraDistance(750);
+    sprite.onBeforeRender = scaleToCameraDistance(25);
 
     let planet = new Planet(uuid(), sphere, mass, sprite, texture, null);
     this.objectList.addObject(planet);

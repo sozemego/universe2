@@ -7,7 +7,7 @@ import { Planet } from '../object/Planet';
 export class Universe {
   static UNIVERSE_RADIUS = 100000;
   static SCALE_INSIDE_SYSTEM = 60000;
-  static MAX_CAMERA_Z = 2500000;
+  static MAX_CAMERA_Z = 100000;
   solarSystems: SolarSystem[] = [];
   freePlanets: Planet[] = [];
   centerStar: Star;
