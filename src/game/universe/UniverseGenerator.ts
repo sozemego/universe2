@@ -131,7 +131,7 @@ export class UniverseGenerator {
   generateBackground(): Points {
     return this.gameObjectFactory.createBackground(
       10000,
-      this.bounds.clone().set(this.bounds.center, this.bounds.radius * 10),
+      this.bounds.clone().set(this.bounds.center, this.bounds.radius * 5),
       Color.NAMES['white']
     );
   }
