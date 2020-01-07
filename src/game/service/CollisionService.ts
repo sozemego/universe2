@@ -20,6 +20,13 @@ export class CollisionService implements IGameService {
         let star2 = stars[j];
         if (star1.sphere.intersectsSphere(star2.sphere)) {
           const starToDestroy = star1.mass > star2.mass ? star2 : star1;
+          let planets = starToDestroy.solarSystem?.planets;
+          if (planets) {
+            [...planets].forEach(planet => {
+              starToDestroy.solarSystem?.removePlanet(planet);
+              this.universe.freePlanets.push(planet);
+            });
+          }
           starToDestroy.solarSystem?.dispose();
         }
       }

@@ -23,9 +23,33 @@ export class Universe {
   ) {
     this.centerStar = centerStar;
     this.solarSystems = solarSystems;
+    this.solarSystems.forEach(system => {
+      system.addEventListener('remove', event => {
+        this.removeSolarSystem(system);
+      });
+    });
     this.freePlanets = freePlanets;
+    this.freePlanets.forEach(planet => {
+      planet.addEventListener('remove', event => {
+        this.removeFreePlanet(planet);
+      });
+    });
     this.bounds = bounds;
     this.background = background;
+  }
+
+  removeSolarSystem(solarSystem: SolarSystem) {
+    let index = this.solarSystems.findIndex(system => system === solarSystem);
+    if (index > -1) {
+      this.solarSystems.splice(index, 1);
+    }
+  }
+
+  removeFreePlanet(planet: Planet) {
+    let index = this.freePlanets.findIndex(freePlanet => freePlanet === planet);
+    if (index > -1) {
+      this.freePlanets.splice(index, 1);
+    }
   }
 
   getCenter() {

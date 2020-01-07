@@ -1,14 +1,15 @@
-import { Line, Material, Sphere, Vector2, Vector3 } from 'three';
+import { EventDispatcher, Line, Material, Sphere, Vector2, Vector3 } from 'three';
 import { Star } from './Star';
 import { Planet } from './Planet';
 
-export class SolarSystem {
+export class SolarSystem extends EventDispatcher {
   readonly star: Star;
   readonly planets: Planet[];
   radius: number;
   private readonly ring: Line;
 
   constructor(radius: number, star: Star, ring: Line) {
+    super();
     this.radius = radius;
     this.star = star;
     this.star.solarSystem = this;
@@ -39,6 +40,7 @@ export class SolarSystem {
     this.ring.parent?.remove(this.ring);
     this.star.dispose();
     this.planets.forEach(p => p.dispose());
+    this.dispatchEvent({ type: 'remove' });
   }
 
   addPlanet(planet: Planet) {
@@ -49,6 +51,7 @@ export class SolarSystem {
   removePlanet(planet: Planet) {
     const index = this.planets.findIndex(p => p === planet);
     if (index > -1) {
+      planet.solarSystem = null;
       this.planets.splice(index, 1);
     }
   }
