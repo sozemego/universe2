@@ -79,8 +79,10 @@ export class GameEngine {
     this.camera.updateProjectionMatrix();
   };
 
-  start = () => {
-    this._animate(0);
+  start = (): Promise<void> => {
+    return this.loadAllTextures().then(() => {
+      this._animate(0);
+    });
   };
 
   _animate = (now: number) => {
@@ -126,5 +128,13 @@ export class GameEngine {
 
   setUpdate(fn: (delta: number) => void) {
     this.updateFn = fn;
+  }
+
+  loadAllTextures(): Promise<unknown[]> {
+    let textures = ['textures/black_hole_1.png', 'textures/green_planet_1.png', 'textures/white_star_1.png'];
+    let promises = textures.map(
+      texture => new Promise(resolve => this.textureLoader.load(texture, resolve))
+    );
+    return Promise.all(promises);
   }
 }

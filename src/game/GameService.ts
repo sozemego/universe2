@@ -36,7 +36,7 @@ export class GameService {
     this.services = services;
   }
 
-  start() {
+  start(): Promise<void> {
     let engine = this;
     this.engine.setUpdate(function gameServiceUpdate(delta: number) {
       engine.update(delta);
@@ -50,12 +50,13 @@ export class GameService {
       }
     });
 
-    this.engine.start();
-    this.selectionService.selected = this.universe.centerStar;
-    // this.input.pressKey(']');
-    // this.input.pressKey(']');
-    this.input.pressKey('o');
-    this.input.pressKey('i');
+    return this.engine.start().then(() => {
+      this.selectionService.selected = this.universe.centerStar;
+      // this.input.pressKey(']');
+      // this.input.pressKey(']');
+      this.input.pressKey('o');
+      this.input.pressKey('i');
+    });
   }
 
   update = (delta: number) => {
