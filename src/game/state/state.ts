@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ObjectList } from '../ObjectList';
 import { SelectionService } from '../service/SelectionService';
 import { MoveToSelectionService } from '../service/MoveToSelectionService';
-import { GravityService } from '../service/GravityService';
 import { AccelerationService } from '../service/AccelerationService';
 import { DebugLineService } from '../service/DebugLineService';
 import { MouseSelectionService } from '../service/MouseSelectionService';
@@ -13,7 +12,7 @@ import { SelectionRectangleService } from '../service/SelectionRectangleService'
 import { DebugOrbitService } from '../service/DebugOrbitService';
 import { Universe } from '../universe/Universe';
 import { GameOptions } from '../GameOptions';
-import { MainThreadGravityService } from '../service/MainThreadGravityService';
+import { GravityService } from '../service/GravityService';
 import { ObjectBoundsService } from '../service/ObjectBoundsService';
 import { GameClockService } from '../service/GameClockService';
 
@@ -81,7 +80,7 @@ export const {
 } = gameSlice.actions;
 
 export interface GameServices {
-  gravityService: GravityService | MainThreadGravityService;
+  gravityService: GravityService;
   accelerationService: AccelerationService;
   debugLineService: DebugLineService;
   mouseSelectionService: MouseSelectionService;

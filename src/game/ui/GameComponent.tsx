@@ -12,7 +12,6 @@ import { GameObjectFactory } from '../GameObjectFactory';
 import { UniverseGenerator } from '../universe/UniverseGenerator';
 import { ObjectList } from '../ObjectList';
 import { GameOptions } from '../GameOptions';
-import { GravityService } from '../service/GravityService';
 import { AccelerationService } from '../service/AccelerationService';
 import { DebugLineService } from '../service/DebugLineService';
 import { MouseSelectionService } from '../service/MouseSelectionService';
@@ -25,8 +24,7 @@ import { DebugOrbitService } from '../service/DebugOrbitService';
 import { SelectionContainer } from '../SelectionContainer';
 import { SelectionService } from '../service/SelectionService';
 import { GameServices, setServices } from '../state/state';
-import { MainThreadGravityService } from '../service/MainThreadGravityService';
-import { FLAGS } from '../../flags';
+import { GravityService } from '../service/GravityService';
 import { ObjectBoundsService } from '../service/ObjectBoundsService';
 import { GameClockService } from '../service/GameClockService';
 import { UniverseBoundsService } from '../service/UniverseBoundsService';
@@ -58,9 +56,8 @@ export function GameComponent() {
     const universe = new UniverseGenerator(gameObjectFactory).generateUniverse();
     const gameOptions = new GameOptions(dispatch);
 
-    const gravityService = FLAGS.GRAVITY_MAIN_THREAD
-      ? new MainThreadGravityService(universe)
-      : new GravityService(universe);
+    const gravityService = new GravityService(universe);
+
     const accelerationService = new AccelerationService(objectList);
     const debugLineService = new DebugLineService(objectList, objectFactory, input, gameOptions);
     const mouseSelectionService = new MouseSelectionService(

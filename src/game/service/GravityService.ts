@@ -1,128 +1,91 @@
-import { Vector2 } from 'three';
-// @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-unused-vars,import/no-webpack-loader-syntax
-import GravityWorker from 'worker-loader!../worker/gravity.worker';
-import { Universe } from '../universe/Universe';
-import { Star } from '../object/Star';
-import { Planet } from '../object/Planet';
-import { CalcData, ResultData } from '../worker';
+import { Clock } from 'three';
 import { IGameService } from './index';
+import { Universe } from '../universe/Universe';
 import { FLAGS } from '../../flags';
+import { BaseObject } from '../object/BaseObject';
+import { calcAccelerationDueToGravity } from '../gravity';
 
 export class GravityService implements IGameService {
-  private universe: Universe;
-  private gravityWorker: Worker;
-  private currentUpdate: number = 0;
-  private nextUpdate: number = 0;
-  private lastResultApplied: number = Date.now();
-  private differences: number[] = [];
+  private readonly universe: Universe;
+  private gravityCalcs: number = 0;
+  private delta: number = 0;
 
   constructor(universe: Universe) {
     this.universe = universe;
-    // @ts-ignore
-    this.gravityWorker = new GravityWorker();
-    this.gravityWorker.addEventListener('message', (message: any) => {
-      if (message.data.type === 'gravityCalcResult') {
-        this.applyResult(message.data.result);
-      }
-    });
   }
 
   update(delta: number) {
-    if (this.nextUpdate !== this.currentUpdate) {
-      return;
+    this.delta = delta;
+    let clock = null;
+    if (FLAGS.GRAVITY_WORKER_PERF) {
+      this.gravityCalcs = 0;
+      clock = new Clock();
+      clock.start();
     }
-    // console.log(`sending data for frame ${this.currentUpdate}`)
-    this.gravityWorker.postMessage({
-      type: 'gravityCalc',
-      data: this.prepareData(),
-    });
-    this.currentUpdate += 1;
-  }
-
-  applyResult(resultData: ResultData) {
-    // console.log(`applying result for frame ${this.currentUpdate}`)
-    let result = resultData;
-    let vector = new Vector2();
-    for (const solarSystem of this.universe.solarSystems) {
-      const { star } = solarSystem;
-      const starAcceleration = result[solarSystem.star.id];
-      if (starAcceleration) {
-        star.accelerate(vector.set(starAcceleration.x, starAcceleration.y));
+    let { solarSystems, centerStar, freePlanets } = this.universe;
+    for (let i = 0; i < solarSystems.length; i++) {
+      let solarSystem1 = solarSystems[i];
+      for (let j = i + 1; j < solarSystems.length; j++) {
+        let solarSystem2 = solarSystems[j];
+        let star1 = solarSystem1.star;
+        let star2 = solarSystem2.star;
+        let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(star1, star2);
+        solarSystem2.accelerate(accelerationA);
+        solarSystem1.accelerate(accelerationB);
       }
-      const { planets } = solarSystem;
-      for (const planet of planets) {
-        const planetAcceleration = result[planet.id];
-        if (planetAcceleration) {
-          planet.accelerate(vector.set(planetAcceleration.x, planetAcceleration.y));
+    }
+
+    if (centerStar) {
+      for (let solarSystem of solarSystems) {
+        let star = solarSystem.star;
+        let [accelerationA] = this.calcAccelerationDueToGravity(centerStar, star);
+        solarSystem.accelerate(accelerationA);
+      }
+    }
+
+    for (let solarSystem of solarSystems) {
+      let star = solarSystem.star;
+      let planets = solarSystem.planets;
+      for (let i = 0; i < planets.length; i++) {
+        let planet1 = planets[i];
+        let [accelerationToStar] = this.calcAccelerationDueToGravity(star, planet1);
+        planet1.accelerate(accelerationToStar);
+        for (let j = i + 1; j < planets.length; j++) {
+          let planet2 = planets[j];
+          let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(planet1, planet2);
+          planet2.accelerate(accelerationA);
+          planet1.accelerate(accelerationB);
         }
       }
     }
-    for (const planet of this.universe.freePlanets) {
-      const acceleration = result[planet.id];
-      if (acceleration) {
-        planet.accelerate(vector.set(acceleration.x, acceleration.y));
+
+    if (centerStar) {
+      for (let freePlanet of freePlanets) {
+        let [accelerationToCenter] = this.calcAccelerationDueToGravity(centerStar, freePlanet);
+        freePlanet.accelerate(accelerationToCenter);
       }
     }
-    this.nextUpdate += 1;
+
+    for (let solarSystem of solarSystems) {
+      let star = solarSystem.star;
+      for (let freePlanet of freePlanets) {
+        let [accelerationToStar] = this.calcAccelerationDueToGravity(star, freePlanet);
+        freePlanet.accelerate(accelerationToStar);
+      }
+    }
+
     if (FLAGS.GRAVITY_WORKER_PERF) {
-      let now = Date.now();
-      let timeDiff = now - this.lastResultApplied;
-      this.differences.push(timeDiff);
-      while (this.differences.length > 200) {
-        this.differences.shift();
-      }
-      let average =
-        this.differences.reduce((curr, next) => {
-          return curr + next;
-        }, 0) / this.differences.length;
-      console.log(
-        `Time difference of ${timeDiff} ms between last and current applyResult. Average difference is now = ${average}`
-      );
-      this.lastResultApplied = now;
+      clock!.stop();
+      let time = clock!.getElapsedTime();
+      console.log(`gravityCalcs = ${this.gravityCalcs}. Took ${(time * 1000).toFixed(2)}ms`);
     }
   }
 
-  prepareData() {
-    const data: CalcData = {
-      centerStar: null,
-      stars: [],
-      planets: {},
-      freePlanets: [],
-    };
-    data.centerStar = this.prepareStarData(this.universe.centerStar);
-    for (const solarSystem of this.universe.solarSystems) {
-      data.stars.push(this.prepareStarData(solarSystem.star));
+  calcAccelerationDueToGravity(attractor: BaseObject, attractee: BaseObject) {
+    let [accelerationA, accelerationB] = calcAccelerationDueToGravity(attractor, attractee);
+    if (FLAGS.GRAVITY_WORKER_PERF) {
+      this.gravityCalcs++;
     }
-    for (const solarSystem of this.universe.solarSystems) {
-      const { planets } = solarSystem;
-      const planetsData = [];
-      for (const planet of planets) {
-        const planetData = this.preparePlanetData(planet);
-        planetsData.push(planetData);
-      }
-      data.planets[solarSystem.star.id] = planetsData;
-    }
-    for (const planet of this.universe.freePlanets) {
-      data.freePlanets.push(this.preparePlanetData(planet));
-    }
-    this.nextUpdate = this.currentUpdate;
-    return data;
-  }
-
-  prepareStarData(star: Star) {
-    return {
-      id: star.id,
-      mass: star.mass,
-      position: { x: star.position.x, y: star.position.y },
-    };
-  }
-
-  preparePlanetData(planet: Planet) {
-    return {
-      id: planet.id,
-      mass: planet.mass,
-      position: { x: planet.position.x, y: planet.position.y },
-    };
+    return [accelerationA.multiplyScalar(this.delta), accelerationB.multiplyScalar(this.delta)];
   }
 }

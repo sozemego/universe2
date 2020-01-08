@@ -13,7 +13,7 @@ import { UniverseGenerator } from '../game/universe/UniverseGenerator';
 import { GameObjectFactory } from '../game/GameObjectFactory';
 import { ObjectFactory } from '../game/ObjectFactory';
 import { CollisionService } from '../game/service/CollisionService';
-import { MainThreadGravityService } from '../game/service/MainThreadGravityService';
+import { GravityService } from '../game/service/GravityService';
 import { AccelerationService } from '../game/service/AccelerationService';
 import { Universe } from '../game/universe/Universe';
 import { Star } from '../game/object/Star';
@@ -44,7 +44,7 @@ export function runScenario() {
 
   const services: IGameService[] = [
     new CollisionService(universe, selectionContainer),
-    new MainThreadGravityService(universe),
+    new GravityService(universe),
     new AccelerationService(objectList),
   ];
 
