@@ -3,6 +3,7 @@ import { IGameService } from './index';
 import { Universe } from '../universe/Universe';
 import { FLAGS } from '../../flags';
 import { BaseObject } from '../object/BaseObject';
+import { calcAccelerationDueToGravity } from '../gravity';
 
 const vector2A = new Vector2();
 const vector2B = new Vector2();
@@ -84,26 +85,10 @@ export class MainThreadGravityService implements IGameService {
   }
 
   calcAccelerationDueToGravity(attractor: BaseObject, attractee: BaseObject) {
-    let distancePx = vector2A
-      .set(attractor.position.x, attractor.position.y)
-      .distanceTo(vector2B.set(attractee.position.x, attractee.position.y));
-    let radians = vector2B
-      .set(attractor.position.x, attractor.position.y)
-      .sub(vector2A.set(attractee.position.x, attractee.position.y))
-      .angle();
-    let cos = Math.cos(radians);
-    let sin = Math.sin(radians);
-    let distanceSquared = distancePx * distancePx;
-    let accelerationA =
-      (attractor.mass / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM * this.delta;
-    let accelerationB =
-      (attractee.mass / distanceSquared) * Universe.SCALE_INSIDE_SYSTEM * this.delta;
+    let [accelerationA, accelerationB] = calcAccelerationDueToGravity(attractor, attractee);
     if (FLAGS.GRAVITY_WORKER_PERF) {
       this.gravityCalcs++;
     }
-    return [
-      vector2A.set(cos * accelerationA, sin * accelerationA),
-      vector2B.set(cos * accelerationB, sin * accelerationB),
-    ];
+    return [accelerationA.multiplyScalar(this.delta), accelerationB.multiplyScalar(this.delta)];
   }
 }
