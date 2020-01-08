@@ -1,6 +1,7 @@
 import { Universe } from '../universe/Universe';
 import { IGameService } from './index';
 import { calcDistance } from '../util/utils';
+import { calcAccelerationDueToGravity } from '../gravity';
 
 export class UniverseBoundsService implements IGameService {
   private readonly universe: Universe;
@@ -14,8 +15,14 @@ export class UniverseBoundsService implements IGameService {
     backgroundBounds.radius *= 5;
     for (let solarSystem of [...this.universe.solarSystems]) {
       if (!backgroundBounds.containsPoint(solarSystem.star.position)) {
-        solarSystem.dispose();
-        continue;
+        let [accelerationToCenter] = calcAccelerationDueToGravity(
+          this.universe.centerStar,
+          solarSystem.star
+        );
+        let distanceFromBounds =
+          calcDistance(this.universe.centerStar, solarSystem.star) - backgroundBounds.radius;
+        let multipleOfBoundsRadius = Math.ceil(distanceFromBounds / backgroundBounds.radius);
+        solarSystem.accelerate(accelerationToCenter.multiplyScalar(500 * multipleOfBoundsRadius));
       }
 
       let { planets } = solarSystem;
@@ -29,8 +36,14 @@ export class UniverseBoundsService implements IGameService {
     }
     for (let freePlanet of [...this.universe.freePlanets]) {
       if (!backgroundBounds.containsPoint(freePlanet.position)) {
-        freePlanet.dispose();
-        continue;
+        let [accelerationToCenter] = calcAccelerationDueToGravity(
+          this.universe.centerStar,
+          freePlanet
+        );
+        let distanceFromBounds =
+          calcDistance(this.universe.centerStar, freePlanet) - backgroundBounds.radius;
+        let multipleOfBoundsRadius = Math.ceil(distanceFromBounds / backgroundBounds.radius);
+        freePlanet.accelerate(accelerationToCenter.multiplyScalar(500 * multipleOfBoundsRadius));
       }
       for (let solarSystem of this.universe.solarSystems) {
         let distance = calcDistance(solarSystem.star, freePlanet);

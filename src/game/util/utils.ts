@@ -64,7 +64,5 @@ export function next(current: any, arr: any[]) {
 }
 
 export function calcDistance(obj1: BaseObject, obj2: BaseObject): number {
-  return new Vector2(obj1.position.x, obj1.position.y).distanceTo(
-    new Vector2(obj2.position.x, obj2.position.y)
-  );
+  return obj1.position.distanceTo(obj2.position);
 }
