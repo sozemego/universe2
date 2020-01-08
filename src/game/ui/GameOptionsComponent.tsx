@@ -31,7 +31,7 @@ export function GameOptionsComponent() {
         <Slider
           value={gameSpeedScale * 100}
           onChange={val => (gameOptions.gameSpeedScale = (val as number) / 100)}
-          max={500}
+          max={2500}
         />
       </div>
       <div onClick={() => (gameOptions.showDebugLines = !gameOptions.showDebugLines)}>

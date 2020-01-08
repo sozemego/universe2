@@ -56,7 +56,7 @@ export class GameOptions {
   }
 
   set gameSpeedScale(scale: number) {
-    scale = clampAbs(scale, 0, 5);
+    scale = clampAbs(scale, 0, 25);
     // @ts-ignore
     this.dispatch(setGameSpeedScale(scale));
   }
