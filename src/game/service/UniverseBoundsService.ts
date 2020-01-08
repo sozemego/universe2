@@ -24,15 +24,6 @@ export class UniverseBoundsService implements IGameService {
         let multipleOfBoundsRadius = Math.ceil(distanceFromBounds / backgroundBounds.radius);
         solarSystem.accelerate(accelerationToCenter.multiplyScalar(500 * multipleOfBoundsRadius));
       }
-
-      let { planets } = solarSystem;
-      for (let planet of [...planets]) {
-        let distance = calcDistance(solarSystem.star, planet);
-        if (distance > solarSystem.radius * 1.5) {
-          solarSystem.removePlanet(planet);
-          this.universe.addFreePlanet(planet);
-        }
-      }
     }
     for (let freePlanet of [...this.universe.freePlanets]) {
       if (!backgroundBounds.containsPoint(freePlanet.position)) {
@@ -44,13 +35,6 @@ export class UniverseBoundsService implements IGameService {
           calcDistance(this.universe.centerStar, freePlanet) - backgroundBounds.radius;
         let multipleOfBoundsRadius = Math.ceil(distanceFromBounds / backgroundBounds.radius);
         freePlanet.accelerate(accelerationToCenter.multiplyScalar(500 * multipleOfBoundsRadius));
-      }
-      for (let solarSystem of this.universe.solarSystems) {
-        let distance = calcDistance(solarSystem.star, freePlanet);
-        if (distance < solarSystem.radius * 0.75) {
-          this.universe.removeFreePlanet(freePlanet);
-          solarSystem.addPlanet(freePlanet);
-        }
       }
     }
   }
