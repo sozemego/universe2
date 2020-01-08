@@ -59,14 +59,14 @@ export class GameService {
   }
 
   update = (delta: number) => {
-    delta *= this.options.gameSpeedScale;
+    let newDelta = delta * this.options.gameSpeedScale;
     for (let i = 0; i < this.options.gameSpeed; i++) {
       this.accumulator += delta;
       while (this.accumulator >= GameService.FPS) {
         this.accumulator -= GameService.FPS;
 
-        this.universe.update(delta);
-        this.services.forEach(service => service.update(delta));
+        this.universe.update(newDelta);
+        this.services.forEach(service => service.update(newDelta));
       }
     }
   };

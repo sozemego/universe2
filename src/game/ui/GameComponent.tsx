@@ -28,6 +28,7 @@ import { GameServices, setServices } from '../state/state';
 import { MainThreadGravityService } from '../service/MainThreadGravityService';
 import { FLAGS } from '../../flags';
 import { ObjectBoundsService } from '../service/ObjectBoundsService';
+import { GameClockService } from "../service/GameClockService";
 
 export function GameComponent() {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ export function GameComponent() {
     );
     const debugOrbitService = new DebugOrbitService(universe, objectFactory, input, gameOptions);
     const objectBoundsService = new ObjectBoundsService(objectList, objectFactory, input, gameOptions);
+    const gameClockService = new GameClockService(dispatch);
 
     const gameServices: GameServices = {
       gravityService,
@@ -109,6 +111,7 @@ export function GameComponent() {
       objectBoundsService,
       universe,
       gameOptions,
+      gameClockService
     };
 
     // @ts-ignore
@@ -126,6 +129,7 @@ export function GameComponent() {
       selectionRectangleService,
       debugOrbitService,
       objectBoundsService,
+      gameClockService
     ];
 
     const game = new GameService(

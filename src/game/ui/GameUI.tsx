@@ -1,6 +1,7 @@
 import React from 'react';
 import { SelectedObject } from './SelectedObject';
 import { GameOptionsComponent } from './GameOptionsComponent';
+import { GameClockComponent } from './GameClockComponent';
 
 export function GameUI() {
   return (
@@ -12,7 +13,7 @@ export function GameUI() {
           height: '100%',
           borderRight: '4px solid gray',
           borderBottom: '4px solid gray',
-            borderRadius: "0px 0px 12px 0px"
+          borderRadius: '0px 0px 12px 0px',
         }}
       >
         <SelectedObject />
@@ -22,9 +23,21 @@ export function GameUI() {
           background: 'white',
           width: '250px',
           height: '100%',
+          border: '4px solid gray',
+          borderRadius: '0px 0px 12px 12px',
+          textAlign: 'center',
+        }}
+      >
+        <GameClockComponent />
+      </div>
+      <div
+        style={{
+          background: 'white',
+          width: '250px',
+          height: '100%',
           borderLeft: '4px solid gray',
           borderBottom: '4px solid gray',
-            borderRadius: "0px 0px 0px 12px"
+          borderRadius: '0px 0px 0px 12px',
         }}
       >
         <GameOptionsComponent />

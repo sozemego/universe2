@@ -65,6 +65,10 @@ export function useGetObjectBoundsService() {
   return useSelector((state: AppState) => state.game.services!.objectBoundsService);
 }
 
+export function useGetGameClockService() {
+  return useSelector((state: AppState) => state.game.services!.gameClockService);
+}
+
 export function useGetGameSpeedScale(state? : AppState) {
   if (state) {
     return state.game.gameSpeedScale;
@@ -79,4 +83,8 @@ export function useShowDebugSphereBounds(state?: AppState) {
   }
   // eslint-disable-next-line react-hooks/rules-of-hooks
   return useSelector((state: AppState) => state.game.showDebugSphereBounds);
+}
+
+export function useGetTime() {
+  return useSelector((state: AppState) => state.game.time);
 }

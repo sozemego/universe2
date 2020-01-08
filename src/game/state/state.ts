@@ -15,6 +15,7 @@ import { Universe } from '../universe/Universe';
 import { GameOptions } from "../GameOptions";
 import { MainThreadGravityService } from "../service/MainThreadGravityService";
 import { ObjectBoundsService } from "../service/ObjectBoundsService";
+import { GameClockService } from "../service/GameClockService";
 
 const initialState: GameState = {
   selected: null,
@@ -26,6 +27,7 @@ const initialState: GameState = {
   showDebugOrbits: false,
   showDebugSphereBounds: false,
   services: null,
+  time: 0
 };
 
 export const gameSlice = createSlice<GameState, any>({
@@ -56,6 +58,9 @@ export const gameSlice = createSlice<GameState, any>({
     setShowDebugSphereBounds: (state: GameState, action: PayloadAction<boolean>) => {
       state.showDebugSphereBounds = action.payload;
     },
+    setTime: (state: GameState, action: PayloadAction<number>) => {
+      state.time = action.payload;
+    },
     setServices: (state: GameState, action: PayloadAction<GameServices>) => {
       state.services = action.payload;
     },
@@ -71,7 +76,8 @@ export const {
   setShowDebugOrbits,
   setServices,
   setGameSpeedScale,
-  setShowDebugSphereBounds
+  setShowDebugSphereBounds,
+  setTime
 } = gameSlice.actions;
 
 export interface GameServices {
@@ -90,6 +96,7 @@ export interface GameServices {
   objectBoundsService: ObjectBoundsService;
   universe: Universe;
   gameOptions: GameOptions;
+  gameClockService: GameClockService;
 }
 
 export interface GameState {
@@ -102,4 +109,5 @@ export interface GameState {
   showDebugOrbits: boolean;
   showDebugSphereBounds: boolean;
   services: GameServices | null;
+  time: number;
 }

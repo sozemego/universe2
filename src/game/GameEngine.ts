@@ -17,6 +17,7 @@ export class GameEngine {
   // private readonly axesHelper: AxesHelper;
   private readonly pressedKeys: Set<string>;
   private readonly textureLoader: TextureLoader;
+  private time: number = 0;
 
   constructor(
     container: HTMLElement,
@@ -79,10 +80,12 @@ export class GameEngine {
   };
 
   start = () => {
-    this._animate();
+    this._animate(0);
   };
 
-  _animate = () => {
+  _animate = (now: number) => {
+    let diff = now - this.time;
+    this.time = now;
     this.stats.begin();
 
     this.handleCameraMovement();
@@ -90,7 +93,7 @@ export class GameEngine {
     this.camera.updateProjectionMatrix();
     // this.cameraHelper.update();
 
-    this.updateFn(GameService.FPS);
+    this.updateFn(Math.min(diff / 1000, 0.25));
 
     this.renderer.render(this.scene, this.camera);
 
