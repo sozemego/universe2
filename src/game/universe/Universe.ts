@@ -1,7 +1,6 @@
 import { Points, Sphere, Event } from 'three';
 import { SolarSystem } from '../object/SolarSystem';
 import { Star } from '../object/Star';
-import { calcDistance } from '../util/utils';
 import { Planet } from '../object/Planet';
 
 export class Universe {
@@ -11,7 +10,7 @@ export class Universe {
   solarSystems: SolarSystem[] = [];
   freePlanets: Planet[] = [];
   centerStar: Star;
-  private bounds: Sphere;
+  bounds: Sphere;
   background: Points;
 
   constructor(
@@ -30,9 +29,7 @@ export class Universe {
     });
     this.freePlanets = freePlanets;
     this.freePlanets.forEach(planet => {
-      planet.addEventListener('remove', event => {
-        this.removeFreePlanet(planet);
-      });
+      planet.addEventListener('remove', this.handleRemoveFreePlanet);
     });
     this.bounds = bounds;
     this.background = background;
@@ -42,52 +39,12 @@ export class Universe {
     if (this.centerStar) {
       this.centerStar.update(delta);
     }
-    let backgroundBounds = this.bounds.clone();
-    backgroundBounds.radius *= 5;
-    let solarSystemsToRemove = [];
     for (let solarSystem of this.solarSystems) {
       solarSystem.update(delta);
-
-      if (!backgroundBounds.containsPoint(solarSystem.star.position)) {
-        solarSystemsToRemove.push(solarSystem);
-        continue;
-      }
-
-      let { planets } = solarSystem;
-      for (let i = 0; i < planets.length; i++) {
-        let planet = planets[i];
-        let distance = calcDistance(solarSystem.star, planet);
-        if (distance > solarSystem.radius * 1.5) {
-          solarSystem.removePlanet(planet);
-          this.addFreePlanet(planet);
-        }
-      }
     }
-    let freePlanetsReunited: [Planet, SolarSystem][] = [];
-    let planetsToRemove: Planet[] = [];
     for (let freePlanet of this.freePlanets) {
       freePlanet.update(delta);
-      if (!backgroundBounds.containsPoint(freePlanet.position)) {
-        planetsToRemove.push(freePlanet);
-        continue;
-      }
-      for (let solarSystem of this.solarSystems) {
-        let distance = calcDistance(solarSystem.star, freePlanet);
-        if (distance < solarSystem.radius * 0.75) {
-          freePlanetsReunited.push([freePlanet, solarSystem]);
-        }
-      }
     }
-    for (let [planet, solarSystem] of freePlanetsReunited) {
-      this.removeFreePlanet(planet);
-      solarSystem.addPlanet(planet);
-    }
-    solarSystemsToRemove.forEach(solarSystem => {
-      solarSystem.dispose();
-    });
-    planetsToRemove.forEach(planet => {
-      planet.dispose();
-    });
   }
 
   addFreePlanet(planet: Planet) {

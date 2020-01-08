@@ -1,4 +1,4 @@
-import { EventDispatcher, Line, Material, Sphere, Vector2, Vector3 } from 'three';
+import { EventDispatcher, Line, Material, Sphere, Vector2, Vector3, Event } from 'three';
 import { Star } from './Star';
 import { Planet } from './Planet';
 
@@ -39,14 +39,21 @@ export class SolarSystem extends EventDispatcher {
     this.ring.geometry.dispose();
     this.ring.parent?.remove(this.ring);
     this.star.dispose();
-    this.planets.forEach(p => p.dispose());
+    [...this.planets].forEach(p => p.dispose());
     this.dispatchEvent({ type: 'remove' });
   }
 
   addPlanet(planet: Planet) {
+    if (!planet.hasEventListener('remove', this.handlePlanetRemove)) {
+      planet.addEventListener('remove', this.handlePlanetRemove);
+    }
     this.planets.push(planet);
     planet.solarSystem = this;
   }
+
+  handlePlanetRemove = (event: Event) => {
+    this.removePlanet(event.target);
+  };
 
   removePlanet(planet: Planet) {
     const index = this.planets.findIndex(p => p === planet);
