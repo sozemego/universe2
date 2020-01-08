@@ -1,14 +1,22 @@
 import { Dispatch } from 'redux';
 import { store } from '../store';
-import { gameSpeedSet, setShowDebugLines, setFollowSelected, setShowDebugOrbits, setGameSpeedScale, setShowDebugSphereBounds } from './state/state';
+import {
+  gameSpeedSet,
+  setShowDebugLines,
+  setFollowSelected,
+  setShowDebugOrbits,
+  setGameSpeedScale,
+  setShowDebugSphereBounds,
+} from './state/state';
 import {
   getGameSpeed,
   getShowDebugLines,
   useGetFollowSelected,
   useGetGameSpeedScale,
-  useShowDebugOrbits, useShowDebugSphereBounds
+  useShowDebugOrbits,
+  useShowDebugSphereBounds,
 } from './state/selectors';
-import { clampAbs } from "../mathUtils";
+import { clampAbs } from '../mathUtils';
 
 export class GameOptions {
   private readonly dispatch: Dispatch<any>;

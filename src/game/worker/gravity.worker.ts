@@ -1,7 +1,7 @@
 import { Vector2, Clock } from 'three';
-import { FLAGS } from "../../flags";
+import { FLAGS } from '../../flags';
 import { Universe } from '../universe/Universe';
-import { ResultData } from "./index";
+import { ResultData } from './index';
 
 let gravityCalcs = 0;
 let calcResultTimes: number[] = [];
@@ -11,7 +11,7 @@ const vector2B = new Vector2();
 // eslint-disable-next-line no-restricted-globals
 const ctx: Worker = self as any;
 
-ctx.addEventListener("message", (e: MessageEvent) => {
+ctx.addEventListener('message', (e: MessageEvent) => {
   if (e.data.type === 'gravityCalc') {
     let clock = null;
     if (FLAGS.GRAVITY_WORKER_PERF) {
@@ -56,8 +56,8 @@ ctx.addEventListener("message", (e: MessageEvent) => {
         for (let j = i + 1; j < planets.length; j++) {
           const planet2 = planets[j];
           const [accelerationToPlanetA, accelerationToPlanetB] = calcAccelerationDueToGravity(
-              planet1,
-              planet2
+            planet1,
+            planet2
           );
           addResult(accelerationToPlanetA, planet2.id, result);
           addResult(accelerationToPlanetB, planet1.id, result);
@@ -80,13 +80,13 @@ ctx.addEventListener("message", (e: MessageEvent) => {
         calcResultTimes.shift();
       }
       let average =
-          calcResultTimes.reduce((curr, next) => {
-            return curr + next;
-          }, 0) / calcResultTimes.length;
+        calcResultTimes.reduce((curr, next) => {
+          return curr + next;
+        }, 0) / calcResultTimes.length;
       console.log(
-          `Gravity calcs = ${gravityCalcs} in ${(time * 1000).toFixed(2)}ms, average = ${(
-              average * 1000
-          ).toFixed(2)}`
+        `Gravity calcs = ${gravityCalcs} in ${(time * 1000).toFixed(2)}ms, average = ${(
+          average * 1000
+        ).toFixed(2)}`
       );
       gravityCalcs = 0;
     }
@@ -97,7 +97,9 @@ ctx.addEventListener("message", (e: MessageEvent) => {
 });
 
 function calcAccelerationDueToGravity(attractor: any, attractee: any) {
-  const distancePx = vector2A.set(attractor.position.x, attractor.position.y).distanceTo(vector2B.set(attractee.position.x, attractee.position.y));
+  const distancePx = vector2A
+    .set(attractor.position.x, attractor.position.y)
+    .distanceTo(vector2B.set(attractee.position.x, attractee.position.y));
   const radians = vector2B
     .set(attractor.position.x, attractor.position.y)
     .sub(vector2A.set(attractee.position.x, attractee.position.y))
@@ -111,8 +113,8 @@ function calcAccelerationDueToGravity(attractor: any, attractee: any) {
     gravityCalcs++;
   }
   return [
-    {x: cos * accelerationA, y: sin * accelerationA},
-    {x: cos * accelerationB, y: sin * accelerationB},
+    { x: cos * accelerationA, y: sin * accelerationA },
+    { x: cos * accelerationB, y: sin * accelerationB },
   ];
 }
 

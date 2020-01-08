@@ -5,7 +5,8 @@ import {
   Group,
   Material,
   Object3D,
-  Scene, Sprite,
+  Scene,
+  Sprite,
   Vector2,
   WebGLRenderer,
 } from 'three';

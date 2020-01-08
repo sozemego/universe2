@@ -94,7 +94,10 @@ export class DebugLineService implements IGameService {
     }
 
     line.userData.points = points;
-    (line.geometry as BufferGeometry).setDrawRange(0, Math.min(DebugLineService.MAX_POINTS, Math.ceil(points / 3)));
+    (line.geometry as BufferGeometry).setDrawRange(
+      0,
+      Math.min(DebugLineService.MAX_POINTS, Math.ceil(points / 3))
+    );
 
     this.pointMap[obj.id] = line;
     (attributes.position as BufferAttribute).needsUpdate = true;

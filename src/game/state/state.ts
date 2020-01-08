@@ -12,10 +12,10 @@ import { SelectionCycleService } from '../service/SelectionCycleService';
 import { SelectionRectangleService } from '../service/SelectionRectangleService';
 import { DebugOrbitService } from '../service/DebugOrbitService';
 import { Universe } from '../universe/Universe';
-import { GameOptions } from "../GameOptions";
-import { MainThreadGravityService } from "../service/MainThreadGravityService";
-import { ObjectBoundsService } from "../service/ObjectBoundsService";
-import { GameClockService } from "../service/GameClockService";
+import { GameOptions } from '../GameOptions';
+import { MainThreadGravityService } from '../service/MainThreadGravityService';
+import { ObjectBoundsService } from '../service/ObjectBoundsService';
+import { GameClockService } from '../service/GameClockService';
 
 const initialState: GameState = {
   selected: null,
@@ -27,7 +27,7 @@ const initialState: GameState = {
   showDebugOrbits: false,
   showDebugSphereBounds: false,
   services: null,
-  time: 0
+  time: 0,
 };
 
 export const gameSlice = createSlice<GameState, any>({
@@ -77,7 +77,7 @@ export const {
   setServices,
   setGameSpeedScale,
   setShowDebugSphereBounds,
-  setTime
+  setTime,
 } = gameSlice.actions;
 
 export interface GameServices {

@@ -3,7 +3,7 @@ import { Star } from '../object/Star';
 import { SelectedStar } from './SelectedStar';
 import { SelectedPlanet } from './SelectedPlanet';
 import { Planet } from '../object/Planet';
-import { useGetMouseOver, useGetObjectList, useGetSelected } from "../state/selectors";
+import { useGetMouseOver, useGetObjectList, useGetSelected } from '../state/selectors';
 
 export function SelectedObject() {
   let selected = useGetSelected();
@@ -22,6 +22,4 @@ export function SelectedObject() {
   );
 }
 
-export interface SelectedObjectProps {
-
-}
+export interface SelectedObjectProps {}

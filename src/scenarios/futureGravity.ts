@@ -20,7 +20,9 @@ import { Star } from '../game/object/Star';
 import { Planet } from '../game/object/Planet';
 import { SolarSystem } from '../game/object/SolarSystem';
 
+// eslint-disable-next-line no-eval
 const electron = eval('require')('electron');
+// eslint-disable-next-line no-eval
 const fs = eval('require')('fs');
 
 export function runScenario() {
@@ -63,7 +65,6 @@ export function runScenario() {
   while (time >= 0) {
     time -= delta;
     gameService.update(delta);
-
   }
   writeToFile('output/result.txt', universe);
 

@@ -69,7 +69,7 @@ export function useGetGameClockService() {
   return useSelector((state: AppState) => state.game.services!.gameClockService);
 }
 
-export function useGetGameSpeedScale(state? : AppState) {
+export function useGetGameSpeedScale(state?: AppState) {
   if (state) {
     return state.game.gameSpeedScale;
   }

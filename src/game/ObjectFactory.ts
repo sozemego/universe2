@@ -17,7 +17,8 @@ import {
   Sphere,
   SphereGeometry,
   Sprite,
-  SpriteMaterial, Texture,
+  SpriteMaterial,
+  Texture,
   TextureLoader,
   Vector2,
 } from 'three';

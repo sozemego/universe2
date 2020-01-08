@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import thunk from "redux-thunk";
+import thunk from 'redux-thunk';
 import { gameSlice } from './game/state/state';
 
 const reducer = combineReducers({
@@ -8,5 +8,5 @@ const reducer = combineReducers({
 
 export const store = configureStore({
   reducer,
-  middleware: [thunk]
+  middleware: [thunk],
 });

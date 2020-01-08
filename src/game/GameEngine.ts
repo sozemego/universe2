@@ -1,7 +1,6 @@
 import { Scene, TextureLoader, WebGLRenderer } from 'three/src/Three';
 // @ts-ignore
 import Stats from 'stats-js';
-import { GameService } from './GameService';
 import { InputHandler, KEY } from './InputHandler';
 import { GameCamera } from './GameCamera';
 import { Universe } from './universe/Universe';
@@ -131,7 +130,11 @@ export class GameEngine {
   }
 
   loadAllTextures(): Promise<unknown[]> {
-    let textures = ['textures/black_hole_1.png', 'textures/green_planet_1.png', 'textures/white_star_1.png'];
+    let textures = [
+      'textures/black_hole_1.png',
+      'textures/green_planet_1.png',
+      'textures/white_star_1.png',
+    ];
     let promises = textures.map(
       texture => new Promise(resolve => this.textureLoader.load(texture, resolve))
     );

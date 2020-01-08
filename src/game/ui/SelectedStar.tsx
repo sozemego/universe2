@@ -19,7 +19,7 @@ export function SelectedStar({ star }: SelectedStarProps) {
       </div>
       <div>
         <span>Id:</span>
-        <span style={{ fontSize: '0.75em', marginLeft: "4px" }}>{star.id}</span>
+        <span style={{ fontSize: '0.75em', marginLeft: '4px' }}>{star.id}</span>
       </div>
       <div>Mass: {mass.toFixed(0)}</div>
       <div>

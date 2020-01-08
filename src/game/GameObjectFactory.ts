@@ -1,19 +1,23 @@
 import { ObjectList } from './ObjectList';
 import { ObjectFactory } from './ObjectFactory';
-import { scaleToCameraDefault, scaleToCameraDistance } from './util/utils';
+import { scaleToCameraDistance } from './util/utils';
 import { Star } from './object/Star';
 import uuid from 'uuid/v4';
 import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { SolarSystem } from './object/SolarSystem';
 import { Planet } from './object/Planet';
-import { SelectionContainer } from "./SelectionContainer";
+import { SelectionContainer } from './SelectionContainer';
 
 export class GameObjectFactory {
   private readonly objectList: ObjectList;
   private readonly objectFactory: ObjectFactory;
   private readonly selectionContainer: SelectionContainer;
 
-  constructor(objectList: ObjectList, objectFactory: ObjectFactory, selectionContainer: SelectionContainer) {
+  constructor(
+    objectList: ObjectList,
+    objectFactory: ObjectFactory,
+    selectionContainer: SelectionContainer
+  ) {
     this.objectList = objectList;
     this.objectFactory = objectFactory;
     this.selectionContainer = selectionContainer;

@@ -80,8 +80,10 @@ export class UniverseGenerator {
 
       let cosAcc = Math.cos(angle + (90 * Math.PI) / 180);
       let sinAcc = Math.sin(angle + (90 * Math.PI) / 180);
-      let percentageOfDistance = clampAbs(1 - (distance / this.bounds.radius), 0.5, 1);
-      star.accelerate(new Vector2(cosAcc * 100 * percentageOfDistance, sinAcc * 100 * percentageOfDistance));
+      let percentageOfDistance = clampAbs(1 - distance / this.bounds.radius, 0.5, 1);
+      star.accelerate(
+        new Vector2(cosAcc * 100 * percentageOfDistance, sinAcc * 100 * percentageOfDistance)
+      );
     }
     return solarSystems;
   }
@@ -117,7 +119,8 @@ export class UniverseGenerator {
         new Vector2(position.x, position.y),
         new Vector2(solarSystem.sphere.center.x, solarSystem.sphere.center.y)
       );
-      let percentageOfDistance = 1 - (position.distanceTo(solarSystem.sphere.center) / solarSystemRadius);
+      let percentageOfDistance =
+        1 - position.distanceTo(solarSystem.sphere.center) / solarSystemRadius;
       planet.accelerate(
         new Vector2(
           Math.cos(angleRad + (90 * Math.PI) / 180) * 50 * percentageOfDistance,

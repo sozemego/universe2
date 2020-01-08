@@ -5,7 +5,7 @@ import { IGameService } from './index';
 import { InputHandler, KEY } from '../InputHandler';
 import { Planet } from '../object/Planet';
 import { Star } from '../object/Star';
-import { GameOptions } from "../GameOptions";
+import { GameOptions } from '../GameOptions';
 
 export class ObjectBoundsService implements IGameService {
   private readonly objectList: ObjectList;
@@ -13,18 +13,23 @@ export class ObjectBoundsService implements IGameService {
   private readonly input: InputHandler;
   private readonly options: GameOptions;
 
-  constructor(objectList: ObjectList, objectFactory: ObjectFactory, input: InputHandler, options: GameOptions) {
+  constructor(
+    objectList: ObjectList,
+    objectFactory: ObjectFactory,
+    input: InputHandler,
+    options: GameOptions
+  ) {
     this.objectList = objectList;
     this.objectFactory = objectFactory;
     this.input = input;
     this.options = options;
-    this.input.onKeyDown(({key}) => {
+    this.input.onKeyDown(({ key }) => {
       if (key === KEY.K && !this.options.showDebugSphereBounds) {
         this.setVisibilityOfSphereBounds(true);
         return true;
       }
     });
-    this.input.onKeyUp(({key}) => {
+    this.input.onKeyUp(({ key }) => {
       if (key === KEY.K && this.options.showDebugSphereBounds) {
         this.setVisibilityOfSphereBounds(false);
         return true;
