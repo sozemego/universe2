@@ -52,16 +52,16 @@ export class SelectionCycleService implements IGameService {
     if (selected) {
       if (selected instanceof Star) {
         if (selected === this.universe.centerStar) {
-          this.selectionContainer.selected = this.universe.solarSystems[0].star;
+          this.selectionContainer.selected = this.universe.solarSystems[0].stars[0];
         } else {
-          const allStars = this.universe.solarSystems.map(system => system.star);
+          const allStars = this.universe.getAllStars();
           this.selectionContainer.selected = next(selected, allStars);
         }
       }
       if (selected instanceof Planet) {
         const isInSolarSystem = !!selected.solarSystem;
         if (isInSolarSystem) {
-          this.selectionContainer.selected = selected.solarSystem!.star;
+          this.selectionContainer.selected = selected.solarSystem!.stars[0];
         } else {
         }
       }

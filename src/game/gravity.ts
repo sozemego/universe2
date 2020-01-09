@@ -1,11 +1,10 @@
-import { BaseObject } from './object/BaseObject';
 import { Universe } from './universe/Universe';
 import { Vector2 } from 'three';
 
 const VECTOR2A = new Vector2();
 const VECTOR2B = new Vector2();
 
-export function calcAccelerationDueToGravity(attractor: BaseObject, attractee: BaseObject) {
+export function calcAccelerationDueToGravity(attractor: MassObject, attractee: MassObject) {
   let distancePx = VECTOR2A.set(attractor.position.x, attractor.position.y).distanceTo(
     VECTOR2B.set(attractee.position.x, attractee.position.y)
   );
@@ -21,4 +20,14 @@ export function calcAccelerationDueToGravity(attractor: BaseObject, attractee: B
     VECTOR2A.set(cos * accelerationA, sin * accelerationA),
     VECTOR2B.set(cos * accelerationB, sin * accelerationB),
   ];
+}
+
+export interface MassObject {
+  position: PositionData;
+  mass: number;
+}
+
+export interface PositionData {
+  x: number;
+  y: number;
 }

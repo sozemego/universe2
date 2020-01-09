@@ -7,12 +7,10 @@ import {
   Object3D,
   Scene,
   Sprite,
-  Vector2,
   WebGLRenderer,
 } from 'three';
 import { clampAbs } from '../../mathUtils';
 import { Universe } from '../universe/Universe';
-import { BaseObject } from '../object/BaseObject';
 
 export function scaleToCamera(maxScale: number) {
   return function scaleToCamera(
@@ -63,6 +61,16 @@ export function next(current: any, arr: any[]) {
   return arr[nextIndex];
 }
 
-export function calcDistance(obj1: BaseObject, obj2: BaseObject): number {
-  return obj1.position.distanceTo(obj2.position);
+export function calcDistance(obj1: HasPosition, obj2: HasPosition): number {
+  let deltaX = obj1.position.x - obj2.position.x;
+  let deltaY = obj1.position.y - obj2.position.y;
+  let distanceSquared = deltaX * deltaX + deltaY * deltaY;
+  return Math.sqrt(distanceSquared);
+}
+
+export interface HasPosition {
+  position: {
+    x: number;
+    y: number;
+  };
 }

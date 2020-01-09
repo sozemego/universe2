@@ -71,4 +71,15 @@ export class Universe {
       this.solarSystems.splice(index, 1);
     }
   }
+
+  getAllStars() {
+    let stars: Star[] = [];
+    stars.push(this.centerStar);
+    for (let solarSystem of this.solarSystems) {
+      for (let star of solarSystem.stars) {
+        stars.push(star);
+      }
+    }
+    return stars;
+  }
 }

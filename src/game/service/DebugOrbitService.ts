@@ -45,13 +45,12 @@ export class DebugOrbitService implements IGameService {
       return;
     }
     this.universe.solarSystems.forEach(solarSystem => {
-      const { star } = solarSystem;
       solarSystem.planets.forEach(planet => {
         let circle = this.getCircle(planet);
-        circle.position.x = star.position.x;
-        circle.position.y = star.position.y;
+        circle.position.x = solarSystem.position.x;
+        circle.position.y = solarSystem.position.y;
         let distance = new Vector2(planet.position.x, planet.position.y).distanceTo(
-          new Vector2(star.position.x, star.position.y)
+          new Vector2(solarSystem.position.x, solarSystem.position.y)
         );
         circle.scale.x = distance;
         circle.scale.y = distance;

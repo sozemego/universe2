@@ -12,40 +12,43 @@ export class CollisionService implements IGameService {
   }
 
   update(delta: number) {
-    let { centerStar, solarSystems } = this.universe;
-    const stars = [centerStar!, ...solarSystems.map(system => system.star)];
+    let { solarSystems } = this.universe;
+    let stars = this.universe.getAllStars();
     for (let i = 0; i < stars.length; i++) {
       let star1 = stars[i];
       for (let j = i + 1; j < stars.length; j++) {
         let star2 = stars[j];
         if (star1.sphere.intersectsSphere(star2.sphere)) {
           const starToDestroy = star1.mass > star2.mass ? star2 : star1;
-          let planets = starToDestroy.solarSystem?.planets;
-          if (planets) {
-            [...planets].forEach(planet => {
-              starToDestroy.solarSystem?.removePlanet(planet);
-              this.universe.freePlanets.push(planet);
-            });
+          if (starToDestroy.solarSystem?.stars.length === 1) {
+            let planets = starToDestroy.solarSystem?.planets;
+            if (planets) {
+              [...planets].forEach(planet => {
+                starToDestroy.solarSystem?.removePlanet(planet);
+                this.universe.freePlanets.push(planet);
+              });
+            }
+            starToDestroy.solarSystem?.dispose();
           }
-          starToDestroy.solarSystem?.dispose();
         }
       }
     }
 
     for (let solarSystem of solarSystems) {
-      const { star } = solarSystem;
-      const { planets } = solarSystem;
+      let { stars } = solarSystem;
+      let { planets } = solarSystem;
 
       for (let i = 0; i < planets.length; i++) {
         let planet1 = planets[i];
-        if (planet1.sphere.intersectsSphere(star.sphere)) {
-          planet1.dispose();
-          continue;
+        for (let star of stars) {
+          if (planet1.sphere.intersectsSphere(star.sphere)) {
+            planet1.dispose();
+          }
         }
         for (let j = i + 1; j < planets.length; j++) {
           let planet2 = planets[j];
           if (planet1.sphere.intersectsSphere(planet2.sphere)) {
-            const planetToDestroy = planet1.mass > planet2.mass ? planet2 : planet1;
+            let planetToDestroy = planet1.mass > planet2.mass ? planet2 : planet1;
             planetToDestroy.dispose();
           }
         }

@@ -3,22 +3,24 @@ import { Star } from './Star';
 import { Planet } from './Planet';
 
 export class SolarSystem extends EventDispatcher {
-  readonly star: Star;
+  readonly stars: Star[];
   readonly planets: Planet[];
   radius: number;
   private readonly ring: Line;
 
-  constructor(radius: number, star: Star, ring: Line) {
+  constructor(radius: number, stars: Star[], ring: Line) {
     super();
     this.radius = radius;
-    this.star = star;
-    this.star.solarSystem = this;
+    this.stars = stars;
+    this.stars.forEach(star => (star.solarSystem = this));
     this.ring = ring;
     this.planets = [];
   }
 
   get position() {
-    return this.star.position;
+    let x = this.stars.reduce((x, star) => x + star.position.x, 0);
+    let y = this.stars.reduce((y, star) => y + star.position.y, 0);
+    return new Vector2(x / this.stars.length, y / this.stars.length);
   }
 
   get sphere() {
@@ -28,7 +30,7 @@ export class SolarSystem extends EventDispatcher {
   update(delta: number) {
     this.ring.position.x = this.position.x;
     this.ring.position.y = this.position.y;
-    this.star.update(delta);
+    this.stars.forEach(star => star.update(delta));
     this.planets.forEach(planet => planet.update(delta));
   }
 
@@ -38,7 +40,7 @@ export class SolarSystem extends EventDispatcher {
     }
     this.ring.geometry.dispose();
     this.ring.parent?.remove(this.ring);
-    this.star.dispose();
+    [...this.stars].forEach(star => star.dispose());
     [...this.planets].forEach(p => p.dispose());
     this.dispatchEvent({ type: 'remove' });
   }
@@ -64,7 +66,11 @@ export class SolarSystem extends EventDispatcher {
   }
 
   accelerate(acceleration: Vector2) {
-    this.star.accelerate(acceleration);
+    this.stars.forEach(star => star.accelerate(acceleration));
     this.planets.forEach(planet => planet.accelerate(acceleration));
+  }
+
+  get mass() {
+    return this.stars.reduce((mass, star) => mass + star.mass, 0);
   }
 }

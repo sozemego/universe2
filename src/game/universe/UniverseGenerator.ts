@@ -3,6 +3,7 @@ import { Universe } from './Universe';
 import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { angleBetween, clampAbs, random, randomPointInSphere } from '../../mathUtils';
 import { SolarSystem } from '../object/SolarSystem';
+import { Star } from '../object/Star';
 
 export class UniverseGenerator {
   private readonly gameObjectFactory: GameObjectFactory;
@@ -36,16 +37,15 @@ export class UniverseGenerator {
   }
 
   generateSolarSystems(): SolarSystem[] {
-    let systems = 20;
+    let systems = 1;
     console.log('Generating', systems, 'systems');
     let minRadius = 2500;
     let maxRadius = 15000;
     let minDistanceFromCenter = 15000;
-    let minStarRadius = 128;
-    let maxStarRadius = minStarRadius * 3;
 
     let solarSystems: SolarSystem[] = [];
     let tries = 0;
+    let isBinary = true;
     while (solarSystems.length < systems) {
       if (++tries > 1000) {
         throw new Error('Too many tries to generate solar systems');
@@ -60,36 +60,66 @@ export class UniverseGenerator {
         continue;
       }
       let radius = random(minRadius, maxRadius);
+      if (isBinary) {
+        radius *= 1.5;
+      }
       let sphere = new Sphere(new Vector3(x, y, 0), radius);
       if (this.doesCollide(sphere, solarSystems)) {
         continue;
       }
 
-      let starRadius = random(minStarRadius, maxStarRadius);
-      let mass = random(40, 60);
-      let star = this.gameObjectFactory.createStar(
-        starRadius,
-        'textures/white_star_1.png',
-        new Vector2(x, y),
-        mass,
-        'White star'
-      );
+      let stars = this.generateStars(true, new Vector2(x, y));
 
-      let solarSystem = this.gameObjectFactory.createSolarSystem(star, radius);
+      let solarSystem = this.gameObjectFactory.createSolarSystem(stars, radius);
       solarSystems.push(solarSystem);
 
       let cosAcc = Math.cos(angle + (90 * Math.PI) / 180);
       let sinAcc = Math.sin(angle + (90 * Math.PI) / 180);
       let percentageOfDistance = clampAbs(1 - distance / this.bounds.radius, 0.5, 1);
-      star.accelerate(
-        new Vector2(cosAcc * 100 * percentageOfDistance, sinAcc * 100 * percentageOfDistance)
+      stars.forEach(star =>
+        star.accelerate(
+          new Vector2(cosAcc * 100 * percentageOfDistance, sinAcc * 100 * percentageOfDistance)
+        )
       );
     }
     return solarSystems;
   }
 
+  generateStars(isBinary: boolean, center: Vector2): Star[] {
+    let distanceBetweenStars = 768;
+    let minStarRadius = 128;
+    let maxStarRadius = minStarRadius * 3;
+    let stars = [];
+
+    let starRadius = random(minStarRadius, maxStarRadius);
+    let mass = random(40, 60);
+    let star = this.gameObjectFactory.createStar(
+      starRadius,
+      'textures/white_star_1.png',
+      center,
+      mass,
+      'White star'
+    );
+    stars.push(star);
+
+    if (isBinary) {
+      let partnerRadius = starRadius * 0.5;
+      let partnerMass = mass * 0.5;
+      let partner = this.gameObjectFactory.createStar(
+        partnerRadius,
+        'textures/white_star_1.png',
+        center.addScalar(distanceBetweenStars),
+        partnerMass,
+        'White star'
+      );
+      stars.push(partner);
+    }
+
+    return stars;
+  }
+
   generatePlanetsForSolarSystem = (solarSystem: SolarSystem) => {
-    let maxPlanets = 10;
+    let maxPlanets = 100;
 
     let { radius: solarSystemRadius } = solarSystem;
     let planetsToGenerate = Math.ceil(maxPlanets * (solarSystemRadius / 15000));
@@ -127,7 +157,7 @@ export class UniverseGenerator {
           Math.sin(angleRad + (90 * Math.PI) / 180) * 50 * percentageOfDistance
         )
       );
-      planet.accelerate(solarSystem.star.acceleration);
+      planet.accelerate(solarSystem.stars[0].acceleration);
       solarSystem.addPlanet(planet);
     }
   };

@@ -45,10 +45,10 @@ export class GameObjectFactory {
     return star;
   }
 
-  createSolarSystem(star: Star, radius: number): SolarSystem {
-    let ring = this.objectFactory.createCircle(radius, star.color);
+  createSolarSystem(stars: Star[], radius: number): SolarSystem {
+    let ring = this.objectFactory.createCircle(radius, stars[0].color);
     ring.onBeforeRender = scaleToCameraDistance(1);
-    return new SolarSystem(radius, star, ring);
+    return new SolarSystem(radius, stars, ring);
   }
 
   createPlanet(position: Vector2, radius: number, texture: string, mass: number) {

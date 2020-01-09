@@ -2,8 +2,7 @@ import { Clock } from 'three';
 import { IGameService } from './index';
 import { Universe } from '../universe/Universe';
 import { FLAGS } from '../../flags';
-import { BaseObject } from '../object/BaseObject';
-import { calcAccelerationDueToGravity } from '../gravity';
+import { calcAccelerationDueToGravity, MassObject } from '../gravity';
 
 export class GravityService implements IGameService {
   private readonly universe: Universe;
@@ -27,9 +26,10 @@ export class GravityService implements IGameService {
       let solarSystem1 = solarSystems[i];
       for (let j = i + 1; j < solarSystems.length; j++) {
         let solarSystem2 = solarSystems[j];
-        let star1 = solarSystem1.star;
-        let star2 = solarSystem2.star;
-        let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(star1, star2);
+        let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(
+          solarSystem1,
+          solarSystem2
+        );
         solarSystem2.accelerate(accelerationA);
         solarSystem1.accelerate(accelerationB);
       }
@@ -37,19 +37,19 @@ export class GravityService implements IGameService {
 
     if (centerStar) {
       for (let solarSystem of solarSystems) {
-        let star = solarSystem.star;
-        let [accelerationA] = this.calcAccelerationDueToGravity(centerStar, star);
+        let [accelerationA] = this.calcAccelerationDueToGravity(centerStar, solarSystem);
         solarSystem.accelerate(accelerationA);
       }
     }
 
     for (let solarSystem of solarSystems) {
-      let star = solarSystem.star;
-      let planets = solarSystem.planets;
+      let { stars, planets } = solarSystem;
       for (let i = 0; i < planets.length; i++) {
         let planet1 = planets[i];
-        let [accelerationToStar] = this.calcAccelerationDueToGravity(star, planet1);
-        planet1.accelerate(accelerationToStar);
+        for (let star of stars) {
+          let [accelerationToStar] = this.calcAccelerationDueToGravity(star, planet1);
+          planet1.accelerate(accelerationToStar);
+        }
         for (let j = i + 1; j < planets.length; j++) {
           let planet2 = planets[j];
           let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(planet1, planet2);
@@ -67,9 +67,8 @@ export class GravityService implements IGameService {
     }
 
     for (let solarSystem of solarSystems) {
-      let star = solarSystem.star;
       for (let freePlanet of freePlanets) {
-        let [accelerationToStar] = this.calcAccelerationDueToGravity(star, freePlanet);
+        let [accelerationToStar] = this.calcAccelerationDueToGravity(solarSystem, freePlanet);
         freePlanet.accelerate(accelerationToStar);
       }
     }
@@ -81,7 +80,7 @@ export class GravityService implements IGameService {
     }
   }
 
-  calcAccelerationDueToGravity(attractor: BaseObject, attractee: BaseObject) {
+  calcAccelerationDueToGravity(attractor: MassObject, attractee: MassObject) {
     let [accelerationA, accelerationB] = calcAccelerationDueToGravity(attractor, attractee);
     if (FLAGS.GRAVITY_WORKER_PERF) {
       this.gravityCalcs++;

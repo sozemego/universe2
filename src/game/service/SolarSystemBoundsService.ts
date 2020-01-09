@@ -13,7 +13,7 @@ export class SolarSystemBoundsService implements IGameService {
     for (let solarSystem of [...this.universe.solarSystems]) {
       let { planets } = solarSystem;
       for (let planet of [...planets]) {
-        let distance = calcDistance(solarSystem.star, planet);
+        let distance = calcDistance(solarSystem, planet);
         if (distance > solarSystem.radius * 1.5) {
           solarSystem.removePlanet(planet);
           this.universe.addFreePlanet(planet);
@@ -22,7 +22,7 @@ export class SolarSystemBoundsService implements IGameService {
     }
     for (let freePlanet of [...this.universe.freePlanets]) {
       for (let solarSystem of this.universe.solarSystems) {
-        let distance = calcDistance(solarSystem.star, freePlanet);
+        let distance = calcDistance(solarSystem, freePlanet);
         if (distance < solarSystem.radius * 0.75) {
           this.universe.removeFreePlanet(freePlanet);
           solarSystem.addPlanet(freePlanet);

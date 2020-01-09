@@ -86,7 +86,7 @@ function writeToFile(fileName: string, universe: Universe) {
 
 function getSolarSystemData(solarSystem: SolarSystem): SolarSystemData {
   return {
-    star: getStarData(solarSystem.star),
+    stars: solarSystem.stars.map(star => getStarData(star)),
     planets: solarSystem.planets.map(getPlanetData),
   };
 }
@@ -116,7 +116,7 @@ interface UniverseData {
 }
 
 interface SolarSystemData {
-  star: StarData;
+  stars: StarData[];
   planets: PlanetData[];
 }
 
