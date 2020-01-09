@@ -16,10 +16,7 @@ export const POOL: IPools = {
   [PoolType.VECTOR_3]: new Pool<Vector3>(() => new Vector3(), resetVector3),
 };
 
-// export const {
-//   [PoolType.VECTOR_2]: Vector2Pool,
-//   [PoolType.VECTOR_3]: Vector3Pool,
-// } = POOL;
+export const { [PoolType.VECTOR_2]: Vector2Pool, [PoolType.VECTOR_3]: Vector3Pool } = POOL;
 
 export function resetAllPools() {
   Object.values(POOL).forEach(pool => pool.reset());
