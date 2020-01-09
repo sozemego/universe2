@@ -37,7 +37,7 @@ export class UniverseGenerator {
   }
 
   generateSolarSystems(): SolarSystem[] {
-    let systems = 1;
+    let systems = 20;
     console.log('Generating', systems, 'systems');
     let minRadius = 2500;
     let maxRadius = 15000;
@@ -45,7 +45,7 @@ export class UniverseGenerator {
 
     let solarSystems: SolarSystem[] = [];
     let tries = 0;
-    let isBinary = true;
+    let isBinary = Math.random() <= 0.2;
     while (solarSystems.length < systems) {
       if (++tries > 1000) {
         throw new Error('Too many tries to generate solar systems');
@@ -119,7 +119,7 @@ export class UniverseGenerator {
   }
 
   generatePlanetsForSolarSystem = (solarSystem: SolarSystem) => {
-    let maxPlanets = 100;
+    let maxPlanets = 10;
 
     let { radius: solarSystemRadius } = solarSystem;
     let planetsToGenerate = Math.ceil(maxPlanets * (solarSystemRadius / 15000));
