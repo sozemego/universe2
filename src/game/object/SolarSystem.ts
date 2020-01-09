@@ -73,4 +73,9 @@ export class SolarSystem extends EventDispatcher {
   get mass() {
     return this.stars.reduce((mass, star) => mass + star.mass, 0);
   }
+
+  addStar(star: Star) {
+    this.stars.push(star);
+    star.solarSystem = this;
+  }
 }

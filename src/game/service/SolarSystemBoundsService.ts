@@ -10,6 +10,11 @@ export class SolarSystemBoundsService implements IGameService {
   }
 
   update(delta: number) {
+    this.handleSolarSystemSplitJoin();
+    this.handlePlanetSplitJoin();
+  }
+
+  handlePlanetSplitJoin() {
     for (let solarSystem of [...this.universe.solarSystems]) {
       let { planets } = solarSystem;
       for (let planet of [...planets]) {
@@ -26,6 +31,28 @@ export class SolarSystemBoundsService implements IGameService {
         if (distance < solarSystem.radius * 0.75) {
           this.universe.removeFreePlanet(freePlanet);
           solarSystem.addPlanet(freePlanet);
+        }
+      }
+    }
+  }
+
+  handleSolarSystemSplitJoin() {
+    let solarSystems = [...this.universe.solarSystems];
+    for (let i = 0; i < solarSystems.length; i++) {
+      let solarSystem1 = solarSystems[i];
+      for (let j = i + 1; j < solarSystems.length; j++) {
+        let solarSystem2 = solarSystems[j];
+        let distance = calcDistance(solarSystem1, solarSystem2);
+        let smallerRadius = Math.min(solarSystem1.radius, solarSystem2.radius);
+        if (distance < smallerRadius) {
+          solarSystem2.stars.forEach(star => solarSystem1.addStar(star));
+          solarSystem2.stars.length = 0;
+          solarSystem2.planets.forEach(planet => {
+            solarSystem2.removePlanet(planet);
+            solarSystem1.addPlanet(planet);
+          });
+          solarSystem1.radius = solarSystem1.radius + solarSystem2.radius;
+          solarSystem2.dispose();
         }
       }
     }
