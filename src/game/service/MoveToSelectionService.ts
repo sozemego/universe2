@@ -2,7 +2,7 @@ import { SelectionContainer } from '../SelectionContainer';
 import { GameCamera } from '../GameCamera';
 import { InputHandler, KEY, KeyEvent } from '../InputHandler';
 import { ObjectList } from '../ObjectList';
-import { Vector2 } from 'three';
+import { Vector2, Vector3 } from 'three';
 import { IGameService } from './index';
 
 export class MoveToSelectionService implements IGameService {
@@ -37,10 +37,14 @@ export class MoveToSelectionService implements IGameService {
   showSelection = (zoom: boolean) => {
     const selected = this.objectList.findById(this.selectionContainer.selected);
     if (selected) {
-      this.camera.moveTo(new Vector2(selected.position.x, selected.position.y));
+      this.moveTo(selected.position, zoom);
     }
+  };
+
+  moveTo(position: Vector2 | Vector3, zoom: boolean) {
+    this.camera.moveTo(new Vector2(position.x, position.y));
     if (zoom) {
       this.camera.position.z = 5000;
     }
-  };
+  }
 }

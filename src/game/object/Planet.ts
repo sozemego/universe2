@@ -35,4 +35,8 @@ export class Planet extends BaseObject {
   get position() {
     return this.sphere.center;
   }
+
+  get radius() {
+    return this.sphere.radius;
+  }
 }

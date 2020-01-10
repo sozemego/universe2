@@ -90,7 +90,7 @@ export class SpawnObjectService {
     let planet = this.gameObjectFactory.createPlanet(
       new Vector2(x, y),
       radius,
-      'texture/green_planet_1.png',
+      'textures/green_planet_1.png',
       mass
     );
     this.universe.addFreePlanet(planet);

@@ -1,9 +1,9 @@
+import uuid from 'uuid/v4';
+import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { ObjectList } from './ObjectList';
 import { ObjectFactory } from './ObjectFactory';
 import { scaleToCameraDistance } from './util/utils';
 import { Star } from './object/Star';
-import uuid from 'uuid/v4';
-import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { SolarSystem } from './object/SolarSystem';
 import { Planet } from './object/Planet';
 import { SelectionContainer } from './SelectionContainer';
@@ -48,7 +48,7 @@ export class GameObjectFactory {
   createSolarSystem(stars: Star[], radius: number): SolarSystem {
     let ring = this.objectFactory.createCircle(radius, stars[0].color);
     ring.onBeforeRender = scaleToCameraDistance(1);
-    return new SolarSystem(radius, stars, ring);
+    return new SolarSystem(uuid(), radius, stars, ring);
   }
 
   createPlanet(position: Vector2, radius: number, texture: string, mass: number) {

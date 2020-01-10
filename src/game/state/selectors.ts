@@ -49,6 +49,10 @@ export function useGetSelectionService() {
   return useSelector((state: AppState) => state.game.services!.selectionService);
 }
 
+export function useGetUniverse() {
+  return useSelector((state: AppState) => state.game.services!.universe);
+}
+
 export function useGetGameOptions() {
   return useSelector((state: AppState) => state.game.services!.gameOptions);
 }

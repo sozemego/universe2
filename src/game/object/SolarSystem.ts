@@ -3,13 +3,15 @@ import { Star } from './Star';
 import { Planet } from './Planet';
 
 export class SolarSystem extends EventDispatcher {
+  readonly id: string;
   readonly stars: Star[];
   readonly planets: Planet[];
   radius: number;
   private readonly ring: Line;
 
-  constructor(radius: number, stars: Star[], ring: Line) {
+  constructor(id: string, radius: number, stars: Star[], ring: Line) {
     super();
+    this.id = id;
     this.radius = radius;
     this.stars = stars;
     this.stars.forEach(star => (star.solarSystem = this));

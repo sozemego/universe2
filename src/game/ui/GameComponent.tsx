@@ -169,7 +169,9 @@ export function GameComponent() {
     <div style={{ position: 'relative' }}>
       <div style={{ position: 'absolute', left: 0, top: 0 }} id={'game-container'} />
       {started && (
-        <div style={{ position: 'absolute', left: 0, top: 0, width: '100%' }}>
+        <div
+          style={{ position: 'absolute', left: 0, top: 0, width: '100%', pointerEvents: 'none' }}
+        >
           <GameUI />
         </div>
       )}
