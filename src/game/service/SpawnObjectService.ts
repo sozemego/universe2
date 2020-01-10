@@ -86,7 +86,7 @@ export class SpawnObjectService {
   }
 
   spawnPlanet(x: number, y: number) {
-    let { mass, radius } = this.objectToSpawn;
+    let { mass, radius, velocity } = this.objectToSpawn;
     let planet = this.gameObjectFactory.createPlanet(
       new Vector2(x, y),
       radius,
@@ -94,10 +94,11 @@ export class SpawnObjectService {
       mass
     );
     this.universe.addFreePlanet(planet);
+    planet.accelerate(new Vector2(velocity.x, velocity.y));
   }
 
   spawnStar(x: number, y: number) {
-    let { mass, radius } = this.objectToSpawn;
+    let { mass, radius, velocity } = this.objectToSpawn;
     let star = this.gameObjectFactory.createStar(
       radius,
       'textures/white_star_1.png',
@@ -107,5 +108,6 @@ export class SpawnObjectService {
     );
     let solarSystem = this.gameObjectFactory.createSolarSystem([star], 2500);
     this.universe.addSolarSystem(solarSystem);
+    star.accelerate(new Vector2(velocity.x, velocity.y));
   }
 }

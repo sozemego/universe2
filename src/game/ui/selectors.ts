@@ -6,5 +6,6 @@ export function useGetObjectToSpawn(state?: AppState) {
     return state.ui.objectToSpawn;
   }
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  return useSelector((state: AppState) => state.ui.objectToSpawn);
+  let objectToSpawn = useSelector((state: AppState) => state.ui.objectToSpawn);
+  return JSON.parse(JSON.stringify(objectToSpawn));
 }

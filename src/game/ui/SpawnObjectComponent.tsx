@@ -7,7 +7,7 @@ const { Option } = Select;
 
 export function SpawnObjectComponent() {
   let spawnObjectService = useGetSpawnObjectService();
-  let objectToSpawn = { ...useGetObjectToSpawn() };
+  let objectToSpawn = useGetObjectToSpawn();
 
   return (
     <div>
@@ -48,6 +48,29 @@ export function SpawnObjectComponent() {
           value={objectToSpawn.radius}
           onChange={value => {
             objectToSpawn.radius = value as number;
+            spawnObjectService.objectToSpawn = objectToSpawn;
+          }}
+        />
+      </div>
+      <div>
+        <div>Velocity:</div>
+        <span>x: </span>
+        <InputNumber
+          min={-30000}
+          max={30000}
+          value={objectToSpawn.velocity.x}
+          onChange={value => {
+            objectToSpawn.velocity.x = value as number;
+            spawnObjectService.objectToSpawn = objectToSpawn;
+          }}
+        />
+        <span>y: </span>
+        <InputNumber
+          min={-30000}
+          max={30000}
+          value={objectToSpawn.velocity.y}
+          onChange={value => {
+            objectToSpawn.velocity.y = value as number;
             spawnObjectService.objectToSpawn = objectToSpawn;
           }}
         />

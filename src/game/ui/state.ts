@@ -13,6 +13,10 @@ export interface ObjectToSpawn {
   type: TypeOfObjectToSpawn;
   mass: number;
   radius: number;
+  velocity: {
+    x: number;
+    y: number;
+  };
 }
 
 function getDefaultObjectToSpawn(): ObjectToSpawn {
@@ -20,6 +24,7 @@ function getDefaultObjectToSpawn(): ObjectToSpawn {
     type: TypeOfObjectToSpawn.STAR,
     mass: 50,
     radius: 128,
+    velocity: { x: 0, y: 0 },
   };
 }
 
