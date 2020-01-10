@@ -55,9 +55,9 @@ export class SolarSystemBoundsService implements IGameService {
             solarSystem2.removePlanet(planet);
             solarSystem1.addPlanet(planet);
           });
-          solarSystem1.radius = largerRadius * 1.25;
+          solarSystem1.radius = largerRadius;
           solarSystem2.dispose();
-          i--;
+          return;
         }
       }
     }
