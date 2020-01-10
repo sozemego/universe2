@@ -10,11 +10,11 @@
 
 # production
 /build
-scenarios/build
+/scenarios/build
 /output
 
 # misc
-.idea
+/.idea
 .DS_Store
 .env
 .env.local
