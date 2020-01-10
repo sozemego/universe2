@@ -29,6 +29,7 @@ import { ObjectBoundsService } from '../service/ObjectBoundsService';
 import { GameClockService } from '../service/GameClockService';
 import { UniverseBoundsService } from '../service/UniverseBoundsService';
 import { SolarSystemBoundsService } from '../service/SolarSystemBoundsService';
+import { SpawnObjectService } from '../service/SpawnObjectService';
 
 export function GameComponent() {
   const dispatch = useDispatch();
@@ -100,6 +101,14 @@ export function GameComponent() {
     const gameClockService = new GameClockService(dispatch);
     const universeBoundsService = new UniverseBoundsService(universe);
     const solarSystemBoundsService = new SolarSystemBoundsService(universe, gameObjectFactory);
+    const spawnObjectService = new SpawnObjectService(
+      input,
+      universe,
+      camera,
+      objectFactory,
+      gameObjectFactory,
+      dispatch
+    );
 
     const gameServices: GameServices = {
       gravityService,
@@ -118,6 +127,7 @@ export function GameComponent() {
       universe,
       gameOptions,
       gameClockService,
+      spawnObjectService,
     };
 
     // @ts-ignore

@@ -65,6 +65,10 @@ export function useGetObjectBoundsService() {
   return useSelector((state: AppState) => state.game.services!.objectBoundsService);
 }
 
+export function useGetSpawnObjectService() {
+  return useSelector((state: AppState) => state.game.services!.spawnObjectService);
+}
+
 export function useGetGameClockService() {
   return useSelector((state: AppState) => state.game.services!.gameClockService);
 }

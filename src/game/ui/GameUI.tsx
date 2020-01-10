@@ -2,6 +2,7 @@ import React from 'react';
 import { SelectedObject } from './SelectedObject';
 import { GameOptionsComponent } from './GameOptionsComponent';
 import { GameClockComponent } from './GameClockComponent';
+import { SpawnObjectComponent } from './SpawnObjectComponent';
 
 export function GameUI() {
   return (
@@ -41,6 +42,7 @@ export function GameUI() {
         }}
       >
         <GameOptionsComponent />
+        <SpawnObjectComponent />
       </div>
     </div>
   );

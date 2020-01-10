@@ -15,6 +15,7 @@ import { GameOptions } from '../GameOptions';
 import { GravityService } from '../service/GravityService';
 import { ObjectBoundsService } from '../service/ObjectBoundsService';
 import { GameClockService } from '../service/GameClockService';
+import { SpawnObjectService } from '../service/SpawnObjectService';
 
 const initialState: GameState = {
   selected: null,
@@ -93,6 +94,7 @@ export interface GameServices {
   selectionService: SelectionService;
   moveToSelectionService: MoveToSelectionService;
   objectBoundsService: ObjectBoundsService;
+  spawnObjectService: SpawnObjectService;
   universe: Universe;
   gameOptions: GameOptions;
   gameClockService: GameClockService;
