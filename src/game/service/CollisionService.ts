@@ -30,6 +30,7 @@ export class CollisionService implements IGameService {
             }
             starToDestroy.solarSystem?.dispose();
           }
+          starToDestroy.dispose();
         }
       }
     }
