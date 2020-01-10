@@ -21,12 +21,8 @@ export class Universe {
     bounds: Sphere
   ) {
     this.centerStar = centerStar;
-    this.solarSystems = solarSystems;
-    this.solarSystems.forEach(system => {
-      system.addEventListener('remove', event => {
-        this.removeSolarSystem(system);
-      });
-    });
+    this.solarSystems = [];
+    solarSystems.forEach(this.addSolarSystem);
     this.freePlanets = freePlanets;
     this.freePlanets.forEach(planet => {
       planet.addEventListener('remove', this.handleRemoveFreePlanet);
@@ -71,6 +67,13 @@ export class Universe {
       this.solarSystems.splice(index, 1);
     }
   }
+
+  addSolarSystem = (solarSystem: SolarSystem) => {
+    this.solarSystems.push(solarSystem);
+    solarSystem.addEventListener('remove', event => {
+      this.removeSolarSystem(solarSystem);
+    });
+  };
 
   getAllStars() {
     let stars: Star[] = [];

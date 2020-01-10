@@ -99,7 +99,7 @@ export function GameComponent() {
     );
     const gameClockService = new GameClockService(dispatch);
     const universeBoundsService = new UniverseBoundsService(universe);
-    const solarSystemBoundsService = new SolarSystemBoundsService(universe);
+    const solarSystemBoundsService = new SolarSystemBoundsService(universe, gameObjectFactory);
 
     const gameServices: GameServices = {
       gravityService,

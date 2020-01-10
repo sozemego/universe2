@@ -79,4 +79,11 @@ export class SolarSystem extends EventDispatcher {
     this.stars.push(star);
     star.solarSystem = this;
   }
+
+  removeStar(star: Star) {
+    let index = this.stars.findIndex(s => s === star);
+    if (index > -1) {
+      this.stars.splice(index, 1);
+    }
+  }
 }

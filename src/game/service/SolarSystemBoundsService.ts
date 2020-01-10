@@ -1,12 +1,15 @@
 import { IGameService } from './index';
 import { Universe } from '../universe/Universe';
 import { calcDistance } from '../util/utils';
+import { GameObjectFactory } from '../GameObjectFactory';
 
 export class SolarSystemBoundsService implements IGameService {
   private readonly universe: Universe;
+  private readonly gameObjectFactory: GameObjectFactory;
 
-  constructor(universe: Universe) {
+  constructor(universe: Universe, gameObjectFactory: GameObjectFactory) {
     this.universe = universe;
+    this.gameObjectFactory = gameObjectFactory;
   }
 
   update(delta: number) {
@@ -44,6 +47,7 @@ export class SolarSystemBoundsService implements IGameService {
         let solarSystem2 = solarSystems[j];
         let distance = calcDistance(solarSystem1, solarSystem2);
         let smallerRadius = Math.min(solarSystem1.radius, solarSystem2.radius);
+        let largerRadius = Math.max(solarSystem1.radius, solarSystem2.radius);
         if (distance < smallerRadius) {
           solarSystem2.stars.forEach(star => solarSystem1.addStar(star));
           solarSystem2.stars.length = 0;
@@ -51,11 +55,31 @@ export class SolarSystemBoundsService implements IGameService {
             solarSystem2.removePlanet(planet);
             solarSystem1.addPlanet(planet);
           });
-          solarSystem1.radius = solarSystem1.radius + solarSystem2.radius;
+          solarSystem1.radius = largerRadius * 1.25;
           solarSystem2.dispose();
           i--;
         }
       }
     }
+
+    let newSolarSystems = [];
+    for (let i = 0; i < solarSystems.length; i++) {
+      let solarSystem = solarSystems[i];
+      let { stars } = solarSystem;
+      if (stars.length === 1) {
+        continue;
+      }
+      for (let j = 0; j < stars.length; j++) {
+        let star = stars[j];
+        let distance = calcDistance(star, solarSystem);
+        if (distance > solarSystem.radius * 1.5) {
+          let newSolarSystem = this.gameObjectFactory.createSolarSystem([star], 2500);
+          newSolarSystems.push(newSolarSystem);
+          solarSystem.removeStar(star);
+          j--;
+        }
+      }
+    }
+    newSolarSystems.forEach(system => this.universe.addSolarSystem(system));
   }
 }
