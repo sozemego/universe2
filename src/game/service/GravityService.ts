@@ -26,19 +26,27 @@ export class GravityService implements IGameService {
       let solarSystem1 = solarSystems[i];
       for (let j = i + 1; j < solarSystems.length; j++) {
         let solarSystem2 = solarSystems[j];
-        let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(
-          solarSystem1,
-          solarSystem2
-        );
-        solarSystem2.accelerate(accelerationA);
-        solarSystem1.accelerate(accelerationB);
+        let stars1 = solarSystem1.stars;
+        let stars2 = solarSystem2.stars;
+        for (let star1 of stars1) {
+          for (let star2 of stars2) {
+            let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(star1, star2);
+            star2.accelerate(accelerationA);
+            solarSystem2.planets.forEach(planet => planet.accelerate(accelerationA));
+            star1.accelerate(accelerationB);
+            solarSystem1.planets.forEach(planet => planet.accelerate(accelerationB));
+          }
+        }
       }
     }
 
     if (centerStar) {
       for (let solarSystem of solarSystems) {
-        let [accelerationA] = this.calcAccelerationDueToGravity(centerStar, solarSystem);
-        solarSystem.accelerate(accelerationA);
+        for (let star of solarSystem.stars) {
+          let [accelerationA] = this.calcAccelerationDueToGravity(centerStar, solarSystem);
+          star.accelerate(accelerationA);
+          solarSystem.planets.forEach(planet => planet.accelerate(accelerationA));
+        }
       }
     }
 

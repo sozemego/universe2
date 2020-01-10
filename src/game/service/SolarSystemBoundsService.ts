@@ -37,7 +37,7 @@ export class SolarSystemBoundsService implements IGameService {
   }
 
   handleSolarSystemSplitJoin() {
-    let solarSystems = [...this.universe.solarSystems];
+    let solarSystems = this.universe.solarSystems;
     for (let i = 0; i < solarSystems.length; i++) {
       let solarSystem1 = solarSystems[i];
       for (let j = i + 1; j < solarSystems.length; j++) {
@@ -53,6 +53,7 @@ export class SolarSystemBoundsService implements IGameService {
           });
           solarSystem1.radius = solarSystem1.radius + solarSystem2.radius;
           solarSystem2.dispose();
+          i--;
         }
       }
     }

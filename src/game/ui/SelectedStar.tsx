@@ -10,6 +10,7 @@ export function SelectedStar({ star }: SelectedStarProps) {
   const mass = star.mass;
   const solarSystem = star.solarSystem;
   const planetCount = solarSystem?.planets.length || 0;
+  const starCount = solarSystem?.stars.length || 0;
 
   return (
     <div>
@@ -31,6 +32,7 @@ export function SelectedStar({ star }: SelectedStarProps) {
         <div>{acceleration}</div>
       </div>
       <div>Planets: {planetCount}</div>
+      <div>Stars: {starCount}</div>
     </div>
   );
 }

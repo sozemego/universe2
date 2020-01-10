@@ -18,9 +18,8 @@ export class SolarSystem extends EventDispatcher {
   }
 
   get position() {
-    let x = this.stars.reduce((x, star) => x + star.position.x, 0);
-    let y = this.stars.reduce((y, star) => y + star.position.y, 0);
-    return new Vector2(x / this.stars.length, y / this.stars.length);
+    this.stars.sort((a, b) => b.mass - a.mass);
+    return this.stars[0].position;
   }
 
   get sphere() {
@@ -30,6 +29,8 @@ export class SolarSystem extends EventDispatcher {
   update(delta: number) {
     this.ring.position.x = this.position.x;
     this.ring.position.y = this.position.y;
+    this.ring.scale.x = this.radius;
+    this.ring.scale.y = this.radius;
     this.stars.forEach(star => star.update(delta));
     this.planets.forEach(planet => planet.update(delta));
   }
