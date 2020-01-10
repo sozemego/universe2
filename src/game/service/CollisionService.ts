@@ -12,7 +12,7 @@ export class CollisionService implements IGameService {
   }
 
   update(delta: number) {
-    let { solarSystems } = this.universe;
+    let { solarSystems, centerStar, freePlanets } = this.universe;
     let stars = this.universe.getAllStars();
     for (let i = 0; i < stars.length; i++) {
       let star1 = stars[i];
@@ -53,6 +53,14 @@ export class CollisionService implements IGameService {
             planetToDestroy.dispose();
           }
         }
+      }
+    }
+
+    freePlanets = [...freePlanets];
+    for (let planet of freePlanets) {
+      if (planet.sphere.intersectsSphere(centerStar.sphere)) {
+        centerStar.mass += planet.mass;
+        planet.dispose();
       }
     }
   }
