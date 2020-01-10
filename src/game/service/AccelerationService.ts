@@ -12,9 +12,9 @@ export class AccelerationService implements IGameService {
   update(delta: number) {
     this.objectList.allObjects.forEach(object => {
       if (object instanceof BaseObject) {
-        let { acceleration } = object;
-        object.position.x += acceleration.x * delta;
-        object.position.y += acceleration.y * delta;
+        let { velocity } = object;
+        object.position.x += velocity.x * delta;
+        object.position.y += velocity.y * delta;
       }
     });
   }

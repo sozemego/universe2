@@ -6,7 +6,7 @@ export function SelectedStar({ star }: SelectedStarProps) {
   useRealClock({ interval: 1000 });
 
   const position = `x: ${star.position.x.toFixed(0)}, y: ${star.position.y.toFixed(0)}`;
-  const acceleration = `x: ${star.acceleration.x.toFixed(2)}, y: ${star.acceleration.y.toFixed(2)}`;
+  const velocity = `x: ${star.velocity.x.toFixed(2)}, y: ${star.velocity.y.toFixed(2)}`;
   const mass = star.mass;
   const solarSystem = star.solarSystem;
   const planetCount = solarSystem?.planets.length || 0;
@@ -28,8 +28,8 @@ export function SelectedStar({ star }: SelectedStarProps) {
         <div>{position}</div>
       </div>
       <div>
-        <div>Acceleration</div>
-        <div>{acceleration}</div>
+        <div>Velocity</div>
+        <div>{velocity}</div>
       </div>
       <div>Planets: {planetCount}</div>
       <div>Stars: {starCount}</div>

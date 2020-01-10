@@ -7,9 +7,9 @@ export function PlanetListItem({ planet }: PlanetListItemProps) {
   let moveToSelectionService = useGetMoveToSelectionService();
   let selectionService = useGetSelectionService();
 
-  let { id, position, acceleration, mass, radius, texture } = planet;
+  let { id, position, velocity, mass, radius, texture } = planet;
   let positionStr = `x: ${position.x.toFixed(0)}, y: ${position.y.toFixed(0)}`;
-  let accelerationStr = `x: ${acceleration.x.toFixed(0)}, y: ${acceleration.y.toFixed(0)}`;
+  let velocityStr = `x: ${velocity.x.toFixed(0)}, y: ${velocity.y.toFixed(0)}`;
 
   return (
     <div
@@ -34,7 +34,7 @@ export function PlanetListItem({ planet }: PlanetListItemProps) {
         <span>Position: {positionStr}</span>
       </div>
       <div>
-        <span>Acceleration: {accelerationStr}</span>
+        <span>Velocity: {velocityStr}</span>
       </div>
       <Divider />
     </div>

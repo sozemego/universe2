@@ -96,7 +96,7 @@ function getStarData(star: Star): StarData {
     id: star.id,
     mass: star.mass,
     position: { x: star.position.x, y: star.position.y },
-    acceleration: { x: star.acceleration.x, y: star.acceleration.y },
+    velocity: { x: star.velocity.x, y: star.velocity.y },
   };
 }
 
@@ -105,7 +105,7 @@ function getPlanetData(planet: Planet): PlanetData {
     id: planet.id,
     mass: planet.mass,
     position: { x: planet.position.x, y: planet.position.y },
-    acceleration: { x: planet.acceleration.x, y: planet.acceleration.y },
+    velocity: { x: planet.velocity.x, y: planet.velocity.y },
   };
 }
 
@@ -124,14 +124,14 @@ interface StarData {
   id: string;
   mass: number;
   position: Vector2Data;
-  acceleration: Vector2Data;
+  velocity: Vector2Data;
 }
 
 interface PlanetData {
   id: string;
   mass: number;
   position: Vector2Data;
-  acceleration: Vector2Data;
+  velocity: Vector2Data;
 }
 
 interface Vector2Data {

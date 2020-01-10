@@ -157,7 +157,7 @@ export class UniverseGenerator {
           Math.sin(angleRad + (90 * Math.PI) / 180) * 50 * percentageOfDistance
         )
       );
-      planet.accelerate(solarSystem.stars[0].acceleration);
+      planet.accelerate(solarSystem.stars[0].velocity);
       solarSystem.addPlanet(planet);
     }
   };

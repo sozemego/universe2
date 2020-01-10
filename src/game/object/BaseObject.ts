@@ -6,7 +6,7 @@ export class BaseObject extends EventDispatcher {
   mass: number;
   readonly object3D: Object3D;
   texture: string;
-  readonly acceleration: Vector2;
+  readonly velocity: Vector2;
   readonly color: Color;
 
   constructor(id: string, mass: number, object3D: Object3D, texture: string) {
@@ -16,7 +16,7 @@ export class BaseObject extends EventDispatcher {
     this.object3D = object3D;
     this.object3D.userData['objectId'] = id;
     this.texture = texture;
-    this.acceleration = new Vector2(0, 0);
+    this.velocity = new Vector2(0, 0);
     this.color = new Color(Math.random(), Math.random(), Math.random());
   }
 
@@ -25,9 +25,9 @@ export class BaseObject extends EventDispatcher {
   }
 
   accelerate(acceleration: Vector2) {
-    this.acceleration.add(acceleration);
-    this.acceleration.x = clampAbs(this.acceleration.x, 0, 30000);
-    this.acceleration.y = clampAbs(this.acceleration.y, 0, 30000);
+    this.velocity.add(acceleration);
+    this.velocity.x = clampAbs(this.velocity.x, 0, 30000);
+    this.velocity.y = clampAbs(this.velocity.y, 0, 30000);
   }
 
   dispose() {
