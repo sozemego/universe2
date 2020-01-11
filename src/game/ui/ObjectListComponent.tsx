@@ -35,11 +35,11 @@ export function ObjectListComponent() {
       </div>
       <div>Solar systems:</div>
       {universe.solarSystems.map(solarSystem => (
-        <SolarSystemListItem solarSystem={solarSystem} />
+        <SolarSystemListItem solarSystem={solarSystem} key={solarSystem.id} />
       ))}
       <div>Free planets:</div>
       {universe.freePlanets.map(planet => (
-        <PlanetListItem planet={planet} />
+        <PlanetListItem planet={planet} key={planet.id} />
       ))}
     </div>
   );
