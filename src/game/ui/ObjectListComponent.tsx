@@ -38,9 +38,6 @@ export function ObjectListComponent() {
         <SolarSystemListItem solarSystem={solarSystem} key={solarSystem.id} />
       ))}
       <div>Free planets:</div>
-      {universe.freePlanets.map(planet => (
-        <PlanetListItem planet={planet} key={planet.id} />
-      ))}
     </div>
   );
 }

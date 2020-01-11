@@ -8,6 +8,9 @@ export class SolarSystem extends EventDispatcher {
   readonly planets: Planet[];
   radius: number;
   private readonly ring: Line;
+  angle: number = 0;
+  orbitalDistance: number = 0;
+  angularVelocity: number = 0;
 
   constructor(id: string, radius: number, stars: Star[], ring: Line) {
     super();

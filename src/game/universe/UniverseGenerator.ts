@@ -22,7 +22,7 @@ export class UniverseGenerator {
 
   generateUniverse(): Universe {
     let centerBlackHole = this.generateCenterBlackHole();
-    let solarSystems = this.generateSolarSystems();
+    let solarSystems = this.generateSolarSystems(centerBlackHole);
     solarSystems.forEach(this.generatePlanetsForSolarSystem);
     let background = this.generateBackground();
     console.log('Generated universe');
@@ -37,7 +37,7 @@ export class UniverseGenerator {
     );
   }
 
-  generateSolarSystems(): SolarSystem[] {
+  generateSolarSystems(blackHole: Star): SolarSystem[] {
     let systems = 20;
     console.log('Generating', systems, 'systems');
     let minRadius = 2500;
@@ -72,16 +72,10 @@ export class UniverseGenerator {
       let stars = this.generateStars(isBinary, new Vector2(x, y));
 
       let solarSystem = this.gameObjectFactory.createSolarSystem(stars, radius);
+      solarSystem.orbitalDistance = calcDistance(solarSystem, blackHole);
+      solarSystem.angularVelocity = 1;
+      solarSystem.angle = angleBetween(solarSystem.position, blackHole.position) * (180 / Math.PI);
       solarSystems.push(solarSystem);
-
-      let cosAcc = Math.cos(angle + (90 * Math.PI) / 180);
-      let sinAcc = Math.sin(angle + (90 * Math.PI) / 180);
-      let percentageOfDistance = clampAbs(1 - distance / this.bounds.radius, 0.5, 1);
-      stars.forEach(star =>
-        star.accelerate(
-          new Vector2(cosAcc * 100 * percentageOfDistance, sinAcc * 100 * percentageOfDistance)
-        )
-      );
     }
     return solarSystems;
   }

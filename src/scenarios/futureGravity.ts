@@ -73,12 +73,10 @@ export function runScenario() {
 
 function writeToFile(fileName: string, universe: Universe) {
   let centerStarData: StarData = getStarData(universe.centerStar);
-  let freePlanetsData: PlanetData[] = universe.freePlanets.map(getPlanetData);
   let solarSystemsData: SolarSystemData[] = universe.solarSystems.map(getSolarSystemData);
   let universeData: UniverseData = {
     centerStar: centerStarData,
     solarSystems: solarSystemsData,
-    freePlanets: freePlanetsData,
   };
   let str = JSON.stringify(universeData, null, 2);
   fs.writeFileSync(fileName, str);
@@ -112,7 +110,6 @@ function getPlanetData(planet: Planet): PlanetData {
 interface UniverseData {
   centerStar: StarData;
   solarSystems: SolarSystemData[];
-  freePlanets: PlanetData[];
 }
 
 interface SolarSystemData {

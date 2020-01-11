@@ -8,7 +8,6 @@ export class Universe {
   static SCALE_INSIDE_SYSTEM = 60000;
   static MAX_CAMERA_Z = 500000;
   solarSystems: SolarSystem[] = [];
-  freePlanets: Planet[] = [];
   centerStar: Star;
   bounds: Sphere;
   background: Points;
@@ -23,10 +22,6 @@ export class Universe {
     this.centerStar = centerStar;
     this.solarSystems = [];
     solarSystems.forEach(this.addSolarSystem);
-    this.freePlanets = freePlanets;
-    this.freePlanets.forEach(planet => {
-      planet.addEventListener('remove', this.handleRemoveFreePlanet);
-    });
     this.bounds = bounds;
     this.background = background;
   }
@@ -37,27 +32,6 @@ export class Universe {
     }
     for (let solarSystem of this.solarSystems) {
       solarSystem.update(delta);
-    }
-    for (let freePlanet of this.freePlanets) {
-      freePlanet.update(delta);
-    }
-  }
-
-  addFreePlanet(planet: Planet) {
-    this.freePlanets.push(planet);
-    if (!planet.hasEventListener('remove', this.handleRemoveFreePlanet)) {
-      planet.addEventListener('remove', this.handleRemoveFreePlanet);
-    }
-  }
-
-  handleRemoveFreePlanet = (event: Event) => {
-    this.removeFreePlanet(event.target as Planet);
-  };
-
-  removeFreePlanet(planet: Planet) {
-    let index = this.freePlanets.findIndex(freePlanet => freePlanet === planet);
-    if (index > -1) {
-      this.freePlanets.splice(index, 1);
     }
   }
 

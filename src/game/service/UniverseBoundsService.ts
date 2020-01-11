@@ -32,17 +32,5 @@ export class UniverseBoundsService implements IGameService {
         solarSystem.accelerate(accelerationToCenter.multiplyScalar(500 * multipleOfBoundsRadius));
       }
     }
-    for (let freePlanet of [...this.universe.freePlanets]) {
-      if (!backgroundBounds.containsPoint(freePlanet.position)) {
-        let [accelerationToCenter] = calcAccelerationDueToGravity(
-          this.universe.centerStar,
-          freePlanet
-        );
-        let distanceFromBounds =
-          calcDistance(this.universe.centerStar, freePlanet) - backgroundBounds.radius;
-        let multipleOfBoundsRadius = Math.ceil(distanceFromBounds / backgroundBounds.radius);
-        freePlanet.accelerate(accelerationToCenter.multiplyScalar(500 * multipleOfBoundsRadius));
-      }
-    }
   }
 }

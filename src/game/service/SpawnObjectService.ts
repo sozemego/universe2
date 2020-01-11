@@ -79,23 +79,20 @@ export class SpawnObjectService {
       case TypeOfObjectToSpawn.STAR:
         this.spawnStar(worldCoordinates.x, worldCoordinates.y);
         break;
-      case TypeOfObjectToSpawn.PLANET:
-        this.spawnPlanet(worldCoordinates.x, worldCoordinates.y);
-        break;
     }
   }
 
-  spawnPlanet(x: number, y: number) {
-    let { mass, radius, velocity } = this.objectToSpawn;
-    let planet = this.gameObjectFactory.createPlanet(
-      new Vector2(x, y),
-      radius,
-      'textures/green_planet_1.png',
-      mass
-    );
-    this.universe.addFreePlanet(planet);
-    planet.accelerate(new Vector2(velocity.x, velocity.y));
-  }
+  // spawnPlanet(x: number, y: number) {
+  //   let { mass, radius, velocity } = this.objectToSpawn;
+  //   let planet = this.gameObjectFactory.createPlanet(
+  //     new Vector2(x, y),
+  //     radius,
+  //     'textures/green_planet_1.png',
+  //     mass
+  //   );
+  //   this.universe.addFreePlanet(planet);
+  //   planet.accelerate(new Vector2(velocity.x, velocity.y));
+  // }
 
   spawnStar(x: number, y: number) {
     let { mass, radius, velocity } = this.objectToSpawn;

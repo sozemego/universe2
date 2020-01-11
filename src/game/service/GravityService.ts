@@ -21,48 +21,6 @@ export class GravityService implements IGameService {
       clock = new Clock();
       clock.start();
     }
-    let { solarSystems, centerStar, freePlanets } = this.universe;
-    for (let i = 0; i < solarSystems.length; i++) {
-      let solarSystem1 = solarSystems[i];
-      for (let j = i + 1; j < solarSystems.length; j++) {
-        let solarSystem2 = solarSystems[j];
-        let stars1 = solarSystem1.stars;
-        let stars2 = solarSystem2.stars;
-        for (let star1 of stars1) {
-          for (let star2 of stars2) {
-            let [accelerationA, accelerationB] = this.calcAccelerationDueToGravity(star1, star2);
-            star2.accelerate(accelerationA);
-            solarSystem2.planets.forEach(planet => planet.accelerate(accelerationA));
-            star1.accelerate(accelerationB);
-            solarSystem1.planets.forEach(planet => planet.accelerate(accelerationB));
-          }
-        }
-      }
-    }
-
-    if (centerStar) {
-      for (let solarSystem of solarSystems) {
-        for (let star of solarSystem.stars) {
-          let [accelerationA] = this.calcAccelerationDueToGravity(centerStar, solarSystem);
-          star.accelerate(accelerationA);
-          solarSystem.planets.forEach(planet => planet.accelerate(accelerationA));
-        }
-      }
-    }
-
-    if (centerStar) {
-      for (let freePlanet of freePlanets) {
-        let [accelerationToCenter] = this.calcAccelerationDueToGravity(centerStar, freePlanet);
-        freePlanet.accelerate(accelerationToCenter);
-      }
-    }
-
-    for (let solarSystem of solarSystems) {
-      for (let freePlanet of freePlanets) {
-        let [accelerationToStar] = this.calcAccelerationDueToGravity(solarSystem, freePlanet);
-        freePlanet.accelerate(accelerationToStar);
-      }
-    }
 
     if (FLAGS.GRAVITY_WORKER_PERF) {
       clock!.stop();
