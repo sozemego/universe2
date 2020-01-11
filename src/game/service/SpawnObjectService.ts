@@ -60,7 +60,7 @@ export class SpawnObjectService {
     this.dispatch = dispatch;
 
     this.mouseCircle = objectFactory.createCircle(1024, Color.NAMES['gold']);
-    this.mouseCircle.visible = true;
+    this.mouseCircle.visible = false;
   }
 
   get objectToSpawn() {
