@@ -6,6 +6,7 @@ import { SolarSystem } from '../object/SolarSystem';
 import { Star } from '../object/Star';
 import { planetData, PlanetData, starData, StarData } from '../data/data';
 import { Planet } from '../object/Planet';
+import { calcDistance } from '../util/utils';
 
 export class UniverseGenerator {
   private readonly gameObjectFactory: GameObjectFactory;
@@ -45,7 +46,7 @@ export class UniverseGenerator {
 
     let solarSystems: SolarSystem[] = [];
     let tries = 0;
-    let isBinary = Math.random() <= 0.2;
+    let isBinary = false;
     while (solarSystems.length < systems) {
       if (++tries > 1000) {
         throw new Error('Too many tries to generate solar systems');
@@ -68,7 +69,7 @@ export class UniverseGenerator {
         continue;
       }
 
-      let stars = this.generateStars(true, new Vector2(x, y));
+      let stars = this.generateStars(isBinary, new Vector2(x, y));
 
       let solarSystem = this.gameObjectFactory.createSolarSystem(stars, radius);
       solarSystems.push(solarSystem);
@@ -128,19 +129,9 @@ export class UniverseGenerator {
         this.getRandomPlanetData(),
         new Vector2(position.x, position.y)
       );
-      let angleRad = angleBetween(
-        new Vector2(position.x, position.y),
-        new Vector2(solarSystem.sphere.center.x, solarSystem.sphere.center.y)
-      );
-      let percentageOfDistance =
-        1 - position.distanceTo(solarSystem.sphere.center) / solarSystemRadius;
-      planet.accelerate(
-        new Vector2(
-          Math.cos(angleRad + (90 * Math.PI) / 180) * 50 * percentageOfDistance,
-          Math.sin(angleRad + (90 * Math.PI) / 180) * 50 * percentageOfDistance
-        )
-      );
-      planet.accelerate(solarSystem.stars[0].velocity);
+      planet.orbitalDistance = calcDistance(planet, solarSystem);
+      planet.angularVelocity = 1;
+
       solarSystem.addPlanet(planet);
     }
   };

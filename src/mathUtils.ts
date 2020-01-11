@@ -32,10 +32,20 @@ export function randomPointInSphere(sphere: Sphere, minDistance?: number): Vecto
   return new Vector3(x, y, 0);
 }
 
-export function angleBetween(vector1: Vector2, vector2: Vector2): number {
-  return vector1
+export function angleBetween(vector1: Vector2, vector2: Vector2): number;
+export function angleBetween(vector1: Vector3, vector3: Vector3): number;
+
+export function angleBetween(vector1: Vector2 | Vector3, vector2: Vector2 | Vector3): number {
+  if (vector1 instanceof Vector2 && vector2 instanceof Vector2) {
+    return vector1
+      .clone()
+      .sub(vector2)
+      .angle();
+  }
+
+  return new Vector2(vector1.x, vector1.y)
     .clone()
-    .sub(vector2)
+    .sub(new Vector2(vector2.x, vector2.y))
     .angle();
 }
 

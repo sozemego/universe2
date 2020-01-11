@@ -5,6 +5,8 @@ import { Sphere, Sprite } from 'three';
 export class Planet extends BaseObject {
   sphere: Sphere;
   solarSystem: SolarSystem | null;
+  orbitalDistance: number = 0;
+  angularVelocity: number = 0;
 
   constructor(
     id: string,
