@@ -22,7 +22,7 @@
     "uuid": "^3.3.3"
   },
   "scripts": {
-    "start": "nf start -p 3000",
+    "start": "npm run load-textures && nf start -p 3000",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -32,7 +32,8 @@
     "pack": "build --dir",
     "dist": "npm run build && build",
     "postinstall": "install-app-deps",
-    "gravity_test1": "set REACT_APP_GRAVITY_TEST_1=true&& npm start"
+    "gravity_test1": "set REACT_APP_GRAVITY_TEST_1=true&& npm start",
+    "load-textures": "node scripts/textureNameLoader.js"
   },
   "eslintConfig": {
     "extends": "react-app"
