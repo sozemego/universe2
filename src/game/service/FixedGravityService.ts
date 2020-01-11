@@ -1,6 +1,5 @@
 import { IGameService } from './index';
 import { Universe } from '../universe/Universe';
-import { angleBetween } from '../../mathUtils';
 
 export class FixedGravityService implements IGameService {
   private readonly universe: Universe;
@@ -14,13 +13,16 @@ export class FixedGravityService implements IGameService {
     for (let solarSystem of solarSystems) {
       let { planets } = solarSystem;
       for (let planet of planets) {
-        let { orbitalDistance, angularVelocity } = planet;
-        let angle = angleBetween(planet.position, solarSystem.position) * (180 / Math.PI);
-        let nextAngle = (angle + angularVelocity * delta) * (Math.PI / 180);
-        let x = solarSystem.position.x + orbitalDistance * Math.cos(nextAngle);
-        let y = solarSystem.position.y + orbitalDistance * Math.sin(nextAngle);
+        let { orbitalDistance, angularVelocity, angle } = planet;
+        let nextAngle = angle + angularVelocity * delta;
+        if (nextAngle > 360) {
+          nextAngle -= 360;
+        }
+        let x = solarSystem.position.x + orbitalDistance * Math.cos(nextAngle * (Math.PI / 180));
+        let y = solarSystem.position.y + orbitalDistance * Math.sin(nextAngle * (Math.PI / 180));
         planet.position.x = x;
         planet.position.y = y;
+        planet.angle = nextAngle;
       }
     }
   }

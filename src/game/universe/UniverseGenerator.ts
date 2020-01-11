@@ -131,7 +131,7 @@ export class UniverseGenerator {
       );
       planet.orbitalDistance = calcDistance(planet, solarSystem);
       planet.angularVelocity = 1;
-
+      planet.angle = angleBetween(planet.position, solarSystem.position) * (180 / Math.PI);
       solarSystem.addPlanet(planet);
     }
   };
