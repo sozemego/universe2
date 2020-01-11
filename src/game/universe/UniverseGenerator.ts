@@ -111,14 +111,17 @@ export class UniverseGenerator {
     let { radius: solarSystemRadius } = solarSystem;
     let planetsToGenerate = Math.ceil(maxPlanets * (solarSystemRadius / 15000));
 
-    let minDistanceFromCenter = 500;
+    let minDistanceFromCenter = 1000;
+    let distanceFromEdge = 100;
+    let possibleDistance = solarSystemRadius - minDistanceFromCenter - distanceFromEdge;
 
-    let tries = 0;
-    while (solarSystem.planets.length < planetsToGenerate) {
-      if (++tries > 1000) {
-        throw new Error('Took too many tries to generate planets');
-      }
-      let position = randomPointInSphere(solarSystem.sphere, minDistanceFromCenter);
+    for (let i = 0; i < planetsToGenerate; i++) {
+      let distance = i === 0 ? minDistanceFromCenter : (i / planetsToGenerate) * possibleDistance;
+      let angle = random(360);
+
+      let position = new Vector2();
+      position.x = solarSystem.position.x + distance * Math.cos(angle * (Math.PI / 180));
+      position.y = solarSystem.position.y + distance * Math.sin(angle * (Math.PI / 180));
 
       let planet = this.createPlanetFromData(
         this.getRandomPlanetData(),
@@ -127,7 +130,7 @@ export class UniverseGenerator {
       planet.orbitalDistance = calcDistance(planet, solarSystem);
       let distancePercentage = 1 - planet.orbitalDistance / solarSystem.radius;
       planet.angularVelocity = distancePercentage;
-      planet.angle = angleBetween(planet.position, solarSystem.position) * (180 / Math.PI);
+      planet.angle = angle;
       solarSystem.addPlanet(planet);
     }
   };
