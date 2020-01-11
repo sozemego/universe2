@@ -6,7 +6,6 @@ import {
 } from '../state/selectors';
 import { useRealClock } from '../util/useRealClock';
 import { SolarSystemListItem } from './SolarSystemListItem';
-import { PlanetListItem } from './PlaneListItem';
 
 export function ObjectListComponent() {
   let universe = useGetUniverse();

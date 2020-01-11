@@ -1,4 +1,4 @@
-import { Points, Sphere, Event } from 'three';
+import { Points, Sphere } from 'three';
 import { SolarSystem } from '../object/SolarSystem';
 import { Star } from '../object/Star';
 import { Planet } from '../object/Planet';

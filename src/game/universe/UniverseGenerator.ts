@@ -1,7 +1,7 @@
 import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { GameObjectFactory } from '../GameObjectFactory';
 import { Universe } from './Universe';
-import { angleBetween, random, randomPointInSphere } from '../../mathUtils';
+import { angleBetween, random } from '../../mathUtils';
 import { SolarSystem } from '../object/SolarSystem';
 import { Star } from '../object/Star';
 import { planetData, PlanetData, starData, StarData } from '../data/data';
