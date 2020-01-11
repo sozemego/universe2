@@ -27,6 +27,7 @@ export function SolarSystemListItem({ solarSystem }: SolarSystemListItemProps) {
       <div style={{ cursor: 'pointer' }}>
         {stars.map(star => (
           <img
+            key={star.id}
             style={{ width: '24px', height: '24px' }}
             src={star.texture}
             alt={'Star texture'}
@@ -40,6 +41,7 @@ export function SolarSystemListItem({ solarSystem }: SolarSystemListItemProps) {
       <div style={{ cursor: 'pointer' }}>
         {planets.map(planet => (
           <img
+            key={planet.id}
             style={{ width: '24px', height: '24px' }}
             src={planet.texture}
             alt={'Planet texture'}
