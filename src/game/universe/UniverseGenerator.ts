@@ -73,7 +73,8 @@ export class UniverseGenerator {
 
       let solarSystem = this.gameObjectFactory.createSolarSystem(stars, radius);
       solarSystem.orbitalDistance = calcDistance(solarSystem, blackHole);
-      solarSystem.angularVelocity = 1;
+      let distancePercentage = 1 - distance / this.bounds.radius;
+      solarSystem.angularVelocity = 0.2 * distancePercentage;
       solarSystem.angle = angleBetween(solarSystem.position, blackHole.position) * (180 / Math.PI);
       solarSystems.push(solarSystem);
     }
@@ -124,7 +125,8 @@ export class UniverseGenerator {
         new Vector2(position.x, position.y)
       );
       planet.orbitalDistance = calcDistance(planet, solarSystem);
-      planet.angularVelocity = 1;
+      let distancePercentage = 1 - planet.orbitalDistance / solarSystem.radius;
+      planet.angularVelocity = distancePercentage;
       planet.angle = angleBetween(planet.position, solarSystem.position) * (180 / Math.PI);
       solarSystem.addPlanet(planet);
     }
