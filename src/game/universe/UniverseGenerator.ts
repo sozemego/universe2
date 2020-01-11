@@ -4,6 +4,8 @@ import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import { angleBetween, clampAbs, random, randomPointInSphere } from '../../mathUtils';
 import { SolarSystem } from '../object/SolarSystem';
 import { Star } from '../object/Star';
+import { planetData, PlanetData, starData, StarData } from '../data/data';
+import { Planet } from '../object/Planet';
 
 export class UniverseGenerator {
   private readonly gameObjectFactory: GameObjectFactory;
@@ -27,12 +29,10 @@ export class UniverseGenerator {
   }
 
   generateCenterBlackHole() {
-    return this.gameObjectFactory.createStar(
-      1024,
-      'textures/black_hole_1.png',
-      new Vector2(this.getCenter().x, this.getCenter().y),
-      5000,
-      'Black hole'
+    let blackHoleData = starData['black1'];
+    return this.createStarFromData(
+      blackHoleData,
+      new Vector2(this.getCenter().x, this.getCenter().y)
     );
   }
 
@@ -87,30 +87,21 @@ export class UniverseGenerator {
 
   generateStars(isBinary: boolean, center: Vector2): Star[] {
     let distanceBetweenStars = 768;
-    let minStarRadius = 128;
-    let maxStarRadius = minStarRadius * 3;
     let stars = [];
 
-    let starRadius = random(minStarRadius, maxStarRadius);
-    let mass = random(40, 60);
-    let star = this.gameObjectFactory.createStar(
-      starRadius,
-      'textures/white_star_1.png',
-      center,
-      mass,
-      'White star'
-    );
+    let star = this.createStarFromData(this.getRandomStarData(), center);
     stars.push(star);
 
     if (isBinary) {
-      let partnerRadius = starRadius * 0.5;
-      let partnerMass = mass * 0.5;
+      let partnerRadius = star.radius * 0.5;
+      let partnerMass = star.mass * 0.5;
+      let starData = this.getRandomStarData();
       let partner = this.gameObjectFactory.createStar(
         partnerRadius,
-        'textures/white_star_1.png',
+        starData.texture,
         center.addScalar(distanceBetweenStars),
         partnerMass,
-        'White star'
+        starData.name
       );
       stars.push(partner);
     }
@@ -124,11 +115,7 @@ export class UniverseGenerator {
     let { radius: solarSystemRadius } = solarSystem;
     let planetsToGenerate = Math.ceil(maxPlanets * (solarSystemRadius / 15000));
 
-    let minRadius = 12.5;
-    let maxRadius = minRadius * 3;
     let minDistanceFromCenter = 500;
-    let minMass = 0.005;
-    let maxMass = 0.05;
 
     let tries = 0;
     while (solarSystem.planets.length < planetsToGenerate) {
@@ -136,14 +123,10 @@ export class UniverseGenerator {
         throw new Error('Took too many tries to generate planets');
       }
       let position = randomPointInSphere(solarSystem.sphere, minDistanceFromCenter);
-      let radius = random(minRadius, maxRadius);
-      let mass = random(minMass, maxMass);
 
-      let planet = this.gameObjectFactory.createPlanet(
-        new Vector2(position.x, position.y),
-        radius,
-        'textures/green_planet_1.png',
-        mass
+      let planet = this.createPlanetFromData(
+        this.getRandomPlanetData(),
+        new Vector2(position.x, position.y)
       );
       let angleRad = angleBetween(
         new Vector2(position.x, position.y),
@@ -177,6 +160,30 @@ export class UniverseGenerator {
       }
     }
     return false;
+  }
+
+  createPlanetFromData(data: PlanetData, position: Vector2): Planet {
+    let radius = random(data.minRadius, data.maxRadius);
+    let mass = random(data.minMass, data.maxMass);
+    return this.gameObjectFactory.createPlanet(position, radius, data.texture, mass);
+  }
+
+  getRandomPlanetData(): PlanetData {
+    let planetDataArr = Object.values(planetData);
+    return planetDataArr[Math.floor(random(planetDataArr.length))];
+  }
+
+  getRandomStarData(): StarData {
+    let starDataArr = Object.values(starData).filter(
+      data => !data.name.toLowerCase().includes('black')
+    );
+    return starDataArr[Math.floor(random(starDataArr.length))];
+  }
+
+  createStarFromData(data: StarData, position: Vector2): Star {
+    let radius = random(data.minRadius, data.maxRadius);
+    let mass = random(data.minMass, data.maxMass);
+    return this.gameObjectFactory.createStar(radius, data.texture, position, mass, data.name);
   }
 
   getCenter() {

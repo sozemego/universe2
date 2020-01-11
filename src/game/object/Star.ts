@@ -25,6 +25,10 @@ export class Star extends BaseObject {
     return this.sphere.center;
   }
 
+  get radius() {
+    return this.sphere.radius;
+  }
+
   update(delta: number) {
     this.object3D.position.x = this.sphere.center.x;
     this.object3D.position.y = this.sphere.center.y;
