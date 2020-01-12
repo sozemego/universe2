@@ -9,3 +9,7 @@ export function useGetObjectToSpawn(state?: AppState) {
   let objectToSpawn = useSelector((state: AppState) => state.ui.objectToSpawn);
   return JSON.parse(JSON.stringify(objectToSpawn));
 }
+
+export function useGetServiceStatsMap() {
+  return useSelector((state: AppState) => state.ui.serviceStatsMap);
+}

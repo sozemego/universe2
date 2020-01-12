@@ -55,6 +55,7 @@ export function runScenario() {
     selectionService,
     universe,
     gameOptions,
+    dispatch,
     services
   );
   writeToFile('output/start.txt', universe);

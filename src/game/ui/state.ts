@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface UiState {
   objectToSpawn: ObjectToSpawn;
+  serviceStatsMap: ServiceStatsMap;
 }
 
 export enum TypeOfObjectToSpawn {
@@ -19,6 +20,17 @@ export interface ObjectToSpawn {
   };
 }
 
+export type ServiceStatsMap = Record<string, ServiceStats>;
+
+export interface ServiceStats {
+  name: string;
+  min: number;
+  max: number;
+  average: number;
+  current: number;
+  previous: number[];
+}
+
 function getDefaultObjectToSpawn(): ObjectToSpawn {
   return {
     type: TypeOfObjectToSpawn.STAR,
@@ -30,6 +42,7 @@ function getDefaultObjectToSpawn(): ObjectToSpawn {
 
 let initialState: UiState = {
   objectToSpawn: getDefaultObjectToSpawn(),
+  serviceStatsMap: {},
 };
 
 export const uiSlice = createSlice<UiState, any>({
@@ -39,7 +52,10 @@ export const uiSlice = createSlice<UiState, any>({
     setObjectToSpawn: (state: UiState, action: PayloadAction<ObjectToSpawn>) => {
       state.objectToSpawn = action.payload;
     },
+    setServiceStatsMap: (state: UiState, action: PayloadAction<ServiceStatsMap>) => {
+      state.serviceStatsMap = action.payload;
+    },
   },
 });
 
-export const { setObjectToSpawn } = uiSlice.actions;
+export const { setObjectToSpawn, setServiceStatsMap } = uiSlice.actions;

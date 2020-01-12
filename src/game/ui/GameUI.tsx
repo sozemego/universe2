@@ -4,6 +4,7 @@ import { GameOptionsComponent } from './GameOptionsComponent';
 import { GameClockComponent } from './GameClockComponent';
 import { SpawnObjectComponent } from './SpawnObjectComponent';
 import { ObjectListComponent } from './ObjectListComponent';
+import { ServiceStatsComponent } from './ServiceStatsComponent';
 
 export function GameUI() {
   return (
@@ -57,6 +58,7 @@ export function GameUI() {
       >
         <GameOptionsComponent />
         <SpawnObjectComponent />
+        <ServiceStatsComponent />
         <ObjectListComponent />
       </div>
     </div>

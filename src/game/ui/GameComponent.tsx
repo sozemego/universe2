@@ -157,6 +157,7 @@ export function GameComponent() {
       selectionService,
       universe,
       gameOptions,
+      dispatch,
       services
     );
 

@@ -5,6 +5,9 @@ import { InputHandler, KEY } from './InputHandler';
 import { IGameService } from './service';
 import { SelectionService } from './service/SelectionService';
 import { GameOptions } from './GameOptions';
+import { Clock } from 'three';
+import { Dispatch } from 'redux';
+import { ServiceStatsMap, setServiceStatsMap } from './ui/state';
 
 export class GameService {
   static FPS = 1 / 60;
@@ -16,6 +19,8 @@ export class GameService {
   private accumulator: number;
   private readonly selectionService: SelectionService;
   private readonly options: GameOptions;
+  private readonly dispatch: Dispatch;
+  private readonly stats: ServiceStatsMap = {};
 
   constructor(
     engine: GameEngine,
@@ -24,6 +29,7 @@ export class GameService {
     selectionService: SelectionService,
     universe: Universe,
     options: GameOptions,
+    dispatch: Dispatch,
     services: IGameService[]
   ) {
     this.engine = engine;
@@ -33,7 +39,19 @@ export class GameService {
     this.universe = universe;
     this.accumulator = 0;
     this.options = options;
+    this.dispatch = dispatch;
     this.services = services;
+    this.services.forEach(service => {
+      let name = service.constructor.name;
+      this.stats[name] = {
+        name,
+        average: 0,
+        max: Number.MIN_SAFE_INTEGER,
+        min: Number.MAX_SAFE_INTEGER,
+        previous: [],
+        current: 0,
+      };
+    });
   }
 
   start(): Promise<void> {
@@ -67,8 +85,33 @@ export class GameService {
         this.accumulator -= GameService.FPS;
 
         this.universe.update(newDelta);
-        this.services.forEach(service => service.update(newDelta));
+        this.services.forEach(service => {
+          let clock = new Clock();
+          clock.start();
+          service.update(newDelta);
+          clock.stop();
+          let time = clock.getElapsedTime() * 1000;
+          let name = service.constructor.name;
+          let stats = this.stats[name];
+          stats.previous[stats.previous.length % 50] = time;
+          stats.average =
+            stats.previous.reduce((total, next) => total + next, 0) / stats.previous.length;
+          stats.previous.sort((a, b) => a - b);
+          stats.min = stats.previous[0];
+          stats.max = stats.previous[stats.previous.length - 1];
+          stats.current = time;
+        });
       }
     }
+    this.dispatchStats();
   };
+
+  dispatchStats() {
+    let stats: ServiceStatsMap = {};
+    Object.values(this.stats).forEach(stat => {
+      stats[stat.name] = { ...stat, previous: [...stat.previous] };
+    });
+    // @ts-ignore
+    this.dispatch(setServiceStatsMap(stats));
+  }
 }
