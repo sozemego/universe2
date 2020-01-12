@@ -21,6 +21,7 @@ export class GameService {
   private readonly options: GameOptions;
   private readonly dispatch: Dispatch;
   private readonly stats: ServiceStatsMap = {};
+  private updates: number = 0;
 
   constructor(
     engine: GameEngine,
@@ -93,7 +94,7 @@ export class GameService {
           let time = clock.getElapsedTime() * 1000;
           let name = service.constructor.name;
           let stats = this.stats[name];
-          stats.previous[stats.previous.length % 50] = time;
+          stats.previous[this.updates % 50] = time;
           stats.average =
             stats.previous.reduce((total, next) => total + next, 0) / stats.previous.length;
           stats.previous.sort((a, b) => a - b);
@@ -101,6 +102,7 @@ export class GameService {
           stats.max = stats.previous[stats.previous.length - 1];
           stats.current = time;
         });
+        this.updates++;
       }
     }
     this.dispatchStats();
