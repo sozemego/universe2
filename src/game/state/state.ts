@@ -16,6 +16,7 @@ import { GravityService } from '../service/GravityService';
 import { ObjectBoundsService } from '../service/ObjectBoundsService';
 import { GameClockService } from '../service/GameClockService';
 import { SpawnObjectService } from '../service/SpawnObjectService';
+import { PlanetService } from '../service/PlanetService';
 
 const initialState: GameState = {
   selected: null,
@@ -98,6 +99,7 @@ export interface GameServices {
   universe: Universe;
   gameOptions: GameOptions;
   gameClockService: GameClockService;
+  planetService: PlanetService;
 }
 
 export interface GameState {

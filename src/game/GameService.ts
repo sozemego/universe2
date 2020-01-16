@@ -8,6 +8,8 @@ import { GameOptions } from './GameOptions';
 import { Clock } from 'three';
 import { Dispatch } from 'redux';
 import { ServiceStatsMap, setServiceStatsMap } from './ui/state';
+import { PlanetService } from './service/PlanetService';
+import { Planet } from './object/Planet';
 
 export class GameService {
   static FPS = 1 / 60;
@@ -71,10 +73,13 @@ export class GameService {
 
     return this.engine.start().then(() => {
       this.selectionService.selected = this.universe.centerStar;
-      // this.input.pressKey(']');
-      // this.input.pressKey(']');
-      this.input.pressKey('o');
+      this.input.pressKey(']');
+      this.input.pressKey(']');
+      this.input.pressKey('}');
+      this.input.pressKey('O');
       this.input.pressKey('i');
+      let planetService = this.services.find(s => s.constructor === PlanetService) as PlanetService;
+      planetService!.colonizePlanet(this.selectionService.selected as Planet);
     });
   }
 
