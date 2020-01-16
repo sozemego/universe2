@@ -83,14 +83,7 @@ export class DebugLineService implements IGameService {
       positions[points++] = obj.position.y;
       positions[points++] = obj.position.z;
     } else {
-      for (let i = 0; i < positions.length; i += 3) {
-        positions[i] = positions[i + 3];
-        positions[i + 1] = positions[i + 4];
-        positions[i + 2] = positions[i + 5];
-      }
-      positions[positions.length - 3] = obj.position.x;
-      positions[positions.length - 2] = obj.position.y;
-      positions[positions.length - 1] = obj.position.z;
+      points = 0;
     }
 
     line.userData.points = points;
