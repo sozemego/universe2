@@ -15,7 +15,7 @@ export class GameClockService implements IGameService {
   update(delta: number) {
     this.timer += delta;
     if (this.timer >= this.updateTime) {
-      this.timer = 0;
+      this.timer -= this.updateTime;
       this.time += 1;
       // @ts-ignore
       this.dispatch(setTime(this.time));
