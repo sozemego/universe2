@@ -66,7 +66,7 @@ export function ServiceStatsComponent() {
       name: stat.name,
       key: stat.name,
       min: `${stat.min.toFixed(2)}ms`,
-      max: `${stat.min.toFixed(2)}ms`,
+      max: `${stat.max.toFixed(2)}ms`,
       average: `${stat.average.toFixed(2)}ms`,
       current: `${stat.current.toFixed(2)}ms`,
     };
