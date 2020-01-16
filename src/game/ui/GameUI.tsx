@@ -21,8 +21,7 @@ export function GameUI() {
           background: 'white',
           width: '250px',
           height: '100%',
-          borderRight: '4px solid gray',
-          borderBottom: '4px solid gray',
+          border: '4px solid gray',
           borderRadius: '0px 0px 12px 0px',
           pointerEvents: 'all',
         }}
