@@ -34,39 +34,47 @@ export function GameOptionsComponent() {
           max={2500}
         />
       </div>
-      <div onClick={() => (gameOptions.showDebugLines = !gameOptions.showDebugLines)}>
+      <div>
         <Checkbox
           checked={showDebugLines}
           onChange={() => (gameOptions.showDebugLines = !gameOptions.showDebugLines)}
         />
-        <span>Show debug lines</span>
+        <span onClick={() => (gameOptions.showDebugLines = !gameOptions.showDebugLines)}>
+          Show debug lines
+        </span>
       </div>
-      <div onClick={() => (gameOptions.showDebugOrbits = !gameOptions.showDebugOrbits)}>
+      <div>
         <Checkbox
           checked={showDebugOrbits}
           onChange={() => (gameOptions.showDebugOrbits = !gameOptions.showDebugOrbits)}
         />
-        <span>Show debug orbits</span>
+        <span onClick={() => (gameOptions.showDebugOrbits = !gameOptions.showDebugOrbits)}>
+          Show debug orbits
+        </span>
       </div>
-      <div
-        onClick={() =>
-          objectBoundsService.setVisibilityOfSphereBounds(!gameOptions.showDebugSphereBounds)
-        }
-      >
+      <div>
         <Checkbox
           checked={showDebugSphereBounds}
           onChange={() =>
             objectBoundsService.setVisibilityOfSphereBounds(!gameOptions.showDebugSphereBounds)
           }
         />
-        <span>Show debug sphere bounds</span>
+        <span
+          onClick={() =>
+            objectBoundsService.setVisibilityOfSphereBounds(!gameOptions.showDebugSphereBounds)
+          }
+        >
+          Show debug sphere bounds
+        </span>
       </div>
-      <div onClick={() => (gameOptions.followSelected = !gameOptions.followSelected)}>
+      <div>
         <Checkbox
           checked={followSelected}
           onChange={() => (gameOptions.followSelected = !gameOptions.followSelected)}
         />
-        <span>Follow selected</span>
+        <span onClick={() => (gameOptions.followSelected = !gameOptions.followSelected)}>
+          Follow selected
+        </span>
       </div>
       <div style={{ cursor: 'pointer' }}>
         <Icon
