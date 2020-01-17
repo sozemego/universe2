@@ -44,7 +44,12 @@ export class PlanetService implements IGameService {
     this.planets[id] = {
       id,
       population: 5,
-      buildings: [this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet)],
+      buildings: [
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+      ],
       storage: new PlanetStorage(50000),
     };
   }

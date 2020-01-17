@@ -20,6 +20,7 @@ export type BuildingProductionData = {
 };
 
 export interface BuildingResourceProductionData {
+  resource: Resource;
   produces: number;
   time: number; // seconds
   timePassed: number; // seconds passed since last resource was produced

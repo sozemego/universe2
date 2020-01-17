@@ -7,9 +7,11 @@ import { Building } from '../object/building/Building';
 import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource, RESOURCE_DATA } from '../object/Resource';
 import { textures } from '../data/textures';
+import { BuildingResourceProductionData } from '../object/building/types';
+import { Progress } from 'antd';
 
 export function SelectedPlanet({ planet }: SelectedPlanetProps) {
-  useRealClock({ interval: 1000 });
+  useRealClock({ interval: 250 });
   let planetService = useGetPlanetService();
 
   let { id, texture, mass } = planet;
@@ -59,19 +61,64 @@ export interface PlanetColonizationComponentProps {
 }
 
 export function BuildingComponent({ building }: BuildingComponentProps) {
-  let { name, texture } = building;
+  let { name, texture, production } = building;
   return (
     <div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <img src={texture} style={{ width: '24px', height: '24px' }} alt={name} />
         <div>{name}</div>
       </div>
+      <div style={{ display: 'flex' }}>
+        {Object.values(production).map(production => (
+          <ProductionSlot production={production!} key={production!.resource} />
+        ))}
+      </div>
+      <hr />
     </div>
   );
 }
 
 export interface BuildingComponentProps {
   building: Building;
+}
+
+export function ProductionSlot({ production }: ProductionSlotProps) {
+  let { resource, produces, timePassed, time } = production;
+  return (
+    <div
+      style={{
+        margin: '4px',
+        width: '105px',
+      }}
+    >
+      <img
+        src={RESOURCE_DATA[resource].texture}
+        alt={`${resource} texture`}
+        style={{
+          width: '32px',
+          height: '32px',
+          minWidth: '32px',
+          minHeight: '32px',
+          background: `url(${textures.production_slot_bg})`,
+          backgroundSize: 'cover',
+        }}
+      />
+      <span style={{ color: 'green' }}>+{produces}</span>
+      {/*<span style={{ marginLeft: '8px' }}>*/}
+      {/*  {timePassed.toFixed(0)} / {time.toFixed(0)}*/}
+      {/*</span>*/}
+      <Progress
+        type="circle"
+        percent={(timePassed / time) * 100}
+        format={percent => `${percent?.toFixed(0)}%`}
+        width={32}
+      />
+    </div>
+  );
+}
+
+export interface ProductionSlotProps {
+  production: BuildingResourceProductionData;
 }
 
 export function PlanetStorageComponent({ storage }: PlanetStorageComponentProps) {
