@@ -107,7 +107,7 @@ export function StorageSlot({ resource, count }: StorageSlotProps) {
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        background: `url(${textures.glass_panel_1})`,
+        background: `url(${textures.glass_panel_2})`,
         backgroundSize: 'cover',
       }}
     >
