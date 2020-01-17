@@ -62,7 +62,7 @@ export function BuildingComponent({ building }: BuildingComponentProps) {
   return (
     <div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <img src={texture} style={{ width: '24px', height: '24px' }} />
+        <img src={texture} style={{ width: '24px', height: '24px' }} alt={name} />
         <div>{name}</div>
       </div>
     </div>
