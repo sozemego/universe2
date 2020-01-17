@@ -6,6 +6,7 @@ import { PlanetData } from '../service/PlanetService';
 import { Building } from '../object/building/Building';
 import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource, RESOURCE_DATA } from '../object/Resource';
+import { textures } from '../data/textures';
 
 export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   useRealClock({ interval: 1000 });
@@ -80,11 +81,9 @@ export function PlanetStorageComponent({ storage }: PlanetStorageComponentProps)
       <hr />
       <div>Storage</div>
       <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-        {Object.entries(resources)
-          .filter(entry => entry[1] > 0)
-          .map(([resource, count]) => {
-            return <StorageSlot resource={resource as Resource} count={count} key={resource} />;
-          })}
+        {Object.entries(resources).map(([resource, count]) => {
+          return <StorageSlot resource={resource as Resource} count={count} key={resource} />;
+        })}
       </div>
     </div>
   );
@@ -106,8 +105,10 @@ export function StorageSlot({ resource, count }: StorageSlotProps) {
         minWidth: '70px',
         height: '48px',
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
+        background: `url(${textures.glass_panel_1})`,
+        backgroundSize: 'cover',
       }}
     >
       <img
