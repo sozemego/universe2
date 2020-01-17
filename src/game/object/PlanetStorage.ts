@@ -2,7 +2,7 @@ import { Resource } from './Resource';
 
 export class PlanetStorage {
   private capacity: number;
-  private resources: Record<Resource, number> = {
+  resources: Record<Resource, number> = {
     [Resource.BUILDING_MATERIAL]: 0,
     [Resource.FOOD]: 0,
     [Resource.METAL]: 0,

@@ -5,6 +5,7 @@ import { Building } from '../object/building/Building';
 import { BuildingFactory } from './BuildingFactory';
 import { BuildingType } from '../object/building/types';
 import { PlanetStorage } from '../object/PlanetStorage';
+import { Resource } from '../object/Resource';
 
 export class PlanetService implements IGameService {
   private readonly objectList: ObjectList;
@@ -17,8 +18,23 @@ export class PlanetService implements IGameService {
 
   update(delta: number) {
     Object.values(this.planets).forEach(planetData => {
-      let { buildings } = planetData;
-      buildings.forEach(building => building.update(delta));
+      this.updatePlanet(planetData, delta);
+    });
+  }
+
+  updatePlanet(planetData: PlanetData, delta: number) {
+    let { buildings, storage } = planetData;
+    buildings.forEach(building => {
+      building.update(delta);
+      let { production } = building;
+      Object.keys(production).forEach(resource => {
+        let productionData = production[resource as Resource]!;
+        let { produces, timePassed, time } = productionData;
+        if (timePassed >= time) {
+          productionData.timePassed = 0;
+          storage.fill(resource as Resource, produces);
+        }
+      });
     });
   }
 
@@ -29,7 +45,7 @@ export class PlanetService implements IGameService {
       id,
       population: 5,
       buildings: [this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet)],
-      storage: new PlanetStorage(50),
+      storage: new PlanetStorage(50000),
     };
   }
 
