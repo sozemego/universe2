@@ -16,7 +16,7 @@ export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   let planetData = planetService.getPlanetData(id);
 
   return (
-    <div style={{ paddingTop: '64px' }}>
+    <div style={{ paddingTop: '64px', paddingBottom: '8px' }}>
       <div style={{ backgroundColor: 'gray', display: 'flex', justifyContent: 'center' }}>
         <img src={texture} alt={'Planet texture'} style={{ padding: '8px' }} />
       </div>
