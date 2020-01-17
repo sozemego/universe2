@@ -4,6 +4,7 @@ import { Planet } from '../object/Planet';
 import { Building } from '../object/building/Building';
 import { BuildingFactory } from './BuildingFactory';
 import { BuildingType } from '../object/building/types';
+import { PlanetStorage } from '../object/PlanetStorage';
 
 export class PlanetService implements IGameService {
   private readonly objectList: ObjectList;
@@ -28,6 +29,7 @@ export class PlanetService implements IGameService {
       id,
       population: 5,
       buildings: [this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet)],
+      storage: new PlanetStorage(50),
     };
   }
 
@@ -40,4 +42,5 @@ export interface PlanetData {
   id: string;
   population: number;
   buildings: Building[];
+  storage: PlanetStorage;
 }
