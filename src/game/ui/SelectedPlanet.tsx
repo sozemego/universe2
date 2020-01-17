@@ -44,7 +44,7 @@ export function PlanetColonizationComponent({
       <div>
         <div>Buildings:</div>
         {buildings.map(building => (
-          <BuildingComponent building={building} />
+          <BuildingComponent building={building} key={building.id} />
         ))}
       </div>
       <PlanetStorageComponent storage={storage} />
@@ -83,7 +83,7 @@ export function PlanetStorageComponent({ storage }: PlanetStorageComponentProps)
         {Object.entries(resources)
           .filter(entry => entry[1] > 0)
           .map(([resource, count]) => {
-            return <StorageSlot resource={resource as Resource} count={count} />;
+            return <StorageSlot resource={resource as Resource} count={count} key={resource} />;
           })}
       </div>
     </div>
