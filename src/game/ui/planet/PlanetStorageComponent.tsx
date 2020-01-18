@@ -36,7 +36,7 @@ export function StorageSlot({ resource, count }: StorageSlotProps) {
         justifyContent: 'flex-start',
         alignItems: 'center',
         background: `url(${textures.glass_panel_2})`,
-        backgroundSize: 'cover',
+        backgroundSize: '100% 100%',
       }}
     >
       <img

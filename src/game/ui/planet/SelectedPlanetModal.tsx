@@ -84,7 +84,14 @@ export function PlanetColonizationComponentModal({
         <PlanetProductionModal planet={planet} planetData={planetData} />
       </div>
       <hr />
-      <div>
+      <div
+        style={{
+          background: 'rgb(192,192,192)',
+          boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
+          maxWidth: '240px',
+          minHeight: '140px',
+        }}
+      >
         <PlanetStorageComponent storage={storage} />
       </div>
     </div>
@@ -105,10 +112,10 @@ export function PlanetBuildingsModal({
   return (
     <div
       style={{
-        background: `url(${textures.panelInset_blue})`,
-        backgroundSize: '100% 100%',
         width: `200px`,
         padding: '12px',
+        background: 'rgb(192,192,192)',
+        boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
       }}
     >
       <div>Buildings</div>
@@ -161,29 +168,46 @@ export interface BuildingSlotProps {
 }
 
 export function PlanetProductionModal({ planet, planetData }: PlanetProductionModalProps) {
-  let productions: BuildingResourceProductionData[] = [];
+  let productions: Record<string, BuildingResourceProductionData> = {};
   planetData.buildings.forEach(building => {
     let { production } = building;
     Object.keys(production).forEach(resource => {
-      let productionData = production[resource as Resource];
-      productions.push(productionData!);
+      let productionData = { ...production[resource as Resource]! };
+      let previous = productions[resource];
+      if (previous) {
+        previous.produces += productionData?.produces;
+      } else {
+        productions[resource] = productionData;
+      }
     });
   });
-  productions.sort((a, b) => a.resource.localeCompare(b.resource));
+
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        padding: '8px',
+        background: 'rgb(192,192,192)',
+        // border: '4px solid rgb(119,136,153)',
+        width: `200px`,
+        padding: '12px',
+        boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
+        marginLeft: '12px',
       }}
     >
-      {productions.map((productionData, index) => (
-        <ProductionSlot production={productionData} key={index} />
-      ))}
+      Production
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+          padding: '8px',
+        }}
+      >
+        {Object.values(productions).map((productionData, index) => (
+          <ProductionSlot production={productionData} key={index} />
+        ))}
+      </div>
     </div>
   );
 }

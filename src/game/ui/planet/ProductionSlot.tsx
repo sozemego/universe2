@@ -5,25 +5,25 @@ import { textures } from '../../data/textures';
 import { BuildingResourceProductionData } from '../../object/building/types';
 
 export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces, timePassed, time } = production;
+  let { resource, produces, timePassed } = production;
   return (
     <div
       style={{
         margin: '4px',
-        width: '48px',
-        height: '48x',
-        minWidth: '48px',
-        minHeight: '48px',
+        width: '64px',
+        height: '64x',
+        minWidth: '64px',
+        minHeight: '64px',
       }}
     >
       <div
         style={{
           background: `url(${textures.production_slot_bg})`,
           backgroundSize: 'cover',
-          width: '48px',
-          height: '48px',
-          minWidth: '48px',
-          minHeight: '48px',
+          width: '64px',
+          height: '64px',
+          minWidth: '64px',
+          minHeight: '64px',
           position: 'absolute',
         }}
       >
@@ -31,16 +31,16 @@ export function ProductionSlot({ production }: ProductionSlotProps) {
           src={RESOURCE_DATA[resource].texture}
           alt={`${resource} texture`}
           style={{
-            opacity: 0.5,
+            opacity: 0.75,
             width: '100%',
           }}
         />
       </div>
       <Progress
         type="circle"
-        percent={(timePassed / time) * 100}
-        format={percent => <span style={{ color: 'black' }}>+{produces}</span>}
-        width={32}
+        percent={(timePassed / 60) * 100}
+        format={percent => <span style={{ color: 'black' }}>{produces}/m</span>}
+        width={48}
         strokeColor={'black'}
         style={{ position: 'relative', top: 8, left: 8 }}
       />

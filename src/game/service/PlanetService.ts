@@ -29,8 +29,8 @@ export class PlanetService implements IGameService {
       let { production } = building;
       Object.keys(production).forEach(resource => {
         let productionData = production[resource as Resource]!;
-        let { produces, timePassed, time } = productionData;
-        if (timePassed >= time) {
+        let { produces, timePassed } = productionData;
+        if (timePassed >= 60) {
           productionData.timePassed = 0;
           storage.fill(resource as Resource, produces);
         }
