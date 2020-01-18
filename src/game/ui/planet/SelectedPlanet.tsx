@@ -1,13 +1,13 @@
 import React from 'react';
 import { Tag } from 'antd';
+import Text from 'antd/lib/typography/Text';
 import { useDispatch } from 'react-redux';
 import { Planet } from '../../object/Planet';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
 import { PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
-import { BuildingComponent } from './BuildingComponent';
-import { PlanetStorageComponent } from './PlanetStorageComponent';
+import { BuildingComponent, BuildingSlot } from './BuildingComponent';
 
 export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   useRealClock({ interval: 250 });
@@ -18,7 +18,7 @@ export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   let planetData = planetService.getPlanetData(id);
 
   return (
-    <div style={{ paddingTop: '52px', paddingBottom: '8px' }}>
+    <div style={{ paddingTop: '52px', paddingBottom: '8px', backgroundColor: 'rgb(211,211,211)' }}>
       <div
         style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}
         onClick={() => {
@@ -51,25 +51,57 @@ export function PlanetColonizationComponent({
   planet,
   planetData,
 }: PlanetColonizationComponentProps) {
-  let { population, buildings, storage } = planetData;
   return (
-    <div>
-      <div>Population: {population.toFixed(0)}</div>
-      <div>
-        <div>Buildings:</div>
-        {buildings.map(building => (
-          <>
-            <BuildingComponent building={building} key={building.id} />
-            <hr />
-          </>
-        ))}
-      </div>
-      <PlanetStorageComponent storage={storage} />
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <PlanetBuildings planet={planet} planetData={planetData} />
     </div>
   );
 }
 
 export interface PlanetColonizationComponentProps {
+  planet: Planet;
+  planetData: PlanetData;
+}
+
+export function PlanetBuildings({ planet, planetData }: PlanetBuildingsProps) {
+  let { buildings } = planetData;
+  let freeSpots = Array.from({ length: 16 - buildings.length });
+  return (
+    <div
+      style={{
+        width: `200px`,
+        padding: '12px',
+        background: 'rgb(192,192,192)',
+        boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
+      }}
+    >
+      <Text type={'secondary'}>Buildings</Text>
+      <div
+        style={{
+          maxWidth: `${44 * 4}px`,
+          minWidth: `${44 * 4}px`,
+          maxHeight: `${44 * 4}px`,
+          minHeight: `${44 * 4}px`,
+          overflow: 'hidden',
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+        }}
+      >
+        {buildings.map(building => (
+          <BuildingSlot key={building.id}>
+            <BuildingComponent building={building} />
+          </BuildingSlot>
+        ))}
+        {freeSpots.map((spot, index) => (
+          <BuildingSlot children={[]} key={index} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export interface PlanetBuildingsProps {
   planet: Planet;
   planetData: PlanetData;
 }

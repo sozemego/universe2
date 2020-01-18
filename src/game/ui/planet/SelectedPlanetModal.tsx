@@ -3,7 +3,7 @@ import Text from 'antd/lib/typography/Text';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
 import { textures } from '../../data/textures';
-import { BuildingComponent } from './BuildingComponent';
+import { BuildingComponent, BuildingSlot } from './BuildingComponent';
 import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
 import { PlanetStorageComponent } from './PlanetStorageComponent';
@@ -159,29 +159,6 @@ export function PlanetBuildingsModal({
       </div>
     </div>
   );
-}
-
-export function BuildingSlot({ children }: BuildingSlotProps) {
-  return (
-    <div
-      style={{
-        width: '36px',
-        minWidth: '36px',
-        height: '36px',
-        minHeight: '36px',
-        background: `url(${textures.panel_beige})`,
-        backgroundSize: 'contain',
-        padding: '8px',
-        margin: '4px',
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-export interface BuildingSlotProps {
-  children: ReactElement | ReactElement[];
 }
 
 export function PlanetProductionModal({ planet, planetData }: PlanetProductionModalProps) {

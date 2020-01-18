@@ -1,10 +1,10 @@
 import React from 'react';
 import { Star } from '../object/Star';
 import { SelectedStar } from './SelectedStar';
-import { SelectedPlanet } from './planet/SelectedPlanet';
 import { Planet } from '../object/Planet';
 import { useGetObjectList, useGetSelected, useGetSelectedObjectIsModal } from '../state/selectors';
 import { SelectedPlanetModal } from './planet/SelectedPlanetModal';
+import { SelectedPlanet } from './planet/SelectedPlanet';
 
 export function SelectedObject() {
   let selected = useGetSelected();
