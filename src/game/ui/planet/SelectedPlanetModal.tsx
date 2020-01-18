@@ -10,9 +10,13 @@ import { PlanetStorageComponent } from './PlanetStorageComponent';
 import { Resource } from '../../object/Resource';
 import { ProductionSlot } from './ProductionSlot';
 import { BuildingResourceProductionData } from '../../object/building/types';
+import { Icon } from 'antd';
+import { useDispatch } from 'react-redux';
+import { setSelectedObjectIsModal } from '../../state/state';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
+  let dispatch = useDispatch();
   let { id } = planet;
   let planetService = useGetPlanetService();
   let planetData = planetService.getPlanetData(id);
@@ -44,14 +48,26 @@ export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
           paddingLeft: '12px',
           alignItems: 'center',
           backgroundColor: `rgb(192,192,192)`,
+          justifyContent: 'space-between',
         }}
       >
-        <img
-          src={planet.texture}
-          style={{ width: '32px', height: '32px' }}
-          alt={'Planet texture'}
+        <div>
+          <img
+            src={planet.texture}
+            style={{ width: '32px', height: '32px' }}
+            alt={'Planet texture'}
+          />
+          <Text strong>Planet summary</Text>
+        </div>
+        <Icon
+          type="close-circle"
+          theme="twoTone"
+          style={{ marginRight: '12px', transform: 'scale(2)', cursor: 'pointer' }}
+          onClick={() => {
+            // @ts-ignore
+            dispatch(setSelectedObjectIsModal(false));
+          }}
         />
-        <Text strong>Planet summary</Text>
       </div>
       <hr />
       <div
