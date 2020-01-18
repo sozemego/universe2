@@ -9,6 +9,8 @@ import { PlanetStorageComponent } from './PlanetStorageComponent';
 import { Resource } from '../../object/Resource';
 import { ProductionSlot } from './ProductionSlot';
 import { BuildingResourceProductionData } from '../../object/building/types';
+import { Tag } from 'antd';
+import Text from 'antd/lib/typography/Text';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
@@ -50,7 +52,7 @@ export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
           style={{ width: '32px', height: '32px' }}
           alt={'Planet texture'}
         />
-        <span>Planet summary</span>
+        <Text strong>Planet summary</Text>
       </div>
       <hr />
       <div
@@ -88,8 +90,8 @@ export function PlanetColonizationComponentModal({
         style={{
           background: 'rgb(192,192,192)',
           boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
-          maxWidth: '240px',
-          minHeight: '140px',
+          maxWidth: '260px',
+          minHeight: '260px',
         }}
       >
         <PlanetStorageComponent storage={storage} />
@@ -118,7 +120,7 @@ export function PlanetBuildingsModal({
         boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
       }}
     >
-      <div>Buildings</div>
+      <Text type={'secondary'}>Buildings</Text>
       <div
         style={{
           maxWidth: `${44 * 4}px`,
@@ -193,7 +195,7 @@ export function PlanetProductionModal({ planet, planetData }: PlanetProductionMo
         marginLeft: '12px',
       }}
     >
-      Production
+      <Text type={'secondary'}>Production</Text>
       <div
         style={{
           display: 'flex',

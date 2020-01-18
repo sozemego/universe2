@@ -2,12 +2,13 @@ import { Resource, RESOURCE_DATA } from '../../object/Resource';
 import React from 'react';
 import { textures } from '../../data/textures';
 import { PlanetStorage } from '../../object/PlanetStorage';
+import Text from 'antd/lib/typography/Text';
 
 export function PlanetStorageComponent({ storage }: PlanetStorageComponentProps) {
   let { resources } = storage;
   return (
-    <div>
-      <div>Storage</div>
+    <div style={{ padding: '12px' }}>
+      <Text type={'secondary'}>Storage</Text>
       <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
         {Object.entries(resources).map(([resource, count]) => {
           return <StorageSlot resource={resource as Resource} count={count} key={resource} />;
