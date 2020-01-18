@@ -1,6 +1,6 @@
+import React, { ReactElement } from 'react';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
-import React, { ReactElement } from 'react';
 import { textures } from '../../data/textures';
 import { BuildingComponent } from './BuildingComponent';
 import { Planet } from '../../object/Planet';
