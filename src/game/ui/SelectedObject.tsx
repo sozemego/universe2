@@ -1,14 +1,21 @@
 import React from 'react';
 import { Star } from '../object/Star';
 import { SelectedStar } from './SelectedStar';
-import { SelectedPlanet } from './SelectedPlanet';
+import { SelectedPlanet } from './planet/SelectedPlanet';
 import { Planet } from '../object/Planet';
-import { useGetMouseOver, useGetObjectList, useGetSelected } from '../state/selectors';
+import {
+  useGetMouseOver,
+  useGetObjectList,
+  useGetSelected,
+  useGetSelectedObjectIsModal,
+} from '../state/selectors';
+import { SelectedPlanetModal } from './planet/SelectedPlanetModal';
 
 export function SelectedObject() {
   let selected = useGetSelected();
   let mouseOver = useGetMouseOver();
   let objectList = useGetObjectList();
+  let selectedObjectIsModal = useGetSelectedObjectIsModal();
 
   let selectedObject = objectList.findById(selected);
   let mouseOverObject = objectList.findById(mouseOver);
@@ -16,8 +23,15 @@ export function SelectedObject() {
 
   return (
     <div>
-      {selectedObject instanceof Star && <SelectedStar star={selectedObject} />}
-      {selectedObject instanceof Planet && <SelectedPlanet planet={selectedObject} />}
+      {!selectedObjectIsModal && selectedObject instanceof Star && (
+        <SelectedStar star={selectedObject} />
+      )}
+      {!selectedObjectIsModal && selectedObject instanceof Planet && (
+        <SelectedPlanet planet={selectedObject} />
+      )}
+      {selectedObjectIsModal && selectedObject instanceof Planet && (
+        <SelectedPlanetModal planet={selectedObject} />
+      )}
     </div>
   );
 }

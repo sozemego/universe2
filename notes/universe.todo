@@ -1,24 +1,129 @@
+Misc:
+     Is the following still applicable?
+  ☐ Many iterations are unsafe because they modify the underlying Array. Think about modifying that code so perhaps Array copies are not needed (the removal will be done on next tick?)
+  ☐ SelectionCycleService - make it work in both directions
+  ☐ Game speed scale is not working fully, 17 speed up does not produce a 17 speed up of the clock @partly fixed
+  ✔ Have a debug UI that shows update times of various services (e.g. gravity) @done (20-01-12 16:27)
+  ☐ Debug sphere render is sometimes broken @created(20-01-12 22:52)
+  ☐ Fix instances of dispatch(actionCreator()) which requires //@ts-ignore
+  ☐ Check other state management libraries (xState as well?)
+
+Planets:
+  ✔ Planets can be colonized @done (20-01-17 22:07)
+  ✔ Planets can have population @done (20-01-17 22:07)
+  ✔ Planets can have buildings @done (20-01-17 09:48)
+  ✔ Planets can have resource storage @done (20-01-17 22:07)
+  ☐ Different UI for planets on the left and in a dialog
+
+Debug spawn objects UI:
+  Rework the object spawner UI
+
+Bugs general:
+  ☐ Very rarely, debug lines of objects do not appear
+
+Scenarios:
+  Scenarios are supposed to be a way for the simulation to run, without user input.
+
+
+Game mechanics:
+  What are the main mechanics of the game that a player can use (when it comes to the gravity model)?
+  Gravity will not be as free as now. Stars and planets will be spawn with a specific distance and angular speed. @created(20-01-11 20:41)
+  ✔ Planets in a solar system will have a specific distance from the star and angular speed. They will not be 'pulled' towards the star @done (20-01-11 21:54)
+  ✔ Stars (Solar system) will still use normal gravity for now @done (20-01-11 21:54)
+  ✔ Free planets will still use normal gravity for now @done (20-01-11 21:54)
+  ✔ Solar systems should also have 'angle', 'orbitalDistance' and 'angularVelocity' @done (20-01-12 00:00)
+  ☐ Think about what to do when solar systems 'collide'
+
+Tests:
+  This project is for tests in general.
+  Gravity:
+    ☐ Test that gravity works in the correct direction
+
+Gravity:
+  Something weird is happening when calculation requests are not sent until the last result returned
+
+Feature flags:
+
+Object scale from afar:
+  The current system of scaling objects to be visible even far away is not working. For some distances it's fine, but planets appear to be inside solar systems even when they're not.
+  And orbit debug lines are wrong.
+  ☐ What?
+
 Game performance:
-  ✔ Think about making object pools @done (20-01-03 14:18)
-  ✔ Do we even need to have subclasses of Pool<T> class? Can we just pass the constructor to the pool to create a new object? @done (20-01-03 15:54)
+  General note about those pools. They were envisioned to be (at fist) used for Vector2, Vector3 instances, but they are not ideal for this.
+  It's generally better to just have a static or class scoped vector instance that is just used throughout the class.
     The pools need to achieve the following:
-    ✔ Get object from the pool @done (20-01-03 15:54)
-    ✔ Release object to the pool @done (20-01-03 15:54)
-    ✔ Reset the object (by step 2?) @done (20-01-03 15:54)
-  ✔ Create a POOL object which will be a map of PoolType -> Pool @done (20-01-03 15:54)
-  ☐ Measure performance before implementing those Pools
-  ✔ Check if pools (static access to some class) can be used in Web Workers @done (20-01-03 19:45)
-  ✔ Write tests for Pools @done (20-01-03 15:54)
-  ✘ Create poolable interface @cancelled (20-01-03 15:55)
-  ✘ Extend Vector2 class which implements Poolable @cancelled (20-01-03 15:55)
-  ✘ Create Vector3 class which implements Poolable @cancelled (20-01-03 15:55)
-  ☐ Use those pools in the code
-  ☐ Check if performance is better
+
+Startup performance:
 
 
 Game performance 2:
   ☐ Have as little GC as possible
-  ☐ Measure frame time and try to keep it as consistent as possible 
-
-Startup performance:
-  ✔ Try to increase startup performance - it is now at 4 seconds, but it does not do much to justify it @done (20-01-04 00:22)
+  ☐ Measure frame time and try to keep it as consistent as possible
+＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+Archive:
+ ✔ Have a data.js file, that is loaded on startup and contains all data for stars, planets etc @done (20-01-11 20:01) @project(Misc)
+ ✔ Create a pre-build script that finds all texture names and loads the textures themselves (so it's automatic) @done (20-01-11 20:01) @project(Misc)
+ ✔ Refactor 'acceleration' field in BaseObject, change name to velocity @done (20-01-10 22:38) @project(Misc)
+ ✔ Fix UI overlay catching mouse events @done (20-01-10 22:21) @project(Misc)
+ ✔ Have a list of all objects in the UI @done (20-01-10 22:20) @project(Misc)
+ ✔ Make velocity possible to be chosen @done (20-01-10 18:53) @project(Debug spawn objects UI)
+ ✔ Posibility to spawn Stars and planets from the UI (basic work is done) @done (20-01-10 16:01) @project(Misc)
+ ✔ Gravity should not be calculated based on solar system itself, but individual stars @done (20-01-10 16:01) @project(Bugs general)
+ ✔ Free planets should collide with the center black hole @done (20-01-10 16:01) @project(Misc)
+ ✔ Add ability for solar systems to split @done (20-01-10 13:03) @project(Multiple stars per solar system)
+ ✔ A solar system will have a 'Main star' which will be its center (SolarSystem.position will return its position). The main star is the biggest star (highest mass) @done (20-01-10 13:03) @project(Multiple stars per solar system)
+ ✔ Solar systems will join when the distance between solar system centers (in different solar systems) becomes less than smaller radius of the two systems @done (20-01-09 17:25) @project(Multiple stars per solar system)
+ ✔ Move logic related to planets leaving and joining solar systems to another service class @done (20-01-09 17:25) @project(Misc)
+ ✔ After joining, the result radius will as big as the sum of two previous solar systems @done (20-01-09 17:25) @project(Multiple stars per solar system)
+ ✔ Add ability for solar systems to join @done (20-01-09 17:24) @project(Multiple stars per solar system)
+ ✔ Center for a solar system will be middle point between two (or more) stars @done (20-01-09 17:09) @project(Multiple stars per solar system)
+ ✔ After joining, all planets will be attracted to all stars in the system @done (20-01-09 17:09) @project(Multiple stars per solar system)
+ ✔ Add ability for solar systems to have multiple stars @done (20-01-09 17:08) @project(Multiple stars per solar system)
+ ✔ If a planet or a solar system is outside of universe bounds, they should slow down to zero (over few seconds) instead of being destroyed @done (20-01-08 20:01) @project(Misc)
+ ✔ Move bounds check to another service (from Universe class) @done (20-01-08 20:00) @project(Misc)
+ ✔ Tweak gravity numbers for stars @done (20-01-08 14:56) @project(Gravity)
+ ✔ Load all current textures on GameEngine start @partial @done (20-01-08 14:46) @project(Misc)
+ ✔ Find a way to run the simulation for some time automatically @done (20-01-08 14:46) @project(Scenarios)
+  Check /src/scenarios folder
+ ✔ Change size of black hole texture so its dimensions are a power of two @done (20-01-08 14:45) @project(Misc)
+ ✔ Game clock! @done (20-01-08 01:29) @project(Misc)
+ ✔ Free planets that escape bounds of the universe should also be disposed of @done (20-01-07 22:59) @project(Misc)
+ ✔ When free planet is near a solar system, it should join it @test @done (20-01-07 16:15) @project(Gravity)
+ ✔ For some reason, when an object is selected, another one cannot be selected, until the selected object is deselected @done (20-01-07 16:14) @project(Selection)
+ ✔ When a star is destroyed, the solar system should be destroyed, but the planets should be added to free planets @done (20-01-07 02:20) @project(Collisions)
+ ✔ Improve the algorithm of collisions, so that it's sped up the same was as gravity calculations were @done (20-01-07 02:20) @project(Collisions)
+ ✔ Change sprites of star/planet so that the actual planet/star takes full width/height of the texture @done (20-01-07 02:20) @project(Misc)
+ ✔ Collisions seem to be happening too early, find out why (could be the scales?) @done (20-01-07 00:12) @project(Collisions)
+  Collisions were weird because the shown sprite was not the size of the sphere (which was used to do the collision)
+ ✔ All objects follow normal gravity model @done (20-01-07 00:12) @project(Game mechanics)
+ ✘ Have gravity use real values. Distance will be scaled to be more fitting to a game @cancelled (20-01-06 23:11) @project(Gravity)
+ ✔ When an object that is followed by the camera is destroyed, the game crashes @critical @done (20-01-06 18:28) @project(Bugs general)
+ ✔ When gravity for stars is calculated (between other stars), apply the same value for the planets as well @done (20-01-06 15:23) @project(Gravity)
+ ✔ Try to increase startup performance - it is now at 4 seconds, but it does not do much to justify it @done (20-01-06 15:23) @project(Startup performance)
+ ✘ When game speed is 0, the gravity.worker.ts is still working and sending back gravity results - this needs a fix @cancelled (20-01-06 01:02) @project(Gravity)
+ ✔ Free planets are not attracted to the main star - fix @done (20-01-05 17:08) @project(Gravity)
+ ✔ Free planets are not attracted to other stars - fix @done (20-01-05 17:08) @project(Gravity)
+ ✔ Find a way to slow down the speed of the game below 1, but not 0. Instead of game speed, have a game speed scale (from 0 to 1). @done (20-01-05 16:26) @project(Game speed)
+ ✘ Investigate this issue @critical @cancelled (20-01-05 01:13) @project(Gravity)
+ ✘ Have a separate algorithm for gravity, that would be used by both the main thread service and web worker service @cancelled (20-01-05 01:13) @project(Gravity)
+ ✔ Tweak initial speeds so that most planets stay in the orbit of the star @done (20-01-05 01:13) @project(Gravity)
+ ✔ Create a GravityService that works on the main thread @done (20-01-05 01:13) @project(Gravity)
+ ✘ Use those pools in the code @cancelled (20-01-04 14:11) @project(Game performance)
+ ✘ Measure performance before implementing those Pools @cancelled (20-01-04 14:11) @project(Game performance)
+ ✘ Check if performance is better @cancelled (20-01-04 14:11) @project(Game performance)
+ ✔ Create less solar systems on startup @done (20-01-04 14:11) @project(Gravity)
+ ✔ Add the ability to load feature flags from ENV variables @done (20-01-04 14:11) @project(Feature flags)
+ ✔ Add a feature flag that @done (20-01-04 14:11) @project(Gravity)
+ ✔ Speed up gravity calculations a little bit @done (20-01-04 12:49) @project(Gravity)
+ ✔ Check if pools (static access to some class) can be used in Web Workers @done (20-01-03 19:45) @project(Game performance)
+ ✘ Extend Vector2 class which implements Poolable @cancelled (20-01-03 15:55) @project(Game performance)
+ ✘ Create poolable interface @cancelled (20-01-03 15:55) @project(Game performance)
+ ✘ Create Vector3 class which implements Poolable @cancelled (20-01-03 15:55) @project(Game performance)
+ ✔ Write tests for Pools @done (20-01-03 15:54) @project(Game performance)
+ ✔ Reset the object (by step 2?) @done (20-01-03 15:54) @project(Game performance)
+ ✔ Release object to the pool @done (20-01-03 15:54) @project(Game performance)
+ ✔ Get object from the pool @done (20-01-03 15:54) @project(Game performance)
+ ✔ Do we even need to have subclasses of Pool<T> class? Can we just pass the constructor to the pool to create a new object? @done (20-01-03 15:54) @project(Game performance)
+ ✔ Create a POOL object which will be a map of PoolType -> Pool @done (20-01-03 15:54) @project(Game performance)
+ ✔ Think about making object pools @done (20-01-03 14:18) @project(Game performance)

@@ -7,6 +7,7 @@ export const textures = {
   glass_panel_2: 'textures/glass_panel_2.png',
   green_planet_1: 'textures/green_planet_1.png',
   green_planet_2: 'textures/green_planet_2.png',
+  grey_panel: 'textures/grey_panel.png',
   metal: 'textures/metal.png',
   production_slot_bg: 'textures/production_slot_bg.png',
   white_star_1: 'textures/white_star_1.png',

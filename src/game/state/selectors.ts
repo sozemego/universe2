@@ -9,6 +9,10 @@ export function useGetSelected() {
   return useSelector((state: AppState) => state.game.selected);
 }
 
+export function useGetSelectedObjectIsModal() {
+  return useSelector((state: AppState) => state.game.selectedObjectIsModal);
+}
+
 export function useGetGameSpeed() {
   return useSelector((state: AppState) => state.game.gameSpeed);
 }

@@ -29,6 +29,7 @@ const initialState: GameState = {
   showDebugSphereBounds: false,
   services: null,
   time: 0,
+  selectedObjectIsModal: true,
 };
 
 export const gameSlice = createSlice<GameState, any>({
@@ -65,6 +66,9 @@ export const gameSlice = createSlice<GameState, any>({
     setServices: (state: GameState, action: PayloadAction<GameServices>) => {
       state.services = action.payload;
     },
+    setSelectedObjectIsModal: (state: GameState, action: PayloadAction<boolean>) => {
+      state.selectedObjectIsModal = action.payload;
+    },
   },
 });
 
@@ -79,6 +83,7 @@ export const {
   setGameSpeedScale,
   setShowDebugSphereBounds,
   setTime,
+  setSelectedObjectIsModal,
 } = gameSlice.actions;
 
 export interface GameServices {
@@ -113,4 +118,5 @@ export interface GameState {
   showDebugSphereBounds: boolean;
   services: GameServices | null;
   time: number;
+  selectedObjectIsModal: boolean;
 }
