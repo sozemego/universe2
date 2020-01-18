@@ -1,18 +1,15 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import Text from 'antd/lib/typography/Text';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
-import { textures } from '../../data/textures';
 import { BuildingComponent, BuildingSlot } from './BuildingComponent';
 import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
 import { PlanetStorageComponent } from './PlanetStorageComponent';
-import { Resource } from '../../object/Resource';
-import { ProductionSlot } from './ProductionSlot';
-import { BuildingResourceProductionData } from '../../object/building/types';
 import { Icon } from 'antd';
 import { useDispatch } from 'react-redux';
 import { setSelectedObjectIsModal } from '../../state/state';
+import { PlanetProduction } from './PlanetProduction';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
@@ -98,7 +95,7 @@ export function PlanetColonizationComponentModal({
     <div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <PlanetBuildingsModal planetData={planetData} planet={planet} />
-        <PlanetProductionModal planet={planet} planetData={planetData} />
+        <PlanetProduction planet={planet} planetData={planetData} />
       </div>
       <hr />
       <div
@@ -159,54 +156,4 @@ export function PlanetBuildingsModal({
       </div>
     </div>
   );
-}
-
-export function PlanetProductionModal({ planet, planetData }: PlanetProductionModalProps) {
-  let productions: Record<string, BuildingResourceProductionData> = {};
-  planetData.buildings.forEach(building => {
-    let { production } = building;
-    Object.keys(production).forEach(resource => {
-      let productionData = { ...production[resource as Resource]! };
-      let previous = productions[resource];
-      if (previous) {
-        previous.produces += productionData?.produces;
-      } else {
-        productions[resource] = productionData;
-      }
-    });
-  });
-
-  return (
-    <div
-      style={{
-        background: 'rgb(192,192,192)',
-        // border: '4px solid rgb(119,136,153)',
-        width: `200px`,
-        padding: '12px',
-        boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
-        marginLeft: '12px',
-      }}
-    >
-      <Text type={'secondary'}>Production</Text>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-          padding: '8px',
-        }}
-      >
-        {Object.values(productions).map((productionData, index) => (
-          <ProductionSlot production={productionData} key={index} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export interface PlanetProductionModalProps {
-  planet: Planet;
-  planetData: PlanetData;
 }
