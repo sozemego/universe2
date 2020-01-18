@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import Text from 'antd/lib/typography/Text';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
 import { textures } from '../../data/textures';
@@ -9,8 +10,6 @@ import { PlanetStorageComponent } from './PlanetStorageComponent';
 import { Resource } from '../../object/Resource';
 import { ProductionSlot } from './ProductionSlot';
 import { BuildingResourceProductionData } from '../../object/building/types';
-import { Tag } from 'antd';
-import Text from 'antd/lib/typography/Text';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
