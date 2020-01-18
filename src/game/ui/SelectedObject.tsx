@@ -3,23 +3,15 @@ import { Star } from '../object/Star';
 import { SelectedStar } from './SelectedStar';
 import { SelectedPlanet } from './planet/SelectedPlanet';
 import { Planet } from '../object/Planet';
-import {
-  useGetMouseOver,
-  useGetObjectList,
-  useGetSelected,
-  useGetSelectedObjectIsModal,
-} from '../state/selectors';
+import { useGetObjectList, useGetSelected, useGetSelectedObjectIsModal } from '../state/selectors';
 import { SelectedPlanetModal } from './planet/SelectedPlanetModal';
 
 export function SelectedObject() {
   let selected = useGetSelected();
-  let mouseOver = useGetMouseOver();
   let objectList = useGetObjectList();
   let selectedObjectIsModal = useGetSelectedObjectIsModal();
 
   let selectedObject = objectList.findById(selected);
-  let mouseOverObject = objectList.findById(mouseOver);
-  selectedObject = selectedObject ? selectedObject : mouseOverObject;
 
   return (
     <div>

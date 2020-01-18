@@ -1,13 +1,10 @@
 import React from 'react';
-import { Progress, Tag } from 'antd';
+import { Tag } from 'antd';
 import { useDispatch } from 'react-redux';
 import { Planet } from '../../object/Planet';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
 import { PlanetData } from '../../service/PlanetService';
-import { RESOURCE_DATA } from '../../object/Resource';
-import { textures } from '../../data/textures';
-import { BuildingResourceProductionData } from '../../object/building/types';
 import { setSelectedObjectIsModal } from '../../state/state';
 import { BuildingComponent } from './BuildingComponent';
 import { PlanetStorageComponent } from './PlanetStorageComponent';
@@ -75,40 +72,4 @@ export function PlanetColonizationComponent({
 export interface PlanetColonizationComponentProps {
   planet: Planet;
   planetData: PlanetData;
-}
-
-export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces, timePassed, time } = production;
-  return (
-    <div
-      style={{
-        margin: '4px',
-        width: '105px',
-      }}
-    >
-      <img
-        src={RESOURCE_DATA[resource].texture}
-        alt={`${resource} texture`}
-        style={{
-          width: '32px',
-          height: '32px',
-          minWidth: '32px',
-          minHeight: '32px',
-          background: `url(${textures.production_slot_bg})`,
-          backgroundSize: 'cover',
-        }}
-      />
-      <span style={{ color: 'green' }}>+{produces}</span>
-      <Progress
-        type="circle"
-        percent={(timePassed / time) * 100}
-        format={percent => `${percent?.toFixed(0)}%`}
-        width={32}
-      />
-    </div>
-  );
-}
-
-export interface ProductionSlotProps {
-  production: BuildingResourceProductionData;
 }

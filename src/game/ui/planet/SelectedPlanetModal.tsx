@@ -1,54 +1,70 @@
 import { useRealClock } from '../../util/useRealClock';
-import { useDispatch } from 'react-redux';
 import { useGetPlanetService } from '../../state/selectors';
-import { Modal } from 'antd';
-import { setSelectedObjectIsModal } from '../../state/state';
 import React, { ReactElement } from 'react';
 import { textures } from '../../data/textures';
 import { BuildingComponent } from './BuildingComponent';
 import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
 import { PlanetStorageComponent } from './PlanetStorageComponent';
+import { Resource } from '../../object/Resource';
+import { ProductionSlot } from './ProductionSlot';
+import { BuildingResourceProductionData } from '../../object/building/types';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
-  let dispatch = useDispatch();
   let { id } = planet;
   let planetService = useGetPlanetService();
   let planetData = planetService.getPlanetData(id);
+  let { innerWidth } = window;
+  let width = 1200;
+  let remainingSpace = innerWidth - width;
 
   return (
-    <Modal
-      visible={true}
-      width={'1200px'}
-      title={
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-          }}
-        >
-          <img
-            src={planet.texture}
-            alt={`Planet texture`}
-            style={{ width: '32px', height: '32px' }}
-          />
-          <span style={{ marginLeft: '6px' }}>Planet info</span>
-        </div>
-      }
-      onCancel={() => {
-        // @ts-ignore
-        dispatch(setSelectedObjectIsModal(false));
-      }}
-      onOk={() => {
-        // @ts-ignore
-        dispatch(setSelectedObjectIsModal(false));
+    <div
+      style={{
+        position: 'fixed',
+        top: 100,
+        bottom: 0,
+        left: remainingSpace / 2,
+        right: remainingSpace / 2,
+        zIndex: 1000,
+        outline: 0,
+        width,
+        height: '600px',
+        borderRadius: 12,
+        backgroundColor: `rgb(192,192,192)`,
       }}
     >
-      {planetData && <PlanetColonizationComponentModal planet={planet} planetData={planetData} />}
-    </Modal>
+      <div
+        style={{
+          display: 'flex',
+          paddingTop: '24px',
+          paddingBottom: '12px',
+          paddingLeft: '12px',
+          alignItems: 'center',
+          backgroundColor: `rgb(192,192,192)`,
+        }}
+      >
+        <img
+          src={planet.texture}
+          style={{ width: '32px', height: '32px' }}
+          alt={'Planet texture'}
+        />
+        <span>Planet summary</span>
+      </div>
+      <hr />
+      <div
+        style={{
+          backgroundColor: 'rgb(211,211,211)',
+          width: '100%',
+          height: '100%',
+          paddingTop: '8px',
+          paddingLeft: '24px',
+        }}
+      >
+        {planetData && <PlanetColonizationComponentModal planet={planet} planetData={planetData} />}
+      </div>
+    </div>
   );
 }
 
@@ -63,7 +79,10 @@ export function PlanetColonizationComponentModal({
   let { storage } = planetData;
   return (
     <div>
-      <PlanetBuildingsModal planetData={planetData} planet={planet} />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <PlanetBuildingsModal planetData={planetData} planet={planet} />
+        <PlanetProductionModal planet={planet} planetData={planetData} />
+      </div>
       <hr />
       <div>
         <PlanetStorageComponent storage={storage} />
@@ -84,8 +103,15 @@ export function PlanetBuildingsModal({
   let { buildings } = planetData;
   let freeSpots = Array.from({ length: 16 - buildings.length });
   return (
-    <div>
-      <div>Buildings:</div>
+    <div
+      style={{
+        background: `url(${textures.panelInset_blue})`,
+        backgroundSize: '100% 100%',
+        width: `200px`,
+        padding: '12px',
+      }}
+    >
+      <div>Buildings</div>
       <div
         style={{
           maxWidth: `${44 * 4}px`,
@@ -99,12 +125,12 @@ export function PlanetBuildingsModal({
         }}
       >
         {buildings.map(building => (
-          <BuildingSlot>
-            <BuildingComponent building={building} key={building.id} />
+          <BuildingSlot key={building.id}>
+            <BuildingComponent building={building} />
           </BuildingSlot>
         ))}
-        {freeSpots.map(spot => (
-          <BuildingSlot children={[]} />
+        {freeSpots.map((spot, index) => (
+          <BuildingSlot children={[]} key={index} />
         ))}
       </div>
     </div>
@@ -119,7 +145,7 @@ export function BuildingSlot({ children }: BuildingSlotProps) {
         minWidth: '36px',
         height: '36px',
         minHeight: '36px',
-        background: `url(${textures.grey_panel})`,
+        background: `url(${textures.panel_beige})`,
         backgroundSize: 'contain',
         padding: '8px',
         margin: '4px',
@@ -132,4 +158,37 @@ export function BuildingSlot({ children }: BuildingSlotProps) {
 
 export interface BuildingSlotProps {
   children: ReactElement | ReactElement[];
+}
+
+export function PlanetProductionModal({ planet, planetData }: PlanetProductionModalProps) {
+  let productions: BuildingResourceProductionData[] = [];
+  planetData.buildings.forEach(building => {
+    let { production } = building;
+    Object.keys(production).forEach(resource => {
+      let productionData = production[resource as Resource];
+      productions.push(productionData!);
+    });
+  });
+  productions.sort((a, b) => a.resource.localeCompare(b.resource));
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        padding: '8px',
+      }}
+    >
+      {productions.map((productionData, index) => (
+        <ProductionSlot production={productionData} key={index} />
+      ))}
+    </div>
+  );
+}
+
+export interface PlanetProductionModalProps {
+  planet: Planet;
+  planetData: PlanetData;
 }

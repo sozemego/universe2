@@ -49,6 +49,12 @@ export class PlanetService implements IGameService {
         this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
         this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
         this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
+        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
       ],
       storage: new PlanetStorage(50000),
     };
