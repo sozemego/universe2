@@ -1,4 +1,5 @@
 import React from 'react';
+import { Icon } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService, useGetSelectionService } from '../../state/selectors';
@@ -6,14 +7,10 @@ import { BuildingComponent, BuildingSlot } from './BuildingComponent';
 import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
 import { PlanetStorageComponent } from './PlanetStorageComponent';
-import { Icon } from 'antd';
-import { useDispatch } from 'react-redux';
-import { setSelectedObjectIsModal } from '../../state/state';
 import { PlanetProduction } from './PlanetProduction';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
-  let dispatch = useDispatch();
   let { id } = planet;
   let planetService = useGetPlanetService();
   let selectionService = useGetSelectionService();
