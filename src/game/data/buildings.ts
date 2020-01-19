@@ -7,6 +7,7 @@ export const BUILDINGS: BuildingDataMap = {
     name: 'Colony center',
     type: BuildingType.COLONY_CENTER,
     texture: textures.colony_center,
+    populationNeeded: 2,
     production: {
       [Resource.FOOD]: {
         resource: Resource.FOOD,

@@ -1,11 +1,11 @@
+import React from 'react';
+import Text from 'antd/lib/typography/Text';
+import { Progress } from 'antd';
 import { BuildingResourceProductionData } from '../../object/building/types';
 import { Resource, RESOURCE_DATA } from '../../object/Resource';
-import Text from 'antd/lib/typography/Text';
-import React from 'react';
 import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
 import { textures } from '../../data/textures';
-import { Progress } from 'antd';
 
 export function ProductionSlot({ production }: ProductionSlotProps) {
   let { resource, produces, timePassed } = production;
@@ -42,7 +42,7 @@ export function ProductionSlot({ production }: ProductionSlotProps) {
       <Progress
         type="circle"
         percent={(timePassed / 60) * 100}
-        format={percent => <span style={{ color: 'black' }}>{produces}/m</span>}
+        format={percent => <span style={{ color: produces ? 'black' : 'red' }}>{produces}/m</span>}
         width={48}
         strokeColor={'black'}
         style={{ position: 'relative', top: 8, left: 8 }}
@@ -58,13 +58,15 @@ export interface ProductionSlotProps {
 export function PlanetProduction({ planet, planetData }: PlanetProductionModalProps) {
   let productions: Record<string, BuildingResourceProductionData> = {};
   planetData.buildings.forEach(building => {
-    let { production } = building;
+    let { production, population, populationNeeded } = building;
+    let populationPercentFilled = population / populationNeeded;
     Object.keys(production).forEach(resource => {
       let productionData = { ...production[resource as Resource]! };
       let previous = productions[resource];
       if (previous) {
-        previous.produces += productionData?.produces;
+        previous.produces += productionData?.produces * populationPercentFilled;
       } else {
+        productionData.produces *= populationPercentFilled;
         productions[resource] = productionData;
       }
     });

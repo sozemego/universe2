@@ -1,15 +1,14 @@
 import uuid from 'uuid/v4';
-import { Planet } from '../object/Planet';
 import { BUILDINGS } from '../data/buildings';
 import { Building } from '../object/building/Building';
 import { BuildingProductionData, BuildingType } from '../object/building/types';
 
 export class BuildingFactory {
-  createBuilding(type: BuildingType, planet: Planet): Building {
+  createBuilding(type: BuildingType): Building {
     let buildingData = BUILDINGS[type];
-    let { texture, name } = buildingData;
+    let { texture, name, populationNeeded } = buildingData;
     let production = this._getProduction(type);
-    let building = new Building(uuid(), planet, texture, name, production);
+    let building = new Building(uuid(), texture, name, production, populationNeeded);
 
     return building;
   }

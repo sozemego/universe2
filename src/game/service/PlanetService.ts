@@ -44,20 +44,38 @@ export class PlanetService implements IGameService {
     this.planets[id] = {
       id,
       population: 5,
-      buildings: [
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-        this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER, planet),
-      ],
-      storage: new PlanetStorage(50000),
+      buildings: [],
+      storage: new PlanetStorage(50),
     };
+    this.constructBuilding(planet, BuildingType.COLONY_CENTER);
+    this.assignPopulation(planet);
+  }
+
+  constructBuilding(planet: Planet, buildingType: BuildingType) {
+    let planetData = this.planets[planet.id];
+    if (!planetData) {
+      return;
+    }
+    let building = this.buildingFactory.createBuilding(buildingType);
+    planetData.buildings.push(building);
+  }
+
+  assignPopulation(planet: Planet) {
+    let planetData = this.planets[planet.id];
+    if (!planetData) {
+      return;
+    }
+    let { buildings, population } = planetData;
+    buildings.forEach(building => (building.population = 0));
+    for (let i = 0; i < population; i++) {
+      for (let j = 0; j < buildings.length; j++) {
+        let building = buildings[j];
+        if (building.population < building.populationNeeded) {
+          building.population += 1;
+          break;
+        }
+      }
+    }
   }
 
   getPlanetData(id: string): PlanetData | null {
