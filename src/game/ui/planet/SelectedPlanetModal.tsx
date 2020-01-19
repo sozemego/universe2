@@ -123,7 +123,7 @@ export function PlanetBuildingsModal({
   return (
     <div
       style={{
-        width: `200px`,
+        width: `250px`,
         padding: '12px',
         background: 'rgb(192,192,192)',
         boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
@@ -132,10 +132,10 @@ export function PlanetBuildingsModal({
       <Text type={'secondary'}>Buildings</Text>
       <div
         style={{
-          maxWidth: `${44 * 4}px`,
-          minWidth: `${44 * 4}px`,
-          maxHeight: `${44 * 4}px`,
-          minHeight: `${44 * 4}px`,
+          maxWidth: `${64 * 4}px`,
+          minWidth: `${64 * 4}px`,
+          maxHeight: `${64 * 4}px`,
+          minHeight: `${64 * 4}px`,
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'row',
