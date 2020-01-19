@@ -5,6 +5,7 @@ export class Building {
   readonly id: string;
   readonly texture: string;
   readonly name: string;
+  readonly description: string;
   readonly production: BuildingProductionData;
   readonly populationNeeded: number;
   population: number = 0;
@@ -13,12 +14,14 @@ export class Building {
     id: string,
     texture: string,
     name: string,
+    description: string,
     production: BuildingProductionData,
     populationNeeded: number
   ) {
     this.id = id;
     this.texture = texture;
     this.name = name;
+    this.description = description;
     this.production = production;
     this.populationNeeded = populationNeeded;
   }

@@ -48,7 +48,6 @@ export class PlanetService implements IGameService {
       storage: new PlanetStorage(50),
     };
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
-    this.assignPopulation(planet);
   }
 
   constructBuilding(planet: Planet, buildingType: BuildingType) {
@@ -58,6 +57,7 @@ export class PlanetService implements IGameService {
     }
     let building = this.buildingFactory.createBuilding(buildingType);
     planetData.buildings.push(building);
+    this.assignPopulation(planet);
   }
 
   assignPopulation(planet: Planet) {

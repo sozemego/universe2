@@ -8,6 +8,7 @@ export const BUILDINGS: BuildingDataMap = {
     type: BuildingType.COLONY_CENTER,
     texture: textures.colony_center,
     populationNeeded: 2,
+    description: 'Colony center serves as a administrative nexus for growing colonies.',
     production: {
       [Resource.FOOD]: {
         resource: Resource.FOOD,

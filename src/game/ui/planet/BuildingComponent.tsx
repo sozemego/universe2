@@ -1,16 +1,25 @@
 import React, { ReactElement } from 'react';
 import Text from 'antd/lib/typography/Text';
+import { Tooltip } from 'antd';
 import { Building } from '../../object/building/Building';
 import { textures } from '../../data/textures';
+import { Resource, RESOURCE_DATA } from '../../object/Resource';
 
 export function BuildingComponent({ building }: BuildingComponentProps) {
   let { name, texture, population, populationNeeded } = building;
   return (
     <div>
-      <img src={texture} alt={name} style={{ maxWidth: '36px' }} />
-      <Text style={{ fontSize: '0.8rem', marginLeft: '6px' }}>
-        {population}/{populationNeeded}
-      </Text>
+      <Tooltip
+        title={<BuildingTooltip building={building} />}
+        placement={'right'}
+        mouseLeaveDelay={0}
+        mouseEnterDelay={0}
+      >
+        <img src={texture} alt={name} style={{ maxWidth: '36px' }} />
+        <Text style={{ fontSize: '0.8rem', marginLeft: '6px' }}>
+          {population}/{populationNeeded}
+        </Text>
+      </Tooltip>
     </div>
   );
 }
@@ -40,4 +49,51 @@ export function BuildingSlot({ children }: BuildingSlotProps) {
 
 export interface BuildingSlotProps {
   children: ReactElement | ReactElement[];
+}
+
+export function BuildingTooltip({ building }: BuildingTooltipProps) {
+  let { description, population, populationNeeded, production } = building;
+  let populationFilledPercent = population / populationNeeded;
+  return (
+    <div>
+      <div>{description}</div>
+      <div>
+        Population: {population} / {populationNeeded}
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div>Produces:</div>
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+          {Object.keys(production).map(resource => {
+            let productionData = production[resource as Resource]!;
+            let maxProduces = productionData?.produces;
+            let realProduces = maxProduces * populationFilledPercent;
+            let producesColor = 'yellow';
+            if (maxProduces === realProduces) {
+              producesColor = 'green';
+            } else if (realProduces === 0) {
+              producesColor = 'red';
+            } else {
+              producesColor = 'gray';
+            }
+            return (
+              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <img
+                  src={RESOURCE_DATA[resource as Resource].texture}
+                  style={{ width: '12px', height: '12px' }}
+                  alt={resource}
+                />
+                <div style={{ color: producesColor }}>
+                  {maxProduces}/{realProduces}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export interface BuildingTooltipProps {
+  building: Building;
 }

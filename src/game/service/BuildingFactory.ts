@@ -6,9 +6,9 @@ import { BuildingProductionData, BuildingType } from '../object/building/types';
 export class BuildingFactory {
   createBuilding(type: BuildingType): Building {
     let buildingData = BUILDINGS[type];
-    let { texture, name, populationNeeded } = buildingData;
+    let { texture, name, populationNeeded, description } = buildingData;
     let production = this._getProduction(type);
-    let building = new Building(uuid(), texture, name, production, populationNeeded);
+    let building = new Building(uuid(), texture, name, description, production, populationNeeded);
 
     return building;
   }

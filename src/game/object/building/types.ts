@@ -12,6 +12,7 @@ export interface BuildingData {
   texture: string;
   production: BuildingProductionData;
   populationNeeded: number;
+  description: string;
 }
 
 type ResourceString = keyof typeof Resource;
