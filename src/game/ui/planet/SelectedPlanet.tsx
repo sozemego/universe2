@@ -8,6 +8,7 @@ import { useGetPlanetService } from '../../state/selectors';
 import { PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
 import { BuildingComponent, BuildingSlot } from './BuildingComponent';
+import { PlanetProduction } from './PlanetProduction';
 
 export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   useRealClock({ interval: 250 });
@@ -52,8 +53,9 @@ export function PlanetColonizationComponent({
   planetData,
 }: PlanetColonizationComponentProps) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
       <PlanetBuildings planet={planet} planetData={planetData} />
+      <PlanetProduction planet={planet} planetData={planetData} />
     </div>
   );
 }

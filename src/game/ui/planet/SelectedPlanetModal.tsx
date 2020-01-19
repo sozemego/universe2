@@ -1,7 +1,7 @@
 import React from 'react';
 import Text from 'antd/lib/typography/Text';
 import { useRealClock } from '../../util/useRealClock';
-import { useGetPlanetService } from '../../state/selectors';
+import { useGetPlanetService, useGetSelectionService } from '../../state/selectors';
 import { BuildingComponent, BuildingSlot } from './BuildingComponent';
 import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
@@ -16,6 +16,7 @@ export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   let dispatch = useDispatch();
   let { id } = planet;
   let planetService = useGetPlanetService();
+  let selectionService = useGetSelectionService();
   let planetData = planetService.getPlanetData(id);
   let { innerWidth } = window;
   let width = 1200;
@@ -61,8 +62,7 @@ export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
           theme="twoTone"
           style={{ marginRight: '12px', transform: 'scale(2)', cursor: 'pointer' }}
           onClick={() => {
-            // @ts-ignore
-            dispatch(setSelectedObjectIsModal(false));
+            selectionService.selected = null;
           }}
         />
       </div>

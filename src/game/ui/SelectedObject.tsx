@@ -4,7 +4,6 @@ import { SelectedStar } from './SelectedStar';
 import { Planet } from '../object/Planet';
 import { useGetObjectList, useGetSelected, useGetSelectedObjectIsModal } from '../state/selectors';
 import { SelectedPlanetModal } from './planet/SelectedPlanetModal';
-import { SelectedPlanet } from './planet/SelectedPlanet';
 
 export function SelectedObject() {
   let selected = useGetSelected();
@@ -18,9 +17,9 @@ export function SelectedObject() {
       {!selectedObjectIsModal && selectedObject instanceof Star && (
         <SelectedStar star={selectedObject} />
       )}
-      {!selectedObjectIsModal && selectedObject instanceof Planet && (
-        <SelectedPlanet planet={selectedObject} />
-      )}
+      {/*{!selectedObjectIsModal && selectedObject instanceof Planet && (*/}
+      {/*  <SelectedPlanet planet={selectedObject} />*/}
+      {/*)}*/}
       {selectedObjectIsModal && selectedObject instanceof Planet && (
         <SelectedPlanetModal planet={selectedObject} />
       )}
