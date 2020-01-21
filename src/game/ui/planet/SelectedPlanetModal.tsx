@@ -8,9 +8,12 @@ import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
 import { PlanetStorageComponent } from './PlanetStorageComponent';
 import { PlanetProduction } from './PlanetProduction';
+import { useDispatch } from 'react-redux';
+import { setSelectedObjectIsModal } from '../../state/state';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
+  let dispatch = useDispatch();
   let { id } = planet;
   let planetService = useGetPlanetService();
   let selectionService = useGetSelectionService();
@@ -59,7 +62,8 @@ export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
           theme="twoTone"
           style={{ marginRight: '12px', transform: 'scale(2)', cursor: 'pointer' }}
           onClick={() => {
-            selectionService.selected = null;
+            // @ts-ignore
+            dispatch(setSelectedObjectIsModal(false));
           }}
         />
       </div>

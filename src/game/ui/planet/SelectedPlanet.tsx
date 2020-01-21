@@ -19,7 +19,7 @@ export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   let planetData = planetService.getPlanetData(id);
 
   return (
-    <div style={{ paddingTop: '52px', paddingBottom: '8px', backgroundColor: 'rgb(211,211,211)' }}>
+    <div style={{ paddingTop: '12px', paddingBottom: '8px', backgroundColor: 'rgb(211,211,211)' }}>
       <div
         style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}
         onClick={() => {
@@ -52,12 +52,7 @@ export function PlanetColonizationComponent({
   planet,
   planetData,
 }: PlanetColonizationComponentProps) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-      <PlanetBuildings planet={planet} planetData={planetData} />
-      <PlanetProduction planet={planet} planetData={planetData} />
-    </div>
-  );
+  return <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }} />;
 }
 
 export interface PlanetColonizationComponentProps {
