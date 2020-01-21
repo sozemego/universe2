@@ -1,4 +1,4 @@
-import { Points, Sphere } from 'three';
+import { Sphere } from 'three';
 import { SolarSystem } from '../object/SolarSystem';
 import { Star } from '../object/Star';
 import { Planet } from '../object/Planet';
@@ -10,20 +10,17 @@ export class Universe {
   solarSystems: SolarSystem[] = [];
   centerStar: Star;
   bounds: Sphere;
-  background: Points;
 
   constructor(
     centerStar: Star,
     solarSystems: SolarSystem[],
     freePlanets: Planet[],
-    background: Points,
     bounds: Sphere
   ) {
     this.centerStar = centerStar;
     this.solarSystems = [];
     solarSystems.forEach(this.addSolarSystem);
     this.bounds = bounds;
-    this.background = background;
   }
 
   update(delta: number) {

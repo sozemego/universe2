@@ -1,5 +1,5 @@
 import uuid from 'uuid/v4';
-import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
+import { Color, Object3D, Points, Sphere, Sprite, Vector2, Vector3 } from 'three';
 import { ObjectList } from './ObjectList';
 import { ObjectFactory } from './ObjectFactory';
 import { scaleToCameraDistance } from './util/utils';
@@ -7,6 +7,7 @@ import { Star } from './object/Star';
 import { SolarSystem } from './object/SolarSystem';
 import { Planet } from './object/Planet';
 import { SelectionContainer } from './SelectionContainer';
+import { textures } from './data/textures';
 
 export class GameObjectFactory {
   private readonly objectList: ObjectList;
@@ -71,5 +72,14 @@ export class GameObjectFactory {
 
   createBackground(n: number, bounds: Sphere, color: Color | number): Points {
     return this.objectFactory.createPoints(n, bounds, color);
+  }
+
+  createBackgroundSprite(bounds: Sphere) {
+    this.objectFactory.createBackground(
+      textures.hub005,
+      new Vector2().set(bounds.center.x, bounds.center.y),
+      100000,
+      100000
+    );
   }
 }

@@ -8,6 +8,7 @@ export const textures = {
   green_planet_1: 'textures/green_planet_1.png',
   green_planet_2: 'textures/green_planet_2.png',
   grey_panel: 'textures/grey_panel.png',
+  hub005: 'textures/hub005.jpg',
   metal: 'textures/metal.png',
   panelInset_beige: 'textures/panelInset_beige.png',
   panelInset_beigeLight: 'textures/panelInset_beigeLight.png',

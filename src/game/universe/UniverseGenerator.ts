@@ -1,4 +1,4 @@
-import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
+import { Color, Points, Sphere, Sprite, Vector2, Vector3 } from 'three';
 import { GameObjectFactory } from '../GameObjectFactory';
 import { Universe } from './Universe';
 import { angleBetween, random } from '../../mathUtils';
@@ -21,12 +21,12 @@ export class UniverseGenerator {
   }
 
   generateUniverse(): Universe {
+    this.generateBackground();
     let centerBlackHole = this.generateCenterBlackHole();
     let solarSystems = this.generateSolarSystems(centerBlackHole);
     solarSystems.forEach(this.generatePlanetsForSolarSystem);
-    let background = this.generateBackground();
     console.log('Generated universe');
-    return new Universe(centerBlackHole, solarSystems, [], background, this.bounds.clone());
+    return new Universe(centerBlackHole, solarSystems, [], this.bounds.clone());
   }
 
   generateCenterBlackHole() {
@@ -135,11 +135,15 @@ export class UniverseGenerator {
     }
   };
 
-  generateBackground(): Points {
-    return this.gameObjectFactory.createBackground(
-      10000,
-      this.bounds.clone().set(this.bounds.center, this.bounds.radius * 5),
-      Color.NAMES['white']
+  generateBackground() {
+    this.gameObjectFactory.createBackgroundSprite(
+      this.bounds.clone().set(this.bounds.center, this.bounds.radius * 5)
+    );
+  }
+
+  generateBackgroundSprite() {
+    this.gameObjectFactory.createBackgroundSprite(
+      this.bounds.clone().set(this.bounds.center, this.bounds.radius * 5)
     );
   }
 

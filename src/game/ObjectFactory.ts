@@ -11,6 +11,7 @@ import {
   MeshBasicMaterial,
   Points,
   PointsMaterial,
+  RepeatWrapping,
   RingGeometry,
   Scene,
   Shape,
@@ -87,13 +88,20 @@ export class ObjectFactory {
     return circle;
   }
 
-  createSprite(textureName: string, position: Vector2, width: number, height: number) {
+  createSprite(
+    textureName: string,
+    position: Vector2,
+    width: number,
+    height: number,
+    sizeAttenuation = true
+  ) {
     const texture = this.getTexture(textureName);
     const spriteMaterial = new SpriteMaterial({
       map: texture,
       color: 0xffffff,
       opacity: 1,
       transparent: true,
+      sizeAttenuation,
     });
     const sprite = new Sprite(spriteMaterial);
     sprite.position.x = position.x;
@@ -104,6 +112,10 @@ export class ObjectFactory {
     sprite.userData['height'] = height;
     this.scene.add(sprite);
     return sprite;
+  }
+
+  createBackground(textureName: string, position: Vector2, width: number, height: number) {
+    this.scene.background = this.getTexture(textureName);
   }
 
   createPoints(n: number, bounds: Sphere, color: Color | number) {
