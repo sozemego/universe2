@@ -11,7 +11,6 @@ import {
   MeshBasicMaterial,
   Points,
   PointsMaterial,
-  RepeatWrapping,
   RingGeometry,
   Scene,
   Shape,

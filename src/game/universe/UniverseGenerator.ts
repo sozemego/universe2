@@ -1,4 +1,4 @@
-import { Color, Points, Sphere, Sprite, Vector2, Vector3 } from 'three';
+import { Sphere, Vector2, Vector3 } from 'three';
 import { GameObjectFactory } from '../GameObjectFactory';
 import { Universe } from './Universe';
 import { angleBetween, random } from '../../mathUtils';

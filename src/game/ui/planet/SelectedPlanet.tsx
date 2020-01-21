@@ -8,7 +8,6 @@ import { useGetPlanetService } from '../../state/selectors';
 import { PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
 import { BuildingComponent, BuildingSlot } from './BuildingComponent';
-import { PlanetProduction } from './PlanetProduction';
 
 export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   useRealClock({ interval: 250 });

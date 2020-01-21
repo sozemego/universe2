@@ -1,5 +1,5 @@
+import { Color, Points, Sphere, Vector2, Vector3 } from 'three';
 import uuid from 'uuid/v4';
-import { Color, Object3D, Points, Sphere, Sprite, Vector2, Vector3 } from 'three';
 import { ObjectList } from './ObjectList';
 import { ObjectFactory } from './ObjectFactory';
 import { scaleToCameraDistance } from './util/utils';

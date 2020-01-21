@@ -1,14 +1,14 @@
 import React from 'react';
 import { Icon } from 'antd';
 import Text from 'antd/lib/typography/Text';
+import { useDispatch } from 'react-redux';
 import { useRealClock } from '../../util/useRealClock';
-import { useGetPlanetService, useGetSelectionService } from '../../state/selectors';
+import { useGetPlanetService } from '../../state/selectors';
 import { BuildingComponent, BuildingSlot } from './BuildingComponent';
 import { Planet } from '../../object/Planet';
 import { PlanetData } from '../../service/PlanetService';
 import { PlanetStorageComponent } from './PlanetStorageComponent';
 import { PlanetProduction } from './PlanetProduction';
-import { useDispatch } from 'react-redux';
 import { setSelectedObjectIsModal } from '../../state/state';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
@@ -16,7 +16,6 @@ export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   let dispatch = useDispatch();
   let { id } = planet;
   let planetService = useGetPlanetService();
-  let selectionService = useGetSelectionService();
   let planetData = planetService.getPlanetData(id);
   let { innerWidth } = window;
   let width = 1200;
