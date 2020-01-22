@@ -1,13 +1,13 @@
 import React from 'react';
-import { Tag } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import { useDispatch } from 'react-redux';
+import { Tag } from 'antd';
 import { Planet } from '../../object/Planet';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
 import { PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
-import { BuildingComponent, BuildingSlot } from './BuildingComponent';
+import { BuildingComponent, BuildingSlot } from './SelectedPlanetModal';
 
 export function SelectedPlanet({ planet }: SelectedPlanetProps) {
   useRealClock({ interval: 250 });
