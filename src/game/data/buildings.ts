@@ -21,5 +21,41 @@ export const BUILDINGS: BuildingDataMap = {
         timePassed: 0,
       },
     },
+    cost: {
+      time: -1,
+      timePassed: 0,
+    },
+  },
+  [BuildingType.HOUSING]: {
+    name: 'Housing',
+    type: BuildingType.HOUSING,
+    texture: textures.housing,
+    populationNeeded: 0,
+    description: "Provides housing for this planet's ever increasing population.",
+    production: {},
+    cost: {
+      [Resource.BUILDING_MATERIAL]: 25,
+      time: 240,
+      timePassed: 0,
+    },
+  },
+  [BuildingType.FOOD_PROCESSOR]: {
+    name: 'Food processor',
+    type: BuildingType.FOOD_PROCESSOR,
+    texture: textures.food_processor,
+    populationNeeded: 4,
+    description: 'Exploits natural resources to provide food for your people.',
+    production: {
+      [Resource.FOOD]: {
+        resource: Resource.FOOD,
+        produces: 1,
+        timePassed: 0,
+      },
+    },
+    cost: {
+      [Resource.BUILDING_MATERIAL]: 50,
+      time: 360,
+      timePassed: 0,
+    },
   },
 };

@@ -2,6 +2,8 @@ import { Resource } from '../Resource';
 
 export enum BuildingType {
   COLONY_CENTER = 'COLONY_CENTER',
+  HOUSING = 'HOUSING',
+  FOOD_PROCESSOR = 'FOOD PROCESSOR',
 }
 
 export type BuildingDataMap = Record<BuildingType, BuildingData>;
@@ -13,6 +15,7 @@ export interface BuildingData {
   production: BuildingProductionData;
   populationNeeded: number;
   description: string;
+  cost: BuildingCost & BuildingTime;
 }
 
 type ResourceString = keyof typeof Resource;
@@ -25,4 +28,13 @@ export interface BuildingResourceProductionData {
   resource: Resource;
   produces: number; // how many of Resource it produces per minute
   timePassed: number; // seconds passed since last resource was produced
+}
+
+export type BuildingCost = {
+  [key in ResourceString]?: number;
+};
+
+export interface BuildingTime {
+  time: number;
+  timePassed: number;
 }
