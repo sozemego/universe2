@@ -5,13 +5,16 @@ import { useDispatch } from 'react-redux';
 import { useRealClock } from '../../util/useRealClock';
 import { useGetPlanetService } from '../../state/selectors';
 import { Planet } from '../../object/Planet';
-import { PlanetData } from '../../service/PlanetService';
+import { BuildingConstruction, PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
 import { Resource, RESOURCE_DATA } from '../../object/Resource';
 import { PlanetStorage } from '../../object/PlanetStorage';
 import { textures } from '../../data/textures';
 import { Building } from '../../object/building/Building';
-import { BuildingResourceProductionData } from '../../object/building/types';
+import {
+  BuildingConstructionData,
+  BuildingResourceProductionData,
+} from '../../object/building/types';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
@@ -123,8 +126,8 @@ export function PlanetBuildingsModal({
   planet,
   planetData,
 }: PlanetColonizationComponentModalProps) {
-  let { buildings } = planetData;
-  let freeSpots = Array.from({ length: 16 - buildings.length });
+  let { buildings, constructions } = planetData;
+  let freeSpots = Array.from({ length: 16 - buildings.length - constructions.length });
   return (
     <div
       style={{
@@ -150,6 +153,11 @@ export function PlanetBuildingsModal({
         {buildings.map(building => (
           <BuildingSlot key={building.id}>
             <BuildingComponent building={building} />
+          </BuildingSlot>
+        ))}
+        {constructions.map(construction => (
+          <BuildingSlot key={construction.building.id}>
+            <BuildingConstructionComponent construction={construction} />
           </BuildingSlot>
         ))}
         {freeSpots.map((spot, index) => (
@@ -259,6 +267,44 @@ export function BuildingSlot({ children }: BuildingSlotProps) {
 
 export interface BuildingSlotProps {
   children: ReactElement | ReactElement[];
+}
+
+export function BuildingConstructionComponent({
+  construction,
+}: BuildingConstructionComponentProps) {
+  let { cost, building } = construction;
+  let { texture, name } = building;
+  return (
+    <div style={{ cursor: 'default' }}>
+      <div style={{ position: 'absolute' }}>
+        <img
+          src={texture}
+          alt={name}
+          style={{
+            maxWidth: '36px',
+            maxHeight: '36px',
+            width: '36px',
+            height: '36px',
+            opacity: 0.5,
+          }}
+        />
+      </div>
+      <div style={{ position: 'relative' }}>
+        <Progress
+          type="circle"
+          percent={(cost.timePassed / cost.time) * 100}
+          format={percent => (cost.time - cost.timePassed).toFixed(0)}
+          width={36}
+          strokeColor={'black'}
+          style={{ position: 'relative', top: 0, left: 0 }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export interface BuildingConstructionComponentProps {
+  construction: BuildingConstruction;
 }
 
 export function BuildingTooltip({ building }: BuildingTooltipProps) {

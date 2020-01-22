@@ -3,7 +3,7 @@ import { ObjectList } from '../ObjectList';
 import { Planet } from '../object/Planet';
 import { Building } from '../object/building/Building';
 import { BuildingFactory } from './BuildingFactory';
-import { BuildingType } from '../object/building/types';
+import { BuildingConstructionData, BuildingType } from '../object/building/types';
 import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource } from '../object/Resource';
 
@@ -23,7 +23,7 @@ export class PlanetService implements IGameService {
   }
 
   updatePlanet(planetData: PlanetData, delta: number) {
-    let { buildings, storage } = planetData;
+    let { id, buildings, storage, constructions } = planetData;
     buildings.forEach(building => {
       building.update(delta);
       let { production } = building;
@@ -36,6 +36,16 @@ export class PlanetService implements IGameService {
         }
       });
     });
+    constructions.forEach(construction => {
+      let { cost } = construction;
+      cost.timePassed += delta;
+      if (cost.timePassed >= cost.time) {
+        this.placeBuilding(this.objectList.findById(id) as Planet, construction.building);
+      }
+    });
+    planetData.constructions = planetData.constructions.filter(
+      construction => construction.cost.timePassed < construction.cost.time
+    );
   }
 
   colonizePlanet(planet: Planet) {
@@ -46,8 +56,10 @@ export class PlanetService implements IGameService {
       population: 5,
       buildings: [],
       storage: new PlanetStorage(50),
+      constructions: [],
     };
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
+    this.constructBuilding(planet, BuildingType.FOOD_PROCESSOR);
   }
 
   constructBuilding(planet: Planet, buildingType: BuildingType) {
@@ -55,7 +67,21 @@ export class PlanetService implements IGameService {
     if (!planetData) {
       return;
     }
+    let constructionData = this.buildingFactory.getBuildingConstructionData(buildingType);
     let building = this.buildingFactory.createBuilding(buildingType);
+    if (constructionData.time === -1) {
+      this.placeBuilding(planet, building);
+    } else {
+      let construction: BuildingConstruction = {
+        building,
+        cost: constructionData,
+      };
+      planetData.constructions.push(construction);
+    }
+  }
+
+  placeBuilding(planet: Planet, building: Building) {
+    let planetData = this.planets[planet.id];
     planetData.buildings.push(building);
     this.assignPopulation(planet);
   }
@@ -88,4 +114,10 @@ export interface PlanetData {
   population: number;
   buildings: Building[];
   storage: PlanetStorage;
+  constructions: BuildingConstruction[];
+}
+
+export interface BuildingConstruction {
+  cost: BuildingConstructionData;
+  building: Building;
 }

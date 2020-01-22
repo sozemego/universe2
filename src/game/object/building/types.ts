@@ -15,7 +15,7 @@ export interface BuildingData {
   production: BuildingProductionData;
   populationNeeded: number;
   description: string;
-  cost: BuildingCost & BuildingTime;
+  cost: BuildingConstructionData;
 }
 
 type ResourceString = keyof typeof Resource;
@@ -29,6 +29,8 @@ export interface BuildingResourceProductionData {
   produces: number; // how many of Resource it produces per minute
   timePassed: number; // seconds passed since last resource was produced
 }
+
+export type BuildingConstructionData = BuildingCost & BuildingTime;
 
 export type BuildingCost = {
   [key in ResourceString]?: number;
