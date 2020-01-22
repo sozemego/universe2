@@ -221,7 +221,11 @@ export function BuildingComponent({ building }: BuildingComponentProps) {
         mouseLeaveDelay={0}
         mouseEnterDelay={0}
       >
-        <img src={texture} alt={name} style={{ maxWidth: '36px' }} />
+        <img
+          src={texture}
+          alt={name}
+          style={{ maxWidth: '36px', maxHeight: '36px', width: '36px', height: '36px' }}
+        />
         <Text style={{ fontSize: '0.8rem', marginLeft: '6px' }}>
           {population}/{populationNeeded}
         </Text>
@@ -263,39 +267,43 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
   return (
     <div>
       <div>{description}</div>
-      <div>
-        Population: {population} / {populationNeeded}
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <div>Produces:</div>
-        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
-          {Object.keys(production).map(resource => {
-            let productionData = production[resource as Resource]!;
-            let maxProduces = productionData?.produces;
-            let realProduces = maxProduces * populationFilledPercent;
-            let producesColor = 'yellow';
-            if (maxProduces === realProduces) {
-              producesColor = 'green';
-            } else if (realProduces === 0) {
-              producesColor = 'red';
-            } else {
-              producesColor = 'gray';
-            }
-            return (
-              <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <img
-                  src={RESOURCE_DATA[resource as Resource].texture}
-                  style={{ width: '12px', height: '12px' }}
-                  alt={resource}
-                />
-                <div style={{ color: producesColor }}>
-                  {maxProduces}/{realProduces}
-                </div>
-              </div>
-            );
-          })}
+      {populationNeeded && (
+        <div>
+          Population: {population} / {populationNeeded}
         </div>
-      </div>
+      )}
+      {Object.keys(production).length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div>Produces:</div>
+          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+            {Object.keys(production).map(resource => {
+              let productionData = production[resource as Resource]!;
+              let maxProduces = productionData?.produces;
+              let realProduces = maxProduces * populationFilledPercent;
+              let producesColor = 'yellow';
+              if (maxProduces === realProduces) {
+                producesColor = 'green';
+              } else if (realProduces === 0) {
+                producesColor = 'red';
+              } else {
+                producesColor = 'gray';
+              }
+              return (
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                  <img
+                    src={RESOURCE_DATA[resource as Resource].texture}
+                    style={{ width: '12px', height: '12px' }}
+                    alt={resource}
+                  />
+                  <div style={{ color: producesColor }}>
+                    {maxProduces}/{realProduces}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
