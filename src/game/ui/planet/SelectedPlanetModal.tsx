@@ -11,10 +11,7 @@ import { Resource, RESOURCE_DATA } from '../../object/Resource';
 import { PlanetStorage } from '../../object/PlanetStorage';
 import { textures } from '../../data/textures';
 import { Building } from '../../object/building/Building';
-import {
-  BuildingConstructionData,
-  BuildingResourceProductionData,
-} from '../../object/building/types';
+import { BuildingResourceProductionData } from '../../object/building/types';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
