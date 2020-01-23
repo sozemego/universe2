@@ -247,6 +247,7 @@ export interface BuildingComponentProps {
 }
 
 export function BuildingSlot({ children }: BuildingSlotProps) {
+  let [mouseOver, setMouseOver] = React.useState(false);
   return (
     <div
       style={{
@@ -254,11 +255,14 @@ export function BuildingSlot({ children }: BuildingSlotProps) {
         minWidth: '48px',
         height: '48px',
         minHeight: '48px',
-        background: `url(${textures.panel_beige})`,
-        backgroundSize: 'contain',
+        background: `url(${
+          mouseOver ? textures.panel_beigeLight : textures.panel_beige
+        }) 0% 0% / contain`,
         padding: '8px',
         margin: '4px',
       }}
+      onMouseEnter={() => setMouseOver(true)}
+      onMouseLeave={() => setMouseOver(false)}
     >
       {children}
     </div>
