@@ -11,7 +11,8 @@ import { Resource, RESOURCE_DATA } from '../../object/Resource';
 import { PlanetStorage } from '../../object/PlanetStorage';
 import { textures } from '../../data/textures';
 import { Building } from '../../object/building/Building';
-import { BuildingResourceProductionData } from '../../object/building/types';
+import { BuildingData, BuildingResourceProductionData } from '../../object/building/types';
+import { BUILDINGS } from '../../data/buildings';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
@@ -125,6 +126,7 @@ export function PlanetBuildingsModal({
 }: PlanetColonizationComponentModalProps) {
   let { buildings, constructions } = planetData;
   let freeSpots = Array.from({ length: 16 - buildings.length - constructions.length });
+  let [showBuildingConstructionList, setShowBuildingConstructionList] = React.useState(false);
   return (
     <div
       style={{
@@ -158,7 +160,15 @@ export function PlanetBuildingsModal({
           </BuildingSlot>
         ))}
         {freeSpots.map((spot, index) => (
-          <BuildingSlot children={[]} key={index} />
+          <BuildingSlot key={index}>
+            <img
+              src={textures.genericItem_color_006}
+              alt={'Wrench'}
+              style={{ width: '32px', height: '32px' }}
+              onClick={() => setShowBuildingConstructionList(true)}
+            />
+            {showBuildingConstructionList ? <ConstructableBuildingList /> : <></>}
+          </BuildingSlot>
         ))}
       </div>
     </div>
@@ -457,4 +467,86 @@ export function PlanetProduction({ planet, planetData }: PlanetProductionModalPr
 export interface PlanetProductionModalProps {
   planet: Planet;
   planetData: PlanetData;
+}
+
+export function ConstructableBuildingList({}: ConstructableBuildingListProps) {
+  let { innerWidth } = window;
+  let width = 400;
+  let remainingSpace = innerWidth - width;
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        top: 200,
+        bottom: 0,
+        left: remainingSpace / 2,
+        right: remainingSpace / 2,
+        zIndex: 1000,
+        outline: 0,
+        width,
+        height: '600px',
+        borderTop: '6px solid black',
+        borderLeft: '4px solid rgb(34,139,34)',
+        borderRight: '4px solid rgb(34,139,34)',
+        borderBottom: '6px solid black',
+        borderRadius: 18,
+        backgroundColor: `rgba(150, 150, 150, 0.9)`,
+        padding: 8,
+      }}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {Object.values(BUILDINGS).map(building => (
+          <ConstructableBuilding building={building} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export interface ConstructableBuildingListProps {}
+
+export function ConstructableBuilding({ building }: ConstructableBuildingProps) {
+  let { cost, texture, description, populationNeeded } = building;
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <BuildingSlot>
+          <img src={texture} alt={'Building texture'} style={{ width: '32px', height: '32px' }} />
+        </BuildingSlot>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            {Object.keys(Resource)
+              .filter(resource => cost[resource as Resource])
+              .map(resource => {
+                let resourceCost = cost[resource as Resource];
+                return (
+                  <div>
+                    <img
+                      src={RESOURCE_DATA[resource as Resource].texture}
+                      style={{ width: '24px', height: '24px' }}
+                      alt={resource}
+                    />
+                    <span>{resourceCost}</span>
+                  </div>
+                );
+              })}
+          </div>
+          <div style={{ paddingLeft: '3px' }}>
+            <img
+              src={textures.hud_p1}
+              alt={'Population'}
+              style={{ width: '18px', height: '18px' }}
+            />
+            <span style={{ paddingLeft: '6px' }}>{populationNeeded}</span>
+          </div>
+        </div>
+      </div>
+      <span>{description}</span>
+    </div>
+  );
+}
+
+export interface ConstructableBuildingProps {
+  building: BuildingData;
 }
