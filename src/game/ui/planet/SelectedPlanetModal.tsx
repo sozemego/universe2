@@ -472,7 +472,7 @@ export interface PlanetProductionModalProps {
   planetData: PlanetData;
 }
 
-export function ConstructableBuildingList({}: ConstructableBuildingListProps) {
+export function ConstructableBuildingList() {
   let { innerWidth } = window;
   let width = 400;
   let remainingSpace = innerWidth - width;
