@@ -168,7 +168,10 @@ export function PlanetBuildingsModal({
               onClick={() => setShowBuildingConstructionList(true)}
             />
             {showBuildingConstructionList ? (
-              <ConstructableBuildingList planetData={planetData} />
+              <ConstructableBuildingList
+                planetData={planetData}
+                onClose={() => setShowBuildingConstructionList(false)}
+              />
             ) : (
               <></>
             )}
@@ -476,7 +479,7 @@ export interface PlanetProductionModalProps {
   planetData: PlanetData;
 }
 
-export function ConstructableBuildingList({ planetData }: ConstructableBuildingListProps) {
+export function ConstructableBuildingList({ planetData, onClose }: ConstructableBuildingListProps) {
   let { innerWidth } = window;
   let width = 400;
   let remainingSpace = innerWidth - width;
@@ -502,6 +505,21 @@ export function ConstructableBuildingList({ planetData }: ConstructableBuildingL
         padding: 8,
       }}
     >
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Text type={'secondary'}>Building list</Text>
+        <Icon
+          type="close-circle"
+          theme="twoTone"
+          style={{
+            marginRight: '12px',
+            marginBottom: '12px',
+            marginTop: '8px',
+            transform: 'scale(2)',
+            cursor: 'pointer',
+          }}
+          onClick={onClose}
+        />
+      </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {Object.values(BUILDINGS).map(building => (
           <ConstructableBuilding building={building} planetData={planetData} />
@@ -513,6 +531,7 @@ export function ConstructableBuildingList({ planetData }: ConstructableBuildingL
 
 export interface ConstructableBuildingListProps {
   planetData: PlanetData;
+  onClose: () => void;
 }
 
 export function ConstructableBuilding({ building, planetData }: ConstructableBuildingProps) {
