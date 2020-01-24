@@ -160,7 +160,7 @@ export function PlanetBuildingsModal({
           </BuildingSlot>
         ))}
         {freeSpots.map((spot, index) => (
-          <BuildingSlot key={index}>
+          <BuildingSlot key={index} hoverable={true}>
             <img
               src={textures.genericItem_color_006}
               alt={'Wrench'}
@@ -253,8 +253,12 @@ export interface BuildingComponentProps {
   building: Building;
 }
 
-export function BuildingSlot({ children }: BuildingSlotProps) {
+export function BuildingSlot({ children, hoverable = false }: BuildingSlotProps) {
   let [mouseOver, setMouseOver] = React.useState(false);
+  let background = textures.panel_beige;
+  if (hoverable && mouseOver) {
+    background = textures.panel_beigeLight;
+  }
   return (
     <div
       style={{
@@ -262,9 +266,7 @@ export function BuildingSlot({ children }: BuildingSlotProps) {
         minWidth: '48px',
         height: '48px',
         minHeight: '48px',
-        background: `url(${
-          mouseOver ? textures.panel_beigeLight : textures.panel_beige
-        }) 0% 0% / contain`,
+        background: `url(${background}) 0% 0% / contain`,
         padding: '8px',
         margin: '4px',
       }}
@@ -278,6 +280,7 @@ export function BuildingSlot({ children }: BuildingSlotProps) {
 
 export interface BuildingSlotProps {
   children: ReactElement | ReactElement[];
+  hoverable?: boolean;
 }
 
 export function BuildingConstructionComponent({
