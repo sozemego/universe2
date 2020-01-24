@@ -558,7 +558,7 @@ export function ConstructableBuilding({ building }: ConstructableBuildingProps) 
           </div>
         </div>
       </div>
-      <span>{description}</span>
+      <span style={{ margin: '4px' }}>{description}</span>
     </div>
   );
 }
