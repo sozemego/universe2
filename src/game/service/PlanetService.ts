@@ -57,6 +57,7 @@ export class PlanetService implements IGameService {
       buildings: [],
       storage: new PlanetStorage(50),
       constructions: [],
+      planet,
     };
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
     this.constructBuilding(planet, BuildingType.FOOD_PROCESSOR);

@@ -536,8 +536,9 @@ export interface ConstructableBuildingListProps {
 
 export function ConstructableBuilding({ building, planetData }: ConstructableBuildingProps) {
   let [hover, setHover] = React.useState(false);
-  let { cost, texture, description, populationNeeded } = building;
-  let { storage } = planetData;
+  let { cost, texture, description, populationNeeded, type } = building;
+  let { storage, planet } = planetData;
+  let planetService = useGetPlanetService();
   return (
     <div
       style={{
@@ -551,6 +552,7 @@ export function ConstructableBuilding({ building, planetData }: ConstructableBui
       }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={() => planetService.constructBuilding(planet, type)}
     >
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <BuildingSlot>
