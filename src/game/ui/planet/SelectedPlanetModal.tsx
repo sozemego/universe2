@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import { Icon, Progress, Tooltip } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import { useDispatch } from 'react-redux';
@@ -522,7 +522,7 @@ export function ConstructableBuildingList({ planetData, onClose }: Constructable
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {Object.values(BUILDINGS).map(building => (
-          <ConstructableBuilding building={building} planetData={planetData} />
+          <ConstructableBuilding building={building} planetData={planetData} key={building.name} />
         ))}
       </div>
     </div>
@@ -564,7 +564,7 @@ export function ConstructableBuilding({ building, planetData }: ConstructableBui
                 let resourceCost = cost[resource as Resource];
                 let enough = storage.resources[resource as Resource] >= resourceCost!;
                 return (
-                  <div>
+                  <div key={resource}>
                     <img
                       src={RESOURCE_DATA[resource as Resource].texture}
                       style={{ width: '24px', height: '24px' }}
