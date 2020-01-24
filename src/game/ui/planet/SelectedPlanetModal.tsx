@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Icon, Progress, Tooltip } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import { useDispatch } from 'react-redux';
@@ -160,7 +160,7 @@ export function PlanetBuildingsModal({
           </BuildingSlot>
         ))}
         {freeSpots.map((spot, index) => (
-          <BuildingSlot key={index} hoverable={true}>
+          <BuildingSlot key={index} hoverable={!showBuildingConstructionList}>
             <img
               src={textures.genericItem_color_006}
               alt={'Wrench'}
