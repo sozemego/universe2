@@ -167,7 +167,11 @@ export function PlanetBuildingsModal({
               style={{ width: '32px', height: '32px' }}
               onClick={() => setShowBuildingConstructionList(true)}
             />
-            {showBuildingConstructionList ? <ConstructableBuildingList /> : <></>}
+            {showBuildingConstructionList ? (
+              <ConstructableBuildingList planetData={planetData} />
+            ) : (
+              <></>
+            )}
           </BuildingSlot>
         ))}
       </div>
@@ -472,7 +476,7 @@ export interface PlanetProductionModalProps {
   planetData: PlanetData;
 }
 
-export function ConstructableBuildingList() {
+export function ConstructableBuildingList({ planetData }: ConstructableBuildingListProps) {
   let { innerWidth } = window;
   let width = 400;
   let remainingSpace = innerWidth - width;
@@ -500,18 +504,21 @@ export function ConstructableBuildingList() {
     >
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         {Object.values(BUILDINGS).map(building => (
-          <ConstructableBuilding building={building} />
+          <ConstructableBuilding building={building} planetData={planetData} />
         ))}
       </div>
     </div>
   );
 }
 
-export interface ConstructableBuildingListProps {}
+export interface ConstructableBuildingListProps {
+  planetData: PlanetData;
+}
 
-export function ConstructableBuilding({ building }: ConstructableBuildingProps) {
+export function ConstructableBuilding({ building, planetData }: ConstructableBuildingProps) {
   let [hover, setHover] = React.useState(false);
   let { cost, texture, description, populationNeeded } = building;
+  let { storage } = planetData;
   return (
     <div
       style={{
@@ -536,6 +543,7 @@ export function ConstructableBuilding({ building }: ConstructableBuildingProps) 
               .filter(resource => cost[resource as Resource])
               .map(resource => {
                 let resourceCost = cost[resource as Resource];
+                let enough = storage.resources[resource as Resource] >= resourceCost!;
                 return (
                   <div>
                     <img
@@ -543,7 +551,7 @@ export function ConstructableBuilding({ building }: ConstructableBuildingProps) 
                       style={{ width: '24px', height: '24px' }}
                       alt={resource}
                     />
-                    <span>{resourceCost}</span>
+                    <span style={{ color: enough ? 'black' : 'red' }}>{resourceCost}</span>
                   </div>
                 );
               })}
@@ -565,4 +573,5 @@ export function ConstructableBuilding({ building }: ConstructableBuildingProps) 
 
 export interface ConstructableBuildingProps {
   building: BuildingData;
+  planetData: PlanetData;
 }
