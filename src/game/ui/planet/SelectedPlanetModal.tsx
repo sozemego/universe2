@@ -126,7 +126,7 @@ export function PlanetBuildingsModal({
 }: PlanetColonizationComponentModalProps) {
   let { buildings, constructions } = planetData;
   let freeSpots = Array.from({ length: 16 - buildings.length - constructions.length });
-  let [showBuildingConstructionList, setShowBuildingConstructionList] = React.useState(false);
+  let [showBuildingConstructionList, setShowBuildingConstructionList] = React.useState(true);
   return (
     <div
       style={{
@@ -490,11 +490,11 @@ export function ConstructableBuildingList() {
         width,
         height: '600px',
         borderTop: '6px solid black',
-        borderLeft: '4px solid rgb(34,139,34)',
-        borderRight: '4px solid rgb(34,139,34)',
+        borderLeft: '4px solid black',
+        borderRight: '4px solid black',
         borderBottom: '6px solid black',
         borderRadius: 18,
-        backgroundColor: `rgba(150, 150, 150, 0.9)`,
+        backgroundColor: `rgb(112,128,144)`,
         padding: 8,
       }}
     >
@@ -510,9 +510,22 @@ export function ConstructableBuildingList() {
 export interface ConstructableBuildingListProps {}
 
 export function ConstructableBuilding({ building }: ConstructableBuildingProps) {
+  let [hover, setHover] = React.useState(false);
   let { cost, texture, description, populationNeeded } = building;
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        border: '1px solid gray',
+        backgroundColor: 'rgb(169,169,169)',
+        boxShadow: `0px 0px 4px 2px ${hover ? 'white' : 'transparent'}`,
+        marginBottom: '6px',
+        cursor: 'pointer',
+      }}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <BuildingSlot>
           <img src={texture} alt={'Building texture'} style={{ width: '32px', height: '32px' }} />
