@@ -61,6 +61,7 @@ export class PlanetService implements IGameService {
     };
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
     this.constructBuilding(planet, BuildingType.FOOD_PROCESSOR);
+    this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 50);
   }
 
   constructBuilding(planet: Planet, buildingType: BuildingType) {
@@ -73,12 +74,32 @@ export class PlanetService implements IGameService {
     if (constructionData.time === -1) {
       this.placeBuilding(planet, building);
     } else {
-      let construction: BuildingConstruction = {
-        building,
-        cost: constructionData,
-      };
-      planetData.constructions.push(construction);
+      let { storage } = planetData;
+      let canAfford = this.checkCanAfford(constructionData, storage);
+      if (canAfford) {
+        let construction: BuildingConstruction = {
+          building,
+          cost: constructionData,
+        };
+        planetData.constructions.push(construction);
+        Object.values(Resource).forEach(resource => {
+          let cost = constructionData[resource as Resource] || 0;
+          storage.removeResource(resource as Resource, cost);
+        });
+      }
     }
+  }
+
+  checkCanAfford(data: BuildingConstructionData, storage: PlanetStorage): boolean {
+    let resources: string[] = Object.values(Resource);
+    for (let resource of resources) {
+      let cost = data[resource as Resource] || 0;
+      let amount = storage.getTakenByResource(resource as Resource);
+      if (cost > amount) {
+        return false;
+      }
+    }
+    return true;
   }
 
   placeBuilding(planet: Planet, building: Building) {
@@ -116,6 +137,7 @@ export interface PlanetData {
   buildings: Building[];
   storage: PlanetStorage;
   constructions: BuildingConstruction[];
+  planet: Planet;
 }
 
 export interface BuildingConstruction {

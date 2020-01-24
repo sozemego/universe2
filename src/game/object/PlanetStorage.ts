@@ -47,7 +47,7 @@ export class PlanetStorage {
   }
 
   getTakenByResource(resource: Resource): number {
-    return this.resources[resource];
+    return this.resources[resource] || 0;
   }
 
   clear() {
