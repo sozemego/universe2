@@ -126,7 +126,7 @@ export function PlanetBuildingsModal({
 }: PlanetColonizationComponentModalProps) {
   let { buildings, constructions } = planetData;
   let freeSpots = Array.from({ length: 16 - buildings.length - constructions.length });
-  let [showBuildingConstructionList, setShowBuildingConstructionList] = React.useState(true);
+  let [showBuildingConstructionList, setShowBuildingConstructionList] = React.useState(false);
   return (
     <div
       style={{
