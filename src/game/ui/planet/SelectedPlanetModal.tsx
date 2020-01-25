@@ -167,16 +167,14 @@ export function PlanetBuildingsModal({
               style={{ width: '32px', height: '32px' }}
               onClick={() => setShowBuildingConstructionList(true)}
             />
-            {showBuildingConstructionList ? (
-              <ConstructableBuildingList
-                planetData={planetData}
-                onClose={() => setShowBuildingConstructionList(false)}
-              />
-            ) : (
-              <></>
-            )}
           </BuildingSlot>
         ))}
+        {showBuildingConstructionList && (
+          <ConstructableBuildingList
+            planetData={planetData}
+            onClose={() => setShowBuildingConstructionList(false)}
+          />
+        )}
       </div>
     </div>
   );
