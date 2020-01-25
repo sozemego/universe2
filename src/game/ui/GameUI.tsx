@@ -2,7 +2,6 @@ import React from 'react';
 import { SelectedObject } from './SelectedObject';
 import { GameOptionsComponent } from './GameOptionsComponent';
 import { GameClockComponent } from './GameClockComponent';
-import { SpawnObjectComponent } from './SpawnObjectComponent';
 import { ObjectListComponent } from './ObjectListComponent';
 import { ServiceStatsComponent } from './ServiceStatsComponent';
 
