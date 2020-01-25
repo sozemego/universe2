@@ -17,7 +17,7 @@ import { BUILDINGS } from '../../data/buildings';
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
   let dispatch = useDispatch();
-  let { id } = planet;
+  let { id, name, texture } = planet;
   let planetService = useGetPlanetService();
   let planetData = planetService.getPlanetData(id);
   let { innerWidth } = window;
@@ -52,12 +52,10 @@ export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
         }}
       >
         <div>
-          <img
-            src={planet.texture}
-            style={{ width: '32px', height: '32px' }}
-            alt={'Planet texture'}
-          />
-          <Text strong>Planet summary</Text>
+          <img src={texture} style={{ width: '32px', height: '32px' }} alt={'Planet texture'} />
+          <Text strong style={{ marginLeft: '4px' }}>
+            {name}
+          </Text>
         </div>
         <Icon
           type="close-circle"
