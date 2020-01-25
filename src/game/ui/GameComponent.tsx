@@ -31,6 +31,7 @@ import { UniverseBoundsService } from '../service/UniverseBoundsService';
 import { SpawnObjectService } from '../service/SpawnObjectService';
 import { FixedGravityService } from '../service/FixedGravityService';
 import { PlanetService } from '../service/PlanetService';
+import { CameraFollowSolarSystemService } from '../service/CameraFollowSolarSystemService';
 
 export function GameComponent() {
   const dispatch = useDispatch();
@@ -111,6 +112,7 @@ export function GameComponent() {
     );
     const fixedGravityService = new FixedGravityService(universe);
     const planetService = new PlanetService(objectList);
+    const cameraFollowSolarSystemService = new CameraFollowSolarSystemService(camera, universe);
 
     const gameServices: GameServices = {
       gravityService,
@@ -152,6 +154,7 @@ export function GameComponent() {
       universeBoundsService,
       fixedGravityService,
       planetService,
+      cameraFollowSolarSystemService,
     ];
 
     const game = new GameService(
