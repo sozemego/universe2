@@ -56,7 +56,6 @@ export function GameUI() {
         }}
       >
         <GameOptionsComponent />
-        <SpawnObjectComponent />
         <ServiceStatsComponent />
         <ObjectListComponent />
       </div>
