@@ -4,6 +4,7 @@ import { Sphere, Sprite } from 'three';
 
 export class Planet extends BaseObject {
   sphere: Sphere;
+  name: string;
   solarSystem: SolarSystem | null;
   angle: number = 0;
   orbitalDistance: number = 0;
@@ -15,10 +16,12 @@ export class Planet extends BaseObject {
     mass: number,
     sprite: Sprite,
     texture: string,
+    name: string,
     solarSystem: SolarSystem | null
   ) {
     super(id, mass, sprite, texture);
     this.sphere = sphere;
+    this.name = name;
     this.solarSystem = solarSystem;
   }
 

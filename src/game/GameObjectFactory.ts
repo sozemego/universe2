@@ -52,14 +52,14 @@ export class GameObjectFactory {
     return new SolarSystem(uuid(), radius, stars, ring);
   }
 
-  createPlanet(position: Vector2, radius: number, texture: string, mass: number) {
+  createPlanet(position: Vector2, radius: number, texture: string, name: string, mass: number) {
     let sphere = new Sphere(new Vector3(position.x, position.y, 0), radius);
     let sprite = this.objectFactory.createSprite(texture, position, radius * 2, radius * 2);
     sprite.scale.x = radius;
     sprite.scale.y = radius;
     sprite.onBeforeRender = scaleToCameraDistance(25);
 
-    let planet = new Planet(uuid(), sphere, mass, sprite, texture, null);
+    let planet = new Planet(uuid(), sphere, mass, sprite, texture, name, null);
     this.objectList.addObject(planet);
     planet.addEventListener('remove', event => {
       this.objectList.removeObject(planet);

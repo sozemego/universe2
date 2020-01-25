@@ -1,4 +1,5 @@
 import { Sphere, Vector2, Vector3 } from 'three';
+import faker from 'faker';
 import { GameObjectFactory } from '../GameObjectFactory';
 import { Universe } from './Universe';
 import { angleBetween, random } from '../../mathUtils';
@@ -97,7 +98,7 @@ export class UniverseGenerator {
         starData.texture,
         center.addScalar(distanceBetweenStars),
         partnerMass,
-        starData.name
+        `${star.name} 2`
       );
       stars.push(partner);
     }
@@ -125,7 +126,8 @@ export class UniverseGenerator {
 
       let planet = this.createPlanetFromData(
         this.getRandomPlanetData(),
-        new Vector2(position.x, position.y)
+        new Vector2(position.x, position.y),
+        `${solarSystem.stars[0].name} ${i + 1}`
       );
       planet.orbitalDistance = calcDistance(planet, solarSystem);
       let distancePercentage = 1 - planet.orbitalDistance / solarSystem.radius;
@@ -156,10 +158,10 @@ export class UniverseGenerator {
     return false;
   }
 
-  createPlanetFromData(data: PlanetData, position: Vector2): Planet {
+  createPlanetFromData(data: PlanetData, position: Vector2, name: string): Planet {
     let radius = random(data.minRadius, data.maxRadius);
     let mass = random(data.minMass, data.maxMass);
-    return this.gameObjectFactory.createPlanet(position, radius, data.texture, mass);
+    return this.gameObjectFactory.createPlanet(position, radius, data.texture, name, mass);
   }
 
   getRandomPlanetData(): PlanetData {
@@ -177,7 +179,9 @@ export class UniverseGenerator {
   createStarFromData(data: StarData, position: Vector2): Star {
     let radius = random(data.minRadius, data.maxRadius);
     let mass = random(data.minMass, data.maxMass);
-    return this.gameObjectFactory.createStar(radius, data.texture, position, mass, data.name);
+    let name = faker.lorem.word();
+    name = name.charAt(0).toUpperCase() + name.substr(1);
+    return this.gameObjectFactory.createStar(radius, data.texture, position, mass, name);
   }
 
   getCenter() {
