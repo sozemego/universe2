@@ -1,8 +1,8 @@
+import { Vector3 } from 'three';
 import { IGameService } from './index';
 import { GameCamera } from '../GameCamera';
 import { Universe } from '../universe/Universe';
 import { SolarSystem } from '../object/SolarSystem';
-import { Vector2, Vector3 } from 'three';
 
 export class CameraFollowSolarSystemService implements IGameService {
   private readonly camera: GameCamera;
