@@ -22,7 +22,7 @@ import {
   TextureLoader,
   Vector2,
 } from 'three';
-import { MeshText2D, textAlign } from 'three-text2d';
+import { MeshText2D, SpriteText2D, textAlign } from 'three-text2d';
 import { Text2D } from 'three-text2d/lib/Text2D';
 import { randomPointInSphere } from '../mathUtils';
 import { SelectionRectangle } from './object/primitive/SelectionRectangle';
@@ -195,13 +195,13 @@ export class ObjectFactory {
   // }
 
   createText(text: string): Text2D {
-    let mesh = new MeshText2D(text, {
+    let sprite = new SpriteText2D(text, {
       align: textAlign.center,
       font: '104px Arial',
       fillStyle: '#ffffff',
       antialias: true,
     });
-    this.scene.add(mesh);
-    return mesh;
+    this.scene.add(sprite);
+    return sprite;
   }
 }

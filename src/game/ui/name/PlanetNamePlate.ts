@@ -12,17 +12,16 @@ export class PlanetNamePlate {
   }
 
   update(planet: Planet) {
-    let radius = planet.sphere.radius;
-    let width = this.name.material.map?.image.width;
-    let height = this.name.material.map?.image.height;
-    this.background.scale.x = width;
-    this.background.scale.y = height;
+    let planetScale = planet.object3D.scale;
+    let planetSize = planetScale.x;
+    let width = this.name.width;
+    let height = this.name.height;
     this.background.position.x = planet.position.x;
-    this.background.position.y = planet.position.y - Math.max(height, radius);
-
-    // this.background.scale.x = this.name.canvas.textWidth;
+    this.background.position.y = planet.position.y - Math.max(height, planetSize);
+    this.background.scale.x = width * 1.1;
+    this.background.scale.y = height;
 
     this.name.position.x = planet.position.x;
-    this.name.position.y = planet.position.y - Math.max(height / 2, radius);
+    this.name.position.y = planet.position.y - Math.max(height, planetSize);
   }
 }
