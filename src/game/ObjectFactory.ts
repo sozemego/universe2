@@ -7,6 +7,7 @@ import {
   Geometry,
   Line,
   LineBasicMaterial,
+  LineLoop,
   Mesh,
   MeshBasicMaterial,
   Points,
@@ -49,9 +50,9 @@ export class ObjectFactory {
   }
 
   createCircle(radius: number, color: Color | number): Line {
-    let geometry = new CircleGeometry(1, 128, 0, 7);
+    let geometry = new CircleGeometry(1, 256, 0, Math.PI * 2);
     geometry.vertices.shift();
-    let circle = new Line(
+    let circle = new LineLoop(
       geometry,
       new LineBasicMaterial({ color, linewidth: 1, transparent: true })
     );
