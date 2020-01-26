@@ -19,6 +19,7 @@
     "redux": "^4.0.4",
     "stats-js": "^1.0.1",
     "three": "^0.111.0",
+    "three-text2d": "^0.6.0",
     "typescript": "^3.7.4",
     "uuid": "^3.3.3"
   },

@@ -6,14 +6,19 @@ import { BuildingFactory } from './BuildingFactory';
 import { BuildingConstructionData, BuildingType } from '../object/building/types';
 import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource } from '../object/Resource';
+import { ObjectFactory } from '../ObjectFactory';
+import { Vector2 } from 'three';
+import { textures } from '../data/textures';
 
 export class PlanetService implements IGameService {
   private readonly objectList: ObjectList;
+  private readonly objectFactory: ObjectFactory;
   private readonly planets: Record<string, PlanetData> = {};
   private readonly buildingFactory: BuildingFactory = new BuildingFactory();
 
-  constructor(objectList: ObjectList) {
+  constructor(objectList: ObjectList, objectFactory: ObjectFactory) {
     this.objectList = objectList;
+    this.objectFactory = objectFactory;
   }
 
   update(delta: number) {
@@ -62,6 +67,14 @@ export class PlanetService implements IGameService {
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
     this.constructBuilding(planet, BuildingType.FOOD_PROCESSOR);
     this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 50);
+
+    let sprite = this.objectFactory.createSprite(
+      textures.colony_center,
+      new Vector2(-0.5, 0.75),
+      0.25,
+      0.25
+    );
+    planet.object3D.add(sprite);
   }
 
   constructBuilding(planet: Planet, buildingType: BuildingType) {

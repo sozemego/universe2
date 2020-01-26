@@ -9,6 +9,7 @@ import {
   LineBasicMaterial,
   Mesh,
   MeshBasicMaterial,
+  Object3D,
   Points,
   PointsMaterial,
   RingGeometry,
@@ -24,6 +25,8 @@ import {
 } from 'three';
 import { randomPointInSphere } from '../mathUtils';
 import { SelectionRectangle } from './object/primitive/SelectionRectangle';
+import { MeshText2D, textAlign } from 'three-text2d';
+import { Text2D } from 'three-text2d/lib/Text2D';
 
 export class ObjectFactory {
   private readonly scene: Scene;
@@ -157,5 +160,49 @@ export class ObjectFactory {
       this.textureCache[textureName] = texture;
     }
     return texture;
+  }
+
+  // createText(text: string): Mesh {
+  //   let canvas = document.createElement('canvas');
+  //   let context = canvas.getContext('2d');
+  //   if (!context) {
+  //     throw new Error('Context 2d has to exist');
+  //   }
+  //   let fontSize = 56;
+  //   context.font = `${fontSize}px monospace`;
+  //   let textMetrics = context.measureText(text);
+  //   let { width } = textMetrics;
+  //   let height = fontSize;
+  //   canvas.width = width;
+  //   canvas.height = height;
+  //   canvas.style.width = width + 'px';
+  //   canvas.style.height = height + 'px';
+  //   context.font = `${fontSize}px monospace`;
+  //   context.textAlign = 'center';
+  //   context.textBaseline = 'middle';
+  //
+  //   context.fillStyle = 'transparent';
+  //   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+  //   context.fillStyle = 'white';
+  //   context.fillText(text, width / 2, height / 2);
+  //
+  //   let texture = new Texture(canvas);
+  //   texture.needsUpdate = true;
+  //   let material = new MeshBasicMaterial({ map: texture });
+  //   let geometry = new PlaneGeometry(canvas.width, canvas.height, 10, 10);
+  //   let mesh = new Mesh(geometry, material);
+  //   this.scene.add(mesh);
+  //   return mesh;
+  // }
+
+  createText(text: string): Text2D {
+    let mesh = new MeshText2D(text, {
+      align: textAlign.center,
+      font: '104px Arial',
+      fillStyle: '#ffffff',
+      antialias: true,
+    });
+    this.scene.add(mesh);
+    return mesh;
   }
 }
