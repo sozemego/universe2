@@ -9,7 +9,6 @@ import {
   LineBasicMaterial,
   Mesh,
   MeshBasicMaterial,
-  Object3D,
   Points,
   PointsMaterial,
   RingGeometry,
@@ -23,10 +22,10 @@ import {
   TextureLoader,
   Vector2,
 } from 'three';
-import { randomPointInSphere } from '../mathUtils';
-import { SelectionRectangle } from './object/primitive/SelectionRectangle';
 import { MeshText2D, textAlign } from 'three-text2d';
 import { Text2D } from 'three-text2d/lib/Text2D';
+import { randomPointInSphere } from '../mathUtils';
+import { SelectionRectangle } from './object/primitive/SelectionRectangle';
 
 export class ObjectFactory {
   private readonly scene: Scene;
