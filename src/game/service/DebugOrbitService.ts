@@ -1,6 +1,6 @@
 import { Universe } from '../universe/Universe';
 import { ObjectFactory } from '../ObjectFactory';
-import { Line, Vector2 } from 'three';
+import { Line, Material, Vector2 } from 'three';
 import { InputHandler, KEY } from '../InputHandler';
 import { Planet } from '../object/Planet';
 import { GameOptions } from '../GameOptions';
@@ -70,6 +70,9 @@ export class DebugOrbitService implements IGameService {
     let circle = this.circleMap[planet.id];
     if (!circle) {
       circle = this.objectFactory.createCircle(1, planet.color);
+      if (circle.material instanceof Material) {
+        circle.material.opacity = 0.25;
+      }
       this.circleMap[planet.id] = circle;
     }
     this.nextCircleMap[planet.id] = circle;

@@ -51,7 +51,10 @@ export class ObjectFactory {
   createCircle(radius: number, color: Color | number): Line {
     let geometry = new CircleGeometry(1, 128, 0, 7);
     geometry.vertices.shift();
-    let circle = new Line(geometry, new LineBasicMaterial({ color, linewidth: 1 }));
+    let circle = new Line(
+      geometry,
+      new LineBasicMaterial({ color, linewidth: 1, transparent: true })
+    );
     this.scene.add(circle);
     circle.scale.x = radius;
     circle.scale.y = radius;
