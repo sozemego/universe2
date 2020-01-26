@@ -32,12 +32,8 @@ export class NamePlateService implements IGameService {
     if (existingPlate) {
       return existingPlate;
     }
-    let background = this.objectFactory.createSprite(
-      textures.panel_blue_empty,
-      new Vector2(0, 0),
-      1,
-      1
-    );
+    let background = this.objectFactory.createSprite(textures.buttonRed, new Vector2(0, 0), 1, 1);
+    background.material.opacity = 0.5;
     let text = this.objectFactory.createText(planet.name);
     this.planetNamePlates[planet.id] = new PlanetNamePlate(background, text);
     return this.getPlanetNamePlate(planet);

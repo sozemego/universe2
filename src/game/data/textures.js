@@ -1,6 +1,7 @@
 export const textures = {
   black_hole_1: 'textures/black_hole_1.png',
   building_material: 'textures/building_material.png',
+  buttonRed: 'textures/buttonRed.png',
   colony_center: 'textures/colony_center.png',
   food: 'textures/food.png',
   food_processor: 'textures/food_processor.png',

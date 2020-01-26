@@ -198,7 +198,7 @@ export class ObjectFactory {
     let sprite = new SpriteText2D(text, {
       align: textAlign.center,
       font: '104px Arial',
-      fillStyle: '#ffffff',
+      fillStyle: '#373737',
       antialias: true,
     });
     this.scene.add(sprite);
