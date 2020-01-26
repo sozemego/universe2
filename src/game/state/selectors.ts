@@ -85,6 +85,10 @@ export function useGetPlanetService() {
   return useSelector((state: AppState) => state.game.services!.planetService);
 }
 
+export function useGetCamera() {
+  return useSelector((state: AppState) => state.game.services!.camera);
+}
+
 export function useGetGameSpeedScale(state?: AppState) {
   if (state) {
     return state.game.gameSpeedScale;

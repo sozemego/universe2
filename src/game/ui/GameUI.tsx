@@ -4,6 +4,7 @@ import { GameOptionsComponent } from './GameOptionsComponent';
 import { GameClockComponent } from './GameClockComponent';
 import { ObjectListComponent } from './ObjectListComponent';
 import { ServiceStatsComponent } from './ServiceStatsComponent';
+import { CameraComponent } from './CameraComponent';
 
 export function GameUI() {
   return (
@@ -54,6 +55,7 @@ export function GameUI() {
           pointerEvents: 'all',
         }}
       >
+        <CameraComponent />
         <GameOptionsComponent />
         <ServiceStatsComponent />
         <ObjectListComponent />

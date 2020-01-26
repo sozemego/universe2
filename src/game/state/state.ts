@@ -17,6 +17,7 @@ import { ObjectBoundsService } from '../service/ObjectBoundsService';
 import { GameClockService } from '../service/GameClockService';
 import { SpawnObjectService } from '../service/SpawnObjectService';
 import { PlanetService } from '../service/PlanetService';
+import { GameCamera } from '../GameCamera';
 
 const initialState: GameState = {
   selected: null,
@@ -105,6 +106,7 @@ export interface GameServices {
   gameOptions: GameOptions;
   gameClockService: GameClockService;
   planetService: PlanetService;
+  camera: GameCamera;
 }
 
 export interface GameState {

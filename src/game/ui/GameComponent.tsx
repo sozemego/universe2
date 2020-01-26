@@ -135,6 +135,7 @@ export function GameComponent() {
       gameClockService,
       spawnObjectService,
       planetService,
+      camera,
     };
 
     // @ts-ignore
