@@ -30,7 +30,7 @@ export class GameEngine {
 
     this.scene = scene;
 
-    this.renderer = new WebGLRenderer();
+    this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth - 5, window.innerHeight - 5);
 
     window.addEventListener('resize', this._resize);
