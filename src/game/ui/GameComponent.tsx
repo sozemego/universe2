@@ -94,7 +94,13 @@ export function GameComponent() {
       selectionService,
       objectFactory
     );
-    const debugOrbitService = new DebugOrbitService(universe, objectFactory, input, gameOptions);
+    const debugOrbitService = new DebugOrbitService(
+      universe,
+      objectFactory,
+      input,
+      gameOptions,
+      selectionService
+    );
     const objectBoundsService = new ObjectBoundsService(
       objectList,
       objectFactory,
