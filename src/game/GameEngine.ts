@@ -76,6 +76,8 @@ export class GameEngine {
 
     inputHandler.onKeyUp(event => this.handleZoom(event.key));
 
+    inputHandler.onMouseWheel(delta => this.handleMouseWheelZoom(delta));
+
     this.textureLoader = new TextureLoader();
   }
 
@@ -132,6 +134,10 @@ export class GameEngine {
     if (key === KEY.e) {
       this.camera.zoomInDirection(1);
     }
+  }
+
+  handleMouseWheelZoom(delta: number) {
+    this.camera.zoomInDirection(delta > 0 ? 1 : -1);
   }
 
   setUpdate(fn: (delta: number) => void) {
