@@ -4,6 +4,7 @@ import Stats from 'stats-js';
 import { InputHandler, KEY } from './InputHandler';
 import { GameCamera } from './GameCamera';
 import { Universe } from './universe/Universe';
+import { GameService } from './GameService';
 
 export class GameEngine {
   private readonly inputHandler: InputHandler;
@@ -16,7 +17,6 @@ export class GameEngine {
   // private readonly axesHelper: AxesHelper;
   private readonly pressedKeys: Set<string>;
   private readonly textureLoader: TextureLoader;
-  private time: number = 0;
 
   constructor(
     container: HTMLElement,
@@ -80,13 +80,11 @@ export class GameEngine {
 
   start = (): Promise<void> => {
     return this.loadAllTextures().then(() => {
-      this._animate(0);
+      this._animate();
     });
   };
 
-  _animate = (now: number) => {
-    let diff = now - this.time;
-    this.time = now;
+  _animate = () => {
     this.stats.begin();
 
     this.handleCameraMovement();
@@ -94,7 +92,7 @@ export class GameEngine {
     this.camera.updateProjectionMatrix();
     // this.cameraHelper.update();
 
-    this.updateFn(Math.min(diff / 1000, 0.25));
+    this.updateFn(GameService.FPS);
 
     this.renderer.render(this.scene, this.camera);
 
