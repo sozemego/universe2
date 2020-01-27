@@ -53,7 +53,12 @@ export class GameEngine {
 
     this.camera.position.x = 5000000 / 2;
     this.camera.position.y = 5000000 / 2;
-    this.camera.position.z = Universe.MAX_CAMERA_Z;
+    this.camera.zoomInDirection(1);
+    this.camera.zoomInDirection(1);
+    this.camera.zoomInDirection(1);
+    this.camera.zoomInDirection(1);
+    this.camera.zoomInDirection(1);
+    this.camera.zoomInDirection(1);
 
     this.pressedKeys = new Set();
 
@@ -68,6 +73,8 @@ export class GameEngine {
       this.pressedKeys.delete(event.key);
       return false;
     });
+
+    inputHandler.onKeyUp(event => this.handleZoom(event.key));
 
     this.textureLoader = new TextureLoader();
   }
@@ -89,6 +96,7 @@ export class GameEngine {
 
     this.handleCameraMovement();
 
+    this.camera.update(GameService.FPS);
     this.camera.updateProjectionMatrix();
     // this.cameraHelper.update();
 
@@ -115,11 +123,14 @@ export class GameEngine {
     if (this.pressedKeys.has(KEY.w)) {
       this.camera.position.y += 0.5 * scale;
     }
-    if (this.pressedKeys.has(KEY.q)) {
-      this.camera.position.z += 0.5 * scale;
+  }
+
+  handleZoom(key: KEY) {
+    if (key === KEY.q) {
+      this.camera.zoomInDirection(-1);
     }
-    if (this.pressedKeys.has(KEY.e)) {
-      this.camera.position.z -= 0.5 * scale;
+    if (key === KEY.e) {
+      this.camera.zoomInDirection(1);
     }
   }
 

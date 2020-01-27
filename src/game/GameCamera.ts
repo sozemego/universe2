@@ -5,6 +5,25 @@ import { Universe } from './universe/Universe';
 import { Mouse } from './InputHandler';
 
 export class GameCamera extends PerspectiveCamera {
+  private zoomLevel: number = 1;
+  private direction: number = 0;
+  private nextZoom: number = 0;
+  private zoomPerSecond: number = 10000;
+
+  update(delta: number) {
+    if (this.direction === 0) {
+      return;
+    }
+    let zoomBy = this.zoomPerSecond * 2 * delta * this.direction;
+    this.position.z += zoomBy;
+    if (this.direction === 1 && this.position.z >= this.nextZoom) {
+      this.direction = 0;
+    }
+    if (this.direction === -1 && this.position.z <= this.nextZoom) {
+      this.direction = 0;
+    }
+  }
+
   moveTo(position: Vector2) {
     this.position.x = position.x;
     this.position.y = position.y;
@@ -30,4 +49,20 @@ export class GameCamera extends PerspectiveCamera {
     position.copy(this.position).add(vec.multiplyScalar(distance));
     return position;
   }
+
+  /**
+   * @param direction - either 1 or -1 to signify direction
+   */
+  zoomInDirection(direction: number) {
+    let nextZoomLevel = this.zoomLevel + direction;
+    if (nextZoomLevel < 0 || nextZoomLevel > ZOOM_LEVELS.length - 1) {
+      return;
+    }
+    this.direction = direction;
+    this.nextZoom = ZOOM_LEVELS[nextZoomLevel];
+    this.zoomLevel = nextZoomLevel;
+    this.zoomPerSecond = Math.abs(this.position.z - this.nextZoom);
+  }
 }
+
+const ZOOM_LEVELS = [2500, 5000, 10000, 25000, 100000, 175000];
