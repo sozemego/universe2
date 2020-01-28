@@ -5,16 +5,19 @@ import { Universe } from '../universe/Universe';
 import { PlanetNamePlate } from '../ui/name/PlanetNamePlate';
 import { Planet } from '../object/Planet';
 import { textures } from '../data/textures';
+import { GameCamera } from '../GameCamera';
 
 export class NamePlateService implements IGameService {
   private readonly universe: Universe;
   private readonly objectFactory: ObjectFactory;
+  private readonly camera: GameCamera;
 
   private readonly planetNamePlates: Record<string, PlanetNamePlate> = {};
 
-  constructor(universe: Universe, objectFactory: ObjectFactory) {
+  constructor(universe: Universe, objectFactory: ObjectFactory, camera: GameCamera) {
     this.universe = universe;
     this.objectFactory = objectFactory;
+    this.camera = camera;
   }
 
   update(delta: number) {
@@ -22,7 +25,7 @@ export class NamePlateService implements IGameService {
     for (let solarSystem of solarSystems) {
       for (let planet of solarSystem.planets) {
         let namePlate = this.getPlanetNamePlate(planet);
-        namePlate.update(planet);
+        namePlate.update(planet, this.camera);
       }
     }
   }

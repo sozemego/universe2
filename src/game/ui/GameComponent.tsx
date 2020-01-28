@@ -120,7 +120,7 @@ export function GameComponent() {
     const fixedGravityService = new FixedGravityService(universe);
     const planetService = new PlanetService(objectList, objectFactory);
     const cameraFollowSolarSystemService = new CameraFollowSolarSystemService(camera, universe);
-    const namePlateService = new NamePlateService(universe, objectFactory);
+    const namePlateService = new NamePlateService(universe, objectFactory, camera);
 
     const gameServices: GameServices = {
       gravityService,
