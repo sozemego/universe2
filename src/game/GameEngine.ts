@@ -3,7 +3,6 @@ import { Scene, TextureLoader, WebGLRenderer } from 'three/src/Three';
 import Stats from 'stats-js';
 import { InputHandler, KEY } from './InputHandler';
 import { GameCamera } from './GameCamera';
-import { Universe } from './universe/Universe';
 import { GameService } from './GameService';
 
 export class GameEngine {
