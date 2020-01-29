@@ -30,7 +30,7 @@ const initialState: GameState = {
   showDebugSphereBounds: false,
   services: null,
   time: 0,
-  selectedObjectIsModal: false,
+  selectedObjectIsModal: true,
 };
 
 export const gameSlice = createSlice<GameState, any>({

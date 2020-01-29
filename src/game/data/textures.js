@@ -5,6 +5,8 @@ export const textures = {
   colony_center: 'textures/colony_center.png',
   food: 'textures/food.png',
   food_processor: 'textures/food_processor.png',
+  gear: 'textures/gear.png',
+  gear_2: 'textures/gear_2.png',
   genericItem_color_006: 'textures/genericItem_color_006.png',
   glass_panel_1: 'textures/glass_panel_1.png',
   glass_panel_2: 'textures/glass_panel_2.png',
@@ -25,5 +27,6 @@ export const textures = {
   panel_blue_empty: 'textures/panel_blue_empty.png',
   panel_brown: 'textures/panel_brown.png',
   production_slot_bg: 'textures/production_slot_bg.png',
+  unemployed_pop: 'textures/unemployed_pop.png',
   white_star_1: 'textures/white_star_1.png',
 };

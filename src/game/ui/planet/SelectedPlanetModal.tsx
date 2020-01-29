@@ -99,15 +99,29 @@ export function PlanetColonizationComponentModal({
         <PlanetProduction planet={planet} planetData={planetData} />
       </div>
       <hr />
-      <div
-        style={{
-          background: 'rgb(192,192,192)',
-          boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
-          maxWidth: '260px',
-          minHeight: '260px',
-        }}
-      >
-        <PlanetStorageComponent storage={storage} />
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div
+          style={{
+            background: 'rgb(192,192,192)',
+            boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
+            maxWidth: '260px',
+            minHeight: '260px',
+          }}
+        >
+          <PlanetStorageComponent storage={storage} />
+        </div>
+        <div
+          style={{
+            background: 'rgb(192,192,192)',
+            marginLeft: '12px',
+            boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
+            maxWidth: '260px',
+            minHeight: '260px',
+            minWidth: '260px',
+          }}
+        >
+          <PlanetPopulation planet={planet} planetData={planetData} />
+        </div>
       </div>
     </div>
   );
@@ -590,5 +604,66 @@ export function ConstructableBuilding({ building, planetData }: ConstructableBui
 
 export interface ConstructableBuildingProps {
   building: BuildingData;
+  planetData: PlanetData;
+}
+
+export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) {
+  let { population, buildings } = planetData;
+  let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
+  let unemployedPopulation = population - employedPopulation;
+  let totalJobs = buildings.reduce((sum, building) => sum + building.populationNeeded, 0);
+
+  return (
+    <div style={{ padding: '12px' }}>
+      <Text type={'secondary'}>Population</Text>
+      <Tooltip title={'Total population of the planet'} mouseEnterDelay={0} mouseLeaveDelay={0}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginBottom: '4px',
+          }}
+        >
+          <img
+            src={textures.hud_p1}
+            alt={'Population icon'}
+            style={{ width: '24px', height: '24px', marginRight: '8px' }}
+          />
+          <div>{population}</div>
+        </div>
+      </Tooltip>
+      <Tooltip title={'Unemployed population units'} mouseEnterDelay={0} mouseLeaveDelay={0}>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <img
+            src={textures.unemployed_pop}
+            alt={'Population icon'}
+            style={{ width: '24px', height: '24px', marginRight: '8px' }}
+          />
+          <div>{unemployedPopulation}</div>
+        </div>
+      </Tooltip>
+      <Tooltip
+        title={'Occupied and total jobs on this planet'}
+        mouseEnterDelay={0}
+        mouseLeaveDelay={0}
+      >
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <img
+            src={textures.gear_2}
+            alt={'Population icon'}
+            style={{ width: '24px', height: '24px', marginRight: '8px' }}
+          />
+          <div>
+            {employedPopulation}/{totalJobs}
+          </div>
+        </div>
+      </Tooltip>
+    </div>
+  );
+}
+
+export interface PlanetPopulationProps {
+  planet: Planet;
   planetData: PlanetData;
 }
