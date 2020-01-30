@@ -609,8 +609,9 @@ export interface ConstructableBuildingProps {
 
 export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) {
   let { population, buildings } = planetData;
+  let { count, foodNeeded, foodConsumedPerMinute, foodAccumulated, timePassed } = population;
   let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
-  let unemployedPopulation = population - employedPopulation;
+  let unemployedPopulation = count - employedPopulation;
   let totalJobs = buildings.reduce((sum, building) => sum + building.populationNeeded, 0);
 
   return (
@@ -630,7 +631,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
             alt={'Population icon'}
             style={{ width: '24px', height: '24px', marginRight: '8px' }}
           />
-          <div>{population}</div>
+          <div>{count}</div>
         </div>
       </Tooltip>
       <Tooltip title={'Unemployed population units'} mouseEnterDelay={0} mouseLeaveDelay={0}>
@@ -659,6 +660,69 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
           </div>
         </div>
       </Tooltip>
+      <div>
+        <Text type={'secondary'}>Population growth</Text>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <img
+              src={RESOURCE_DATA.FOOD.texture}
+              alt={'Food icon'}
+              style={{ width: '32px', height: '32px' }}
+            />
+            <Text type={'secondary'}>{foodConsumedPerMinute}/m</Text>
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexGrow: 1,
+            marginLeft: '8px',
+          }}
+        >
+          <Text type={'secondary'}>{foodAccumulated}</Text>
+          <div style={{ position: 'relative', width: '100%', height: '24px', padding: '4px' }}>
+            <Progress
+              type={'line'}
+              percent={(timePassed / 60) * 100}
+              format={() => ''}
+              strokeColor={'gray'}
+              showInfo={false}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                paddingLeft: '8px',
+                paddingRight: '8px',
+              }}
+              strokeWidth={15}
+            />
+            <Progress
+              type={'line'}
+              percent={(foodAccumulated / foodNeeded) * 100}
+              format={() => ''}
+              strokeColor={'green'}
+              showInfo={false}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                paddingLeft: '8px',
+                paddingRight: '8px',
+              }}
+            />
+          </div>
+          <Text type={'secondary'}>{foodNeeded}</Text>
+        </div>
+      </div>
     </div>
   );
 }
