@@ -28,7 +28,7 @@ export class PlanetService implements IGameService {
   }
 
   updatePlanet(planetData: PlanetData, delta: number) {
-    let { id, buildings, storage, constructions } = planetData;
+    let { id, buildings, storage, constructions, population } = planetData;
     buildings.forEach(building => {
       building.update(delta);
       let { production } = building;
@@ -51,6 +51,22 @@ export class PlanetService implements IGameService {
     planetData.constructions = planetData.constructions.filter(
       construction => construction.cost.timePassed < construction.cost.time
     );
+
+    population.timePassed += delta;
+    let canConsume = population.timePassed >= 60;
+    let hasEnoughFood =
+      storage.getTakenByResource(Resource.FOOD) >= population.foodConsumedPerMinute;
+    if (canConsume && hasEnoughFood) {
+      population.foodAccumulated += population.foodConsumedPerMinute;
+      population.timePassed = 0;
+      storage.removeResource(Resource.FOOD, population.foodConsumedPerMinute);
+      if (population.foodAccumulated === population.foodNeeded) {
+        population.count += 1;
+        population.foodAccumulated = 0;
+        population.foodConsumedPerMinute = 1;
+        population.foodNeeded = population.count;
+      }
+    }
   }
 
   colonizePlanet(planet: Planet) {
@@ -58,7 +74,13 @@ export class PlanetService implements IGameService {
     console.log(`Colonize planet ${id}`);
     this.planets[id] = {
       id,
-      population: 5,
+      population: {
+        count: 5,
+        foodAccumulated: 0,
+        foodConsumedPerMinute: 1,
+        foodNeeded: 5,
+        timePassed: 0,
+      },
       buildings: [],
       storage: new PlanetStorage(50),
       constructions: [],
@@ -66,7 +88,7 @@ export class PlanetService implements IGameService {
     };
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
     this.constructBuilding(planet, BuildingType.FOOD_PROCESSOR);
-    this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 50);
+    this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 10);
 
     let sprite = this.objectFactory.createSprite(
       textures.colony_center,
@@ -128,7 +150,7 @@ export class PlanetService implements IGameService {
     }
     let { buildings, population } = planetData;
     buildings.forEach(building => (building.population = 0));
-    for (let i = 0; i < population; i++) {
+    for (let i = 0; i < population.count; i++) {
       for (let j = 0; j < buildings.length; j++) {
         let building = buildings[j];
         if (building.population < building.populationNeeded) {
@@ -146,11 +168,19 @@ export class PlanetService implements IGameService {
 
 export interface PlanetData {
   id: string;
-  population: number;
+  population: PlanetPopulation;
   buildings: Building[];
   storage: PlanetStorage;
   constructions: BuildingConstruction[];
   planet: Planet;
+}
+
+export interface PlanetPopulation {
+  count: number;
+  foodNeeded: number;
+  foodConsumedPerMinute: number;
+  foodAccumulated: number;
+  timePassed: number;
 }
 
 export interface BuildingConstruction {
