@@ -65,6 +65,7 @@ export class PlanetService implements IGameService {
         population.foodAccumulated = 0;
         population.foodConsumedPerMinute = 1;
         population.foodNeeded = population.count;
+        this.assignPopulation(planetData.planet);
       }
     }
   }
