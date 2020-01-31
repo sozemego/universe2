@@ -356,6 +356,7 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
             {Object.keys(production).map(resource => {
               let productionData = production[resource as Resource]!;
               let maxProduces = productionData?.produces;
+              let perMinutes = productionData?.perMinutes;
               let realProduces = maxProduces * populationFilledPercent;
               let producesColor = 'yellow';
               if (maxProduces === realProduces) {
@@ -373,7 +374,7 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
                     alt={resource}
                   />
                   <div style={{ color: producesColor }}>
-                    {maxProduces}/{realProduces}
+                    {maxProduces}/{realProduces} per {perMinutes} minute{perMinutes > 1 ? 's' : ''}
                   </div>
                 </div>
               );
