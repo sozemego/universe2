@@ -390,7 +390,7 @@ export interface BuildingTooltipProps {
 }
 
 export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces, timePassed } = production;
+  let { resource, produces, timePassed, perMinutes } = production;
   return (
     <div
       style={{
@@ -423,8 +423,12 @@ export function ProductionSlot({ production }: ProductionSlotProps) {
       </div>
       <Progress
         type="circle"
-        percent={(timePassed / 60) * 100}
-        format={percent => <span style={{ color: produces ? 'black' : 'red' }}>{produces}/m</span>}
+        percent={(timePassed / (perMinutes * 60)) * 100}
+        format={percent => (
+          <Text type={'secondary'} style={{ color: produces ? 'black' : 'red' }}>
+            {produces}
+          </Text>
+        )}
         width={48}
         strokeColor={'black'}
         style={{ position: 'relative', top: 8, left: 8 }}

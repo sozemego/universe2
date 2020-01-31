@@ -14,11 +14,13 @@ export const BUILDINGS: BuildingDataMap = {
         resource: Resource.FOOD,
         produces: 1,
         timePassed: 0,
+        perMinutes: 1,
       },
       [Resource.BUILDING_MATERIAL]: {
         resource: Resource.BUILDING_MATERIAL,
-        produces: 0.5,
+        produces: 1,
         timePassed: 0,
+        perMinutes: 2,
       },
     },
     cost: {
@@ -50,6 +52,7 @@ export const BUILDINGS: BuildingDataMap = {
         resource: Resource.FOOD,
         produces: 1,
         timePassed: 0,
+        perMinutes: 1,
       },
     },
     cost: {
