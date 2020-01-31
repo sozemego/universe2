@@ -7,16 +7,49 @@ Misc:
   ☐ Debug sphere render is sometimes broken @created(20-01-12 22:52)
   ☐ Fix instances of dispatch(actionCreator()) which requires //@ts-ignore
   ☐ Check other state management libraries (xState as well?)
+  ✔ Change game background to something more space like @done (20-01-21 20:13)
+  ✔ If camera is at a certain zoom (check which), and camera center is in a solar system, the camera should follow that solar system automatically @done (20-01-26 15:30)
+  ✔  Show camera values on the debug UI on the right @created(20-01-26 15:31) @done (20-01-26 21:19)
+  ✔ Have only a few acceptable camera.position.z levels instead of freely zooming in and out @created(20-01-26 21:38) @done (20-01-28 17:40)
+    2500, 5000, 7500, 10000, 25000, 100000, 175000
+  ✔ Have only one possible value that 'delta' can take - 1/60 @done (20-01-27 18:26)
+  ✔ Change texture sizes so their sizes are power of two @done (20-01-29 20:13)
 
 Planets:
   ✔ Planets can be colonized @done (20-01-17 22:07)
   ✔ Planets can have population @done (20-01-17 22:07)
   ✔ Planets can have buildings @done (20-01-17 09:48)
   ✔ Planets can have resource storage @done (20-01-17 22:07)
-  ☐ Different UI for planets on the left and in a dialog
+  ✘ Different UI for planets on the left and in a dialog @cancelled (20-01-19 13:04)
+  ✘ Change implementation of Storage/Buildings/Production so that the padding/margin are outside of the component, not inside @cancelled (20-01-19 13:04)
+  ✔ Planet production should be averaged over a minute, and each minute some materials should be added to the storage @done (20-01-19 00:15)
+  ✔ Each building should have a population requirement - a population unit should be assigned to the building for it to produce something @created(20-01-19 13:04) @done (20-01-20 18:34)
+  ✔ If a planet is colonized, an icon should be displayed to show that the planet is colonized @done (20-01-26 15:30)
+  ✔ Show population/population needed in PlanetUI modal for each building @done (20-01-20 18:34)
+  ✔ Show small amount of information on the left about the planet or star @done (20-01-22 21:27)
+  ✔ Show UI of a building that is being constructed @done (20-01-22 21:27)
+  ✔ On clicking an empty building stop, a construction menu should appear in which the player can choose to construct a building @done (20-01-25 14:25)
+  ✔ Building construction should use resources @done (20-01-25 14:25)
+  ☐ Think about having a construction queue for planets?
+  ✔ Planet name plate (more or less) @done (20-01-26 15:30)
+  ☐ Scaling planet name plates @created(20-01-26 15:30)
+  ☐ PlanetNamePlate - when Planet is destroyed, the name plate should be destroyed too
+  ☐ PlanetNamePlate - different background
+  ✔ Orbits that can be shown all the time (more or less) @done (20-01-26 23:17)
+  ✔ Show population on a planet @done (20-01-30 18:28)
+  ☐ Have max population on a planet?
+  ✔ Population growth @done (20-01-30 21:06)
+  ✔ Display for population growth @done (20-01-30 21:06)
+  ☐ Planet storage should be per resource, not total
 
-Debug spawn objects UI:
-  Rework the object spawner UI
+Stars:
+  ☐ StarNamePlate - add name plates for Stars
+
+UI:
+  Have a list of owned 'entities' on the right
+  ☐ List of colonized planets
+  ☐ Show construction in the list of colonized planets
+  ☐ List of ships
 
 Bugs general:
   ☐ Very rarely, debug lines of objects do not appear

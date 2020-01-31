@@ -29,21 +29,17 @@ export class PlanetStorage {
   }
 
   canFit(resource: Resource, amount: number): boolean {
-    return this.freeCapacity >= amount;
+    return this.getFreeCapacity(resource) >= amount;
   }
 
   fill(resource: Resource, amount: number): number {
-    let toAdd = Math.min(this.freeCapacity, amount);
+    let toAdd = Math.min(this.getFreeCapacity(resource), amount);
     this.addResource(resource, toAdd);
     return toAdd;
   }
 
-  get capacityTaken(): number {
-    return Object.values(this.resources).reduce((total, count) => total + count, 0);
-  }
-
-  get freeCapacity(): number {
-    return this.capacity - this.capacityTaken;
+  getFreeCapacity(resource: Resource): number {
+    return this.capacity - this.getTakenByResource(resource);
   }
 
   getTakenByResource(resource: Resource): number {
