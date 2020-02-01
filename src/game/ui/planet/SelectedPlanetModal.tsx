@@ -613,11 +613,17 @@ export interface ConstructableBuildingProps {
 }
 
 export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) {
-  let { population, buildings } = planetData;
-  let { count, foodNeeded, foodConsumedPerMinute, foodAccumulated, timePassed } = population;
+  let { population, buildings, populationGrowth } = planetData;
+  let count = population.length;
+  let { foodConsumedPerMinute, timePassed, foodToGrow, foodStored } = populationGrowth;
   let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
   let unemployedPopulation = count - employedPopulation;
   let totalJobs = buildings.reduce((sum, building) => sum + building.populationNeeded, 0);
+
+  let foodConsumerPerMinuteForUpkeep = population.reduce(
+    (sum, pop) => sum + pop.foodUsedPerMinute,
+    0
+  );
 
   return (
     <div style={{ padding: '12px' }}>
@@ -628,15 +634,27 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'space-between',
             marginBottom: '4px',
           }}
         >
-          <img
-            src={textures.hud_p1}
-            alt={'Population icon'}
-            style={{ width: '24px', height: '24px', marginRight: '8px' }}
-          />
-          <div>{count}</div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <img
+              src={textures.hud_p1}
+              alt={'Population icon'}
+              style={{ width: '24px', height: '24px', marginRight: '8px' }}
+            />
+            <div>{count}</div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Text type={'secondary'}>Upkeep</Text>
+            <img
+              src={RESOURCE_DATA.FOOD.texture}
+              style={{ width: '24px', height: '24px' }}
+              alt={'Food icon'}
+            />
+            <Text type={'secondary'}>{foodConsumerPerMinuteForUpkeep}/m</Text>
+          </div>
         </div>
       </Tooltip>
       <Tooltip title={'Unemployed population units'} mouseEnterDelay={0} mouseLeaveDelay={0}>
@@ -665,6 +683,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
           </div>
         </div>
       </Tooltip>
+      <div>{}</div>
       <div>
         <Text type={'secondary'}>Population growth</Text>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -693,7 +712,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
             marginLeft: '8px',
           }}
         >
-          <Text type={'secondary'}>{foodAccumulated}</Text>
+          <Text type={'secondary'}>{foodStored}</Text>
           <div style={{ position: 'relative', width: '100%', height: '24px', padding: '4px' }}>
             <Progress
               type={'line'}
@@ -712,7 +731,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
             />
             <Progress
               type={'line'}
-              percent={(foodAccumulated / foodNeeded) * 100}
+              percent={(foodStored / foodToGrow) * 100}
               format={() => ''}
               strokeColor={'green'}
               showInfo={false}
@@ -725,7 +744,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
               }}
             />
           </div>
-          <Text type={'secondary'}>{foodNeeded}</Text>
+          <Text type={'secondary'}>{foodToGrow}</Text>
         </div>
       </div>
     </div>
