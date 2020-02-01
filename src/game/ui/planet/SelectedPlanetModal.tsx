@@ -244,7 +244,7 @@ export interface StorageSlotProps {
 }
 
 export function BuildingComponent({ building }: BuildingComponentProps) {
-  let { name, texture, population, populationNeeded } = building;
+  let { name, texture, population, maxPopulation } = building;
   return (
     <div>
       <Tooltip
@@ -259,7 +259,7 @@ export function BuildingComponent({ building }: BuildingComponentProps) {
           style={{ maxWidth: '36px', maxHeight: '36px', width: '36px', height: '36px' }}
         />
         <Text style={{ fontSize: '0.8rem', marginLeft: '6px' }}>
-          {population}/{populationNeeded}
+          {population}/{maxPopulation}
         </Text>
       </Tooltip>
     </div>
@@ -339,14 +339,13 @@ export interface BuildingConstructionComponentProps {
 }
 
 export function BuildingTooltip({ building }: BuildingTooltipProps) {
-  let { description, population, populationNeeded, production } = building;
-  let populationFilledPercent = population / populationNeeded;
+  let { description, population, maxPopulation, production } = building;
   return (
     <div>
       <div>{description}</div>
-      {populationNeeded && (
+      {maxPopulation && (
         <div>
-          Population: {population} / {populationNeeded}
+          Population: {population} / {maxPopulation}
         </div>
       )}
       {Object.keys(production).length > 0 && (
@@ -355,9 +354,8 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
           <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
             {Object.keys(production).map(resource => {
               let productionData = production[resource as Resource]!;
-              let maxProduces = productionData?.produces;
-              let perMinutes = productionData?.perMinutes;
-              let realProduces = maxProduces * populationFilledPercent;
+              let maxProduces = productionData?.produces * building.maxPopulation;
+              let realProduces = productionData.produces * building.population;
               let producesColor = 'yellow';
               if (maxProduces === realProduces) {
                 producesColor = 'green';
@@ -374,7 +372,7 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
                     alt={resource}
                   />
                   <div style={{ color: producesColor }}>
-                    {maxProduces}/{realProduces} per {perMinutes} minute{perMinutes > 1 ? 's' : ''}
+                    {maxProduces}/{realProduces}/m
                   </div>
                 </div>
               );
@@ -391,7 +389,7 @@ export interface BuildingTooltipProps {
 }
 
 export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces, timePassed, perMinutes } = production;
+  let { resource, produces, timePassed } = production;
   return (
     <div
       style={{
@@ -424,7 +422,7 @@ export function ProductionSlot({ production }: ProductionSlotProps) {
       </div>
       <Progress
         type="circle"
-        percent={(timePassed / (perMinutes * 60)) * 100}
+        percent={(timePassed / 60) * 100}
         format={percent => (
           <Text type={'secondary'} style={{ color: produces ? 'black' : 'red' }}>
             {produces}
@@ -445,15 +443,14 @@ export interface ProductionSlotProps {
 export function PlanetProduction({ planet, planetData }: PlanetProductionModalProps) {
   let productions: Record<string, BuildingResourceProductionData> = {};
   planetData.buildings.forEach(building => {
-    let { production, population, populationNeeded } = building;
-    let populationPercentFilled = population / populationNeeded;
+    let { production, population, maxPopulation } = building;
     Object.keys(production).forEach(resource => {
       let productionData = { ...production[resource as Resource]! };
       let previous = productions[resource];
       if (previous) {
-        previous.produces += productionData?.produces * populationPercentFilled;
+        previous.produces += productionData?.produces * population;
       } else {
-        productionData.produces *= populationPercentFilled;
+        productionData.produces *= maxPopulation;
         productions[resource] = productionData;
       }
     });
@@ -470,7 +467,7 @@ export function PlanetProduction({ planet, planetData }: PlanetProductionModalPr
         marginLeft: '12px',
       }}
     >
-      <Text type={'secondary'}>Production</Text>
+      <Text type={'secondary'}>Production (per minute)</Text>
       <div
         style={{
           display: 'flex',
@@ -618,7 +615,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
   let { foodConsumedPerMinute, timePassed, foodToGrow, foodStored } = populationGrowth;
   let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
   let unemployedPopulation = count - employedPopulation;
-  let totalJobs = buildings.reduce((sum, building) => sum + building.populationNeeded, 0);
+  let totalJobs = buildings.reduce((sum, building) => sum + building.maxPopulation, 0);
 
   let foodConsumerPerMinuteForUpkeep = population.reduce(
     (sum, pop) => sum + pop.foodUsedPerMinute,

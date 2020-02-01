@@ -27,7 +27,6 @@ export type BuildingProductionData = {
 export interface BuildingResourceProductionData {
   resource: Resource;
   produces: number;
-  perMinutes: number; // per how many minutes is the resource produced
   timePassed: number; // seconds passed since last resource was produced
 }
 

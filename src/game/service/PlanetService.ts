@@ -38,7 +38,7 @@ export class PlanetService implements IGameService {
         let { produces, timePassed } = productionData;
         if (timePassed >= 60) {
           productionData.timePassed = 0;
-          storage.fill(resource as Resource, produces);
+          storage.fill(resource as Resource, produces * building.population);
         }
       });
     });
@@ -192,7 +192,7 @@ export class PlanetService implements IGameService {
     for (let i = 0; i < population.length; i++) {
       for (let j = 0; j < buildings.length; j++) {
         let building = buildings[j];
-        if (building.population < building.populationNeeded) {
+        if (building.population < building.maxPopulation) {
           building.population += 1;
           break;
         }

@@ -12,15 +12,13 @@ export const BUILDINGS: BuildingDataMap = {
     production: {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
-        produces: 1,
+        produces: 6,
         timePassed: 0,
-        perMinutes: 1,
       },
       [Resource.BUILDING_MATERIAL]: {
         resource: Resource.BUILDING_MATERIAL,
-        produces: 1,
+        produces: 2,
         timePassed: 0,
-        perMinutes: 2,
       },
     },
     cost: {
@@ -36,7 +34,7 @@ export const BUILDINGS: BuildingDataMap = {
     description: "Provides housing for this planet's ever increasing population.",
     production: {},
     cost: {
-      [Resource.BUILDING_MATERIAL]: 25,
+      [Resource.BUILDING_MATERIAL]: 15,
       time: 240,
       timePassed: 0,
     },
@@ -50,13 +48,12 @@ export const BUILDINGS: BuildingDataMap = {
     production: {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
-        produces: 1,
+        produces: 3,
         timePassed: 0,
-        perMinutes: 1,
       },
     },
     cost: {
-      [Resource.BUILDING_MATERIAL]: 50,
+      [Resource.BUILDING_MATERIAL]: 25,
       time: 360,
       timePassed: 0,
     },

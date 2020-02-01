@@ -7,8 +7,8 @@ export class Building {
   readonly name: string;
   readonly description: string;
   readonly production: BuildingProductionData;
-  readonly populationNeeded: number;
-  population: number = 0;
+  readonly maxPopulation: number;
+  population: number;
 
   constructor(
     id: string,
@@ -16,20 +16,21 @@ export class Building {
     name: string,
     description: string,
     production: BuildingProductionData,
-    populationNeeded: number
+    maxPopulation: number
   ) {
     this.id = id;
     this.texture = texture;
     this.name = name;
     this.description = description;
     this.production = production;
-    this.populationNeeded = populationNeeded;
+    this.maxPopulation = maxPopulation;
+    this.population = 0;
   }
 
   update(delta: number) {
     Object.keys(this.production).forEach(resource => {
       let production = this.production[resource as Resource]!;
-      production.timePassed += delta * (this.population / this.populationNeeded);
+      production.timePassed += delta;
     });
   }
 }
