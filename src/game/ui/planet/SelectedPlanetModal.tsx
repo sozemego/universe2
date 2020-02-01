@@ -371,9 +371,7 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
                     style={{ width: '12px', height: '12px' }}
                     alt={resource}
                   />
-                  <div style={{ color: producesColor }}>
-                    {maxProduces}/{realProduces}/m
-                  </div>
+                  <div style={{ color: producesColor }}>{realProduces}</div>
                 </div>
               );
             })}
@@ -467,7 +465,7 @@ export function PlanetProduction({ planet, planetData }: PlanetProductionModalPr
         marginLeft: '12px',
       }}
     >
-      <Text type={'secondary'}>Production (per minute)</Text>
+      <Text type={'secondary'}>Production</Text>
       <div
         style={{
           display: 'flex',
@@ -548,7 +546,7 @@ export interface ConstructableBuildingListProps {
 
 export function ConstructableBuilding({ building, planetData }: ConstructableBuildingProps) {
   let [hover, setHover] = React.useState(false);
-  let { cost, texture, description, populationNeeded, type } = building;
+  let { cost, texture, description, populationNeeded, type, production } = building;
   let { storage, planet } = planetData;
   let planetService = useGetPlanetService();
   return (
@@ -570,33 +568,62 @@ export function ConstructableBuilding({ building, planetData }: ConstructableBui
         <BuildingSlot>
           <img src={texture} alt={'Building texture'} style={{ width: '32px', height: '32px' }} />
         </BuildingSlot>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            {Object.keys(Resource)
-              .filter(resource => cost[resource as Resource])
-              .map(resource => {
-                let resourceCost = cost[resource as Resource];
-                let enough = storage.resources[resource as Resource] >= resourceCost!;
-                return (
-                  <div key={resource}>
-                    <img
-                      src={RESOURCE_DATA[resource as Resource].texture}
-                      style={{ width: '24px', height: '24px' }}
-                      alt={resource}
-                    />
-                    <span style={{ color: enough ? 'black' : 'red' }}>{resourceCost}</span>
-                  </div>
-                );
-              })}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            width: '100%',
+          }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              {Object.keys(Resource)
+                .filter(resource => cost[resource as Resource])
+                .map(resource => {
+                  let resourceCost = cost[resource as Resource];
+                  let enough = storage.resources[resource as Resource] >= resourceCost!;
+                  return (
+                    <div key={resource}>
+                      <img
+                        src={RESOURCE_DATA[resource as Resource].texture}
+                        style={{ width: '24px', height: '24px' }}
+                        alt={resource}
+                      />
+                      <span style={{ color: enough ? 'black' : 'red' }}>{resourceCost}</span>
+                    </div>
+                  );
+                })}
+            </div>
+            <div style={{ paddingLeft: '3px' }}>
+              <img
+                src={textures.hud_p1}
+                alt={'Population'}
+                style={{ width: '18px', height: '18px' }}
+              />
+              <span style={{ paddingLeft: '6px' }}>{populationNeeded}</span>
+            </div>
           </div>
-          <div style={{ paddingLeft: '3px' }}>
-            <img
-              src={textures.hud_p1}
-              alt={'Population'}
-              style={{ width: '18px', height: '18px' }}
-            />
-            <span style={{ paddingLeft: '6px' }}>{populationNeeded}</span>
-          </div>
+          {Object.keys(production).length > 0 && (
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <Text type={'secondary'}>Produces</Text>
+              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+                {Object.keys(production).map(resource => {
+                  let productionData = production[resource as Resource]!;
+                  return (
+                    <div>
+                      <img
+                        src={RESOURCE_DATA[resource as Resource].texture}
+                        style={{ width: '24px', height: '24px' }}
+                      />
+                      <Text type={'secondary'}>{productionData.produces}</Text>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <span style={{ margin: '4px' }}>{description}</span>
@@ -650,7 +677,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
               style={{ width: '24px', height: '24px' }}
               alt={'Food icon'}
             />
-            <Text type={'secondary'}>{foodConsumerPerMinuteForUpkeep}/m</Text>
+            <Text type={'secondary'}>{foodConsumerPerMinuteForUpkeep}</Text>
           </div>
         </div>
       </Tooltip>
@@ -696,7 +723,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
               alt={'Food icon'}
               style={{ width: '32px', height: '32px' }}
             />
-            <Text type={'secondary'}>{foodConsumedPerMinute}/m</Text>
+            <Text type={'secondary'}>{foodConsumedPerMinute}</Text>
           </div>
         </div>
         <div
