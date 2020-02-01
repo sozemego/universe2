@@ -124,7 +124,7 @@ export class PlanetService implements IGameService {
 
   initialPopulation(): PlanetPopulationUnit[] {
     let populationUnits: PlanetPopulationUnit[] = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 5; i++) {
       populationUnits.push(this._createPopulationUnit());
     }
     return populationUnits;
