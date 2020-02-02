@@ -12,7 +12,7 @@ export const BUILDINGS: BuildingDataMap = {
     production: {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
-        produces: 6,
+        produces: 4,
       },
       [Resource.BUILDING_MATERIAL]: {
         resource: Resource.BUILDING_MATERIAL,
