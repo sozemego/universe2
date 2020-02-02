@@ -3,7 +3,7 @@ import { Icon, Progress, Tooltip } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import { useDispatch } from 'react-redux';
 import { useRealClock } from '../../util/useRealClock';
-import { useGetPlanetService } from '../../state/selectors';
+import { useGetGameClockService, useGetPlanetService } from '../../state/selectors';
 import { Planet } from '../../object/Planet';
 import { BuildingConstruction, PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
@@ -387,7 +387,9 @@ export interface BuildingTooltipProps {
 }
 
 export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces, framesPassed } = production;
+  let { resource, produces } = production;
+  let clockService = useGetGameClockService();
+  let secondsPassed = clockService.secondsThisMinute;
   return (
     <div
       style={{
@@ -420,7 +422,7 @@ export function ProductionSlot({ production }: ProductionSlotProps) {
       </div>
       <Progress
         type="circle"
-        percent={(framesPassed / (60 * 60)) * 100}
+        percent={(secondsPassed / 60) * 100}
         format={percent => (
           <Text type={'secondary'} style={{ color: produces ? 'black' : 'red' }}>
             {produces}
@@ -640,7 +642,8 @@ export interface ConstructableBuildingProps {
 export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) {
   let { population, buildings, populationGrowth } = planetData;
   let count = population.length;
-  let { foodConsumedPerMinute, framesPassed, foodToGrow, foodStored } = populationGrowth;
+  let { foodConsumedPerMinute, foodToGrow, foodStored } = populationGrowth;
+  let secondsPassed = useGetGameClockService().secondsThisMinute;
   let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
   let unemployedPopulation = count - employedPopulation;
   let totalJobs = buildings.reduce((sum, building) => sum + building.maxPopulation, 0);
@@ -741,7 +744,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
           <div style={{ position: 'relative', width: '100%', height: '24px', padding: '4px' }}>
             <Progress
               type={'line'}
-              percent={(framesPassed / (60 * 60)) * 100}
+              percent={(secondsPassed / 60) * 100}
               format={() => ''}
               strokeColor={'gray'}
               showInfo={false}

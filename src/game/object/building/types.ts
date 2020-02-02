@@ -27,7 +27,6 @@ export type BuildingProductionData = {
 export interface BuildingResourceProductionData {
   resource: Resource;
   produces: number;
-  framesPassed: number; // frames passed since last resource was produced
 }
 
 export type BuildingConstructionData = BuildingCost & BuildingTime;

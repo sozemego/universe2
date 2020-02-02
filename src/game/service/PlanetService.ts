@@ -10,44 +10,43 @@ import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource } from '../object/Resource';
 import { ObjectFactory } from '../ObjectFactory';
 import { textures } from '../data/textures';
-import { GameService } from '../GameService';
+import { GameClockService } from './GameClockService';
 
 export class PlanetService implements IGameService {
   private readonly objectList: ObjectList;
   private readonly objectFactory: ObjectFactory;
   private readonly planets: Record<string, PlanetData> = {};
   private readonly buildingFactory: BuildingFactory = new BuildingFactory();
-  private framesPassed: number = 0;
+  private readonly gameClock: GameClockService;
 
-  constructor(objectList: ObjectList, objectFactory: ObjectFactory) {
+  constructor(
+    objectList: ObjectList,
+    objectFactory: ObjectFactory,
+    gameClockService: GameClockService
+  ) {
     this.objectList = objectList;
     this.objectFactory = objectFactory;
+    this.gameClock = gameClockService;
   }
 
   update(delta: number) {
-    this.framesPassed += 1;
     Object.values(this.planets).forEach(planetData => {
       this.updatePlanet(planetData);
     });
-    if (this.framesPassed === GameService.FRAMES_PER_MINUTE) {
-      this.framesPassed = 0;
-    }
   }
 
   updatePlanet(planetData: PlanetData) {
     let { id, buildings, storage, constructions, population, populationGrowth } = planetData;
-    buildings.forEach(building => {
-      building.update();
-      let { production } = building;
-      Object.keys(production).forEach(resource => {
-        let productionData = production[resource as Resource]!;
-        let { produces, framesPassed } = productionData;
-        if (framesPassed === GameService.FRAMES_PER_MINUTE) {
-          productionData.framesPassed = 0;
+    if (this.gameClock.minutePassed) {
+      buildings.forEach(building => {
+        let { production } = building;
+        Object.keys(production).forEach(resource => {
+          let productionData = production[resource as Resource]!;
+          let { produces } = productionData;
           storage.fill(resource as Resource, produces * building.population);
-        }
+        });
       });
-    });
+    }
     constructions.forEach(construction => {
       let { cost } = construction;
       cost.framesPassed += 1;
@@ -59,47 +58,38 @@ export class PlanetService implements IGameService {
       construction => construction.cost.framesPassed < construction.cost.time
     );
 
-    population.forEach(pop => pop.framesPassed++);
-    let finishedPopulations = population.filter(
-      pop => pop.framesPassed === GameService.FRAMES_PER_MINUTE
-    );
-    let foodNeeded = finishedPopulations.reduce((sum, pop) => sum + pop.foodUsedPerMinute, 0);
-    let foodAvailable = storage.getTakenByResource(Resource.FOOD);
-    let foodToConsume = Math.min(foodNeeded, foodAvailable);
+    if (this.gameClock.minutePassed) {
+      let foodNeeded = population.reduce((sum, pop) => sum + pop.foodUsedPerMinute, 0);
+      let foodAvailable = storage.getTakenByResource(Resource.FOOD);
+      let foodToConsume = Math.min(foodNeeded, foodAvailable);
+      storage.removeResource(Resource.FOOD, foodToConsume);
 
-    storage.removeResource(Resource.FOOD, foodToConsume);
+      population.forEach(pop => {
+        if (foodToConsume >= pop.foodUsedPerMinute) {
+          foodToConsume -= pop.foodUsedPerMinute;
+        } else {
+          let index = population.findIndex(population => population === pop);
+          if (index > -1) {
+            population.splice(index, 1);
+            this.assignPopulation(planetData.planet);
+          }
+        }
+      });
+    }
 
-    finishedPopulations.forEach(pop => {
-      if (foodToConsume >= pop.foodUsedPerMinute) {
-        foodToConsume -= pop.foodUsedPerMinute;
-      } else {
-        let index = population.findIndex(population => population === pop);
-        if (index > -1) {
-          population.splice(index, 1);
+    if (this.gameClock.minutePassed) {
+      let hasEnoughFood =
+        storage.getTakenByResource(Resource.FOOD) >= populationGrowth.foodConsumedPerMinute;
+      if (hasEnoughFood) {
+        populationGrowth.foodStored += populationGrowth.foodConsumedPerMinute;
+        storage.removeResource(Resource.FOOD, populationGrowth.foodConsumedPerMinute);
+        if (populationGrowth.foodStored === populationGrowth.foodToGrow) {
+          populationGrowth.foodStored = 0;
+          populationGrowth.foodConsumedPerMinute = 1;
+          populationGrowth.foodToGrow = population.length;
+          population.push(this._createPopulationUnit());
           this.assignPopulation(planetData.planet);
         }
-      }
-    });
-    population.forEach(
-      pop =>
-        (pop.framesPassed =
-          pop.framesPassed === GameService.FRAMES_PER_MINUTE ? 0 : pop.framesPassed)
-    );
-
-    populationGrowth.framesPassed++;
-    let canConsume = populationGrowth.framesPassed >= GameService.FRAMES_PER_MINUTE;
-    let hasEnoughFood =
-      storage.getTakenByResource(Resource.FOOD) >= populationGrowth.foodConsumedPerMinute;
-    if (canConsume && hasEnoughFood) {
-      populationGrowth.foodStored += populationGrowth.foodConsumedPerMinute;
-      populationGrowth.framesPassed = 0;
-      storage.removeResource(Resource.FOOD, populationGrowth.foodConsumedPerMinute);
-      if (populationGrowth.foodStored === populationGrowth.foodToGrow) {
-        populationGrowth.foodStored = 0;
-        populationGrowth.foodConsumedPerMinute = 1;
-        populationGrowth.foodToGrow = population.length;
-        population.push(this._createPopulationUnit());
-        this.assignPopulation(planetData.planet);
       }
     }
   }
@@ -113,7 +103,6 @@ export class PlanetService implements IGameService {
       populationGrowth: {
         foodStored: 0,
         foodToGrow: 5,
-        framesPassed: 0,
         foodConsumedPerMinute: 1,
       },
       buildings: [],
@@ -230,14 +219,12 @@ export interface PlanetData {
 export interface PlanetPopulationUnit {
   id: string;
   foodUsedPerMinute: number;
-  framesPassed: number;
 }
 
 export interface PopulationGrowth {
   foodToGrow: number;
   foodStored: number;
   foodConsumedPerMinute: number;
-  framesPassed: number;
 }
 
 export interface BuildingConstruction {

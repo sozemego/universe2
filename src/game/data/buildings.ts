@@ -13,12 +13,10 @@ export const BUILDINGS: BuildingDataMap = {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
         produces: 6,
-        framesPassed: 0,
       },
       [Resource.BUILDING_MATERIAL]: {
         resource: Resource.BUILDING_MATERIAL,
         produces: 2,
-        framesPassed: 0,
       },
     },
     cost: {
@@ -49,7 +47,6 @@ export const BUILDINGS: BuildingDataMap = {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
         produces: 3,
-        framesPassed: 0,
       },
     },
     cost: {
