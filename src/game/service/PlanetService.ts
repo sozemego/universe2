@@ -10,12 +10,14 @@ import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource } from '../object/Resource';
 import { ObjectFactory } from '../ObjectFactory';
 import { textures } from '../data/textures';
+import { GameService } from '../GameService';
 
 export class PlanetService implements IGameService {
   private readonly objectList: ObjectList;
   private readonly objectFactory: ObjectFactory;
   private readonly planets: Record<string, PlanetData> = {};
   private readonly buildingFactory: BuildingFactory = new BuildingFactory();
+  private framesPassed: number = 0;
 
   constructor(objectList: ObjectList, objectFactory: ObjectFactory) {
     this.objectList = objectList;
@@ -23,38 +25,44 @@ export class PlanetService implements IGameService {
   }
 
   update(delta: number) {
+    this.framesPassed += 1;
     Object.values(this.planets).forEach(planetData => {
-      this.updatePlanet(planetData, delta);
+      this.updatePlanet(planetData);
     });
+    if (this.framesPassed === GameService.FRAMES_PER_MINUTE) {
+      this.framesPassed = 0;
+    }
   }
 
-  updatePlanet(planetData: PlanetData, delta: number) {
+  updatePlanet(planetData: PlanetData) {
     let { id, buildings, storage, constructions, population, populationGrowth } = planetData;
     buildings.forEach(building => {
-      building.update(delta);
+      building.update();
       let { production } = building;
       Object.keys(production).forEach(resource => {
         let productionData = production[resource as Resource]!;
-        let { produces, timePassed } = productionData;
-        if (timePassed >= 60) {
-          productionData.timePassed = 0;
+        let { produces, framesPassed } = productionData;
+        if (framesPassed === GameService.FRAMES_PER_MINUTE) {
+          productionData.framesPassed = 0;
           storage.fill(resource as Resource, produces * building.population);
         }
       });
     });
     constructions.forEach(construction => {
       let { cost } = construction;
-      cost.timePassed += delta;
-      if (cost.timePassed >= cost.time) {
+      cost.framesPassed += 1;
+      if (cost.framesPassed >= cost.time) {
         this.placeBuilding(this.objectList.findById(id) as Planet, construction.building);
       }
     });
     planetData.constructions = planetData.constructions.filter(
-      construction => construction.cost.timePassed < construction.cost.time
+      construction => construction.cost.framesPassed < construction.cost.time
     );
 
-    population.forEach(pop => (pop.timePassed += delta));
-    let finishedPopulations = population.filter(pop => pop.timePassed >= 60);
+    population.forEach(pop => pop.framesPassed++);
+    let finishedPopulations = population.filter(
+      pop => pop.framesPassed === GameService.FRAMES_PER_MINUTE
+    );
     let foodNeeded = finishedPopulations.reduce((sum, pop) => sum + pop.foodUsedPerMinute, 0);
     let foodAvailable = storage.getTakenByResource(Resource.FOOD);
     let foodToConsume = Math.min(foodNeeded, foodAvailable);
@@ -72,15 +80,19 @@ export class PlanetService implements IGameService {
         }
       }
     });
-    population.forEach(pop => (pop.timePassed = pop.timePassed >= 60 ? 0 : pop.timePassed));
+    population.forEach(
+      pop =>
+        (pop.framesPassed =
+          pop.framesPassed === GameService.FRAMES_PER_MINUTE ? 0 : pop.framesPassed)
+    );
 
-    populationGrowth.timePassed += delta;
-    let canConsume = populationGrowth.timePassed >= 60;
+    populationGrowth.framesPassed++;
+    let canConsume = populationGrowth.framesPassed >= GameService.FRAMES_PER_MINUTE;
     let hasEnoughFood =
       storage.getTakenByResource(Resource.FOOD) >= populationGrowth.foodConsumedPerMinute;
     if (canConsume && hasEnoughFood) {
       populationGrowth.foodStored += populationGrowth.foodConsumedPerMinute;
-      populationGrowth.timePassed = 0;
+      populationGrowth.framesPassed = 0;
       storage.removeResource(Resource.FOOD, populationGrowth.foodConsumedPerMinute);
       if (populationGrowth.foodStored === populationGrowth.foodToGrow) {
         populationGrowth.foodStored = 0;
@@ -101,7 +113,7 @@ export class PlanetService implements IGameService {
       populationGrowth: {
         foodStored: 0,
         foodToGrow: 5,
-        timePassed: 0,
+        framesPassed: 0,
         foodConsumedPerMinute: 1,
       },
       buildings: [],
@@ -133,7 +145,7 @@ export class PlanetService implements IGameService {
   _createPopulationUnit() {
     return {
       id: uuid(),
-      timePassed: 0,
+      framesPassed: 0,
       foodUsedPerMinute: 1,
     };
   }
@@ -218,14 +230,14 @@ export interface PlanetData {
 export interface PlanetPopulationUnit {
   id: string;
   foodUsedPerMinute: number;
-  timePassed: number;
+  framesPassed: number;
 }
 
 export interface PopulationGrowth {
   foodToGrow: number;
   foodStored: number;
   foodConsumedPerMinute: number;
-  timePassed: number;
+  framesPassed: number;
 }
 
 export interface BuildingConstruction {

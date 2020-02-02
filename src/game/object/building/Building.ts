@@ -27,10 +27,10 @@ export class Building {
     this.population = 0;
   }
 
-  update(delta: number) {
+  update() {
     Object.keys(this.production).forEach(resource => {
       let production = this.production[resource as Resource]!;
-      production.timePassed += delta;
+      production.framesPassed += 1;
     });
   }
 }

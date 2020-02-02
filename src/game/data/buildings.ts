@@ -13,17 +13,17 @@ export const BUILDINGS: BuildingDataMap = {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
         produces: 6,
-        timePassed: 0,
+        framesPassed: 0,
       },
       [Resource.BUILDING_MATERIAL]: {
         resource: Resource.BUILDING_MATERIAL,
         produces: 2,
-        timePassed: 0,
+        framesPassed: 0,
       },
     },
     cost: {
       time: -1,
-      timePassed: 0,
+      framesPassed: 0,
     },
   },
   [BuildingType.HOUSING]: {
@@ -35,8 +35,8 @@ export const BUILDINGS: BuildingDataMap = {
     production: {},
     cost: {
       [Resource.BUILDING_MATERIAL]: 15,
-      time: 240,
-      timePassed: 0,
+      time: 240 * 60,
+      framesPassed: 0,
     },
   },
   [BuildingType.FOOD_PROCESSOR]: {
@@ -49,13 +49,13 @@ export const BUILDINGS: BuildingDataMap = {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
         produces: 3,
-        timePassed: 0,
+        framesPassed: 0,
       },
     },
     cost: {
       [Resource.BUILDING_MATERIAL]: 25,
-      time: 360,
-      timePassed: 0,
+      time: 360 * 60,
+      framesPassed: 0,
     },
   },
 };

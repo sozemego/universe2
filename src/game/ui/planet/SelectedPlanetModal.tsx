@@ -323,8 +323,8 @@ export function BuildingConstructionComponent({
       <div style={{ position: 'relative' }}>
         <Progress
           type="circle"
-          percent={(cost.timePassed / cost.time) * 100}
-          format={percent => (cost.time - cost.timePassed).toFixed(0)}
+          percent={(cost.framesPassed / cost.time) * 100}
+          format={percent => ((cost.time - cost.framesPassed) / 60).toFixed(0)}
           width={36}
           strokeColor={'black'}
           style={{ position: 'relative', top: 0, left: 0 }}
@@ -387,7 +387,7 @@ export interface BuildingTooltipProps {
 }
 
 export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces, timePassed } = production;
+  let { resource, produces, framesPassed } = production;
   return (
     <div
       style={{
@@ -420,7 +420,7 @@ export function ProductionSlot({ production }: ProductionSlotProps) {
       </div>
       <Progress
         type="circle"
-        percent={(timePassed / 60) * 100}
+        percent={(framesPassed / (60 * 60)) * 100}
         format={percent => (
           <Text type={'secondary'} style={{ color: produces ? 'black' : 'red' }}>
             {produces}
@@ -639,7 +639,7 @@ export interface ConstructableBuildingProps {
 export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) {
   let { population, buildings, populationGrowth } = planetData;
   let count = population.length;
-  let { foodConsumedPerMinute, timePassed, foodToGrow, foodStored } = populationGrowth;
+  let { foodConsumedPerMinute, framesPassed, foodToGrow, foodStored } = populationGrowth;
   let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
   let unemployedPopulation = count - employedPopulation;
   let totalJobs = buildings.reduce((sum, building) => sum + building.maxPopulation, 0);
@@ -740,7 +740,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
           <div style={{ position: 'relative', width: '100%', height: '24px', padding: '4px' }}>
             <Progress
               type={'line'}
-              percent={(timePassed / 60) * 100}
+              percent={(framesPassed / (60 * 60)) * 100}
               format={() => ''}
               strokeColor={'gray'}
               showInfo={false}
