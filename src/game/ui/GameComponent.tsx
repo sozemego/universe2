@@ -148,6 +148,7 @@ export function GameComponent() {
     dispatch(setServices(gameServices));
 
     const services = [
+      gameClockService,
       gravityService,
       accelerationService,
       debugLineService,
@@ -159,7 +160,6 @@ export function GameComponent() {
       selectionRectangleService,
       debugOrbitService,
       objectBoundsService,
-      gameClockService,
       universeBoundsService,
       fixedGravityService,
       planetService,
