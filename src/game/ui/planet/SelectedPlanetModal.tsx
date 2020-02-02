@@ -3,7 +3,7 @@ import { Icon, Progress, Tooltip } from 'antd';
 import Text from 'antd/lib/typography/Text';
 import { useDispatch } from 'react-redux';
 import { useRealClock } from '../../util/useRealClock';
-import { useGetGameClockService, useGetPlanetService } from '../../state/selectors';
+import { useGetPlanetService } from '../../state/selectors';
 import { Planet } from '../../object/Planet';
 import { BuildingConstruction, PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
