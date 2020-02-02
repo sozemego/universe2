@@ -616,6 +616,7 @@ export function ConstructableBuilding({ building, planetData }: ConstructableBui
                       <img
                         src={RESOURCE_DATA[resource as Resource].texture}
                         style={{ width: '24px', height: '24px' }}
+                        alt={resource + 'icon'}
                       />
                       <Text type={'secondary'}>{productionData.produces}</Text>
                     </div>
