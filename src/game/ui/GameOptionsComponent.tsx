@@ -3,7 +3,7 @@ import { Checkbox, Icon, Slider } from 'antd';
 import {
   useGetFollowSelected,
   useGetGameOptions,
-  useGetGameSpeedScale,
+  useGetGameSpeed,
   useGetMoveToSelectionService,
   useGetObjectBoundsService,
   useGetSelectionCycleService,
@@ -13,7 +13,7 @@ import {
 } from '../state/selectors';
 
 export function GameOptionsComponent() {
-  const gameSpeedScale = useGetGameSpeedScale();
+  const gameSpeed = useGetGameSpeed();
   const showDebugLines = useGetShowDebugLines();
   const showDebugOrbits = useShowDebugOrbits();
   const showDebugSphereBounds = useShowDebugSphereBounds();
@@ -27,11 +27,11 @@ export function GameOptionsComponent() {
     <div style={{ width: '100%', padding: '4px' }}>
       <div>Options</div>
       <div>
-        <div>Game speed scale [{gameSpeedScale}]</div>
+        <div>Game speed [{gameSpeed}]</div>
         <Slider
-          value={gameSpeedScale * 100}
-          onChange={val => (gameOptions.gameSpeedScale = (val as number) / 100)}
-          max={2500}
+          value={gameSpeed}
+          onChange={val => (gameOptions.gameSpeed = val as number)}
+          max={25}
         />
       </div>
       <div>
