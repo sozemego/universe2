@@ -460,7 +460,7 @@ export function ProductionSlot({ production }: ProductionSlot2Props) {
     let producesPerMinute = prod.produces / minutes;
     sum += producesPerMinute;
   });
-  let average = sum / production.length;
+  let average = Math.floor(sum / production.length);
   return (
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
       <div
@@ -472,14 +472,14 @@ export function ProductionSlot({ production }: ProductionSlot2Props) {
       <div
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}
       >
-        {production.map(prod => (
+        {production.map((prod, index) => (
           <Progress
             type="circle"
             percent={(prod.timePassed / prod.time) * 100}
             format={percent => <Text type={'secondary'}>{prod.produces}</Text>}
             width={32}
             strokeColor={'black'}
-            key={prod.resource}
+            key={index}
           />
         ))}
       </div>
