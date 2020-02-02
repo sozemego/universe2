@@ -10,11 +10,9 @@ import { Dispatch } from 'redux';
 import { ServiceStatsMap, setServiceStatsMap } from './ui/state';
 import { PlanetService } from './service/PlanetService';
 import { Planet } from './object/Planet';
+import { CONSTANTS } from './Constants';
 
 export class GameService {
-  static FPS = 1 / 60;
-  static FRAMES_PER_MINUTE = 60 * 60;
-  static FRAMES_PER_SECOND = GameService.FRAMES_PER_MINUTE / 60;
   private readonly engine: GameEngine;
   private readonly input: InputHandler;
   private readonly universe: Universe;
@@ -89,8 +87,8 @@ export class GameService {
     let newDelta = delta * this.options.gameSpeedScale;
     for (let i = 0; i < this.options.gameSpeed; i++) {
       this.accumulator += delta;
-      while (this.accumulator >= GameService.FPS) {
-        this.accumulator -= GameService.FPS;
+      while (this.accumulator >= CONSTANTS.FPS) {
+        this.accumulator -= CONSTANTS.FPS;
 
         this.universe.update(newDelta);
         this.services.forEach(service => {
