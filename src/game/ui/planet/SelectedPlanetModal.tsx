@@ -13,6 +13,7 @@ import { textures } from '../../data/textures';
 import { Building } from '../../object/building/Building';
 import { BuildingData, BuildingResourceProductionData } from '../../object/building/types';
 import { BUILDINGS } from '../../data/buildings';
+import { CONSTANTS } from '../../Constants';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
@@ -398,6 +399,7 @@ export function PlanetProduction({ planet, planetData }: PlanetProductionModalPr
         if (previous) {
           previous.push(productionData);
         } else {
+          productionData.produces *= building.population;
           productions[resource as Resource] = [productionData];
         }
       });
@@ -449,9 +451,21 @@ export interface PlanetProductionModalProps {
 
 export function ProductionSlot({ production }: ProductionSlot2Props) {
   let resource = production[0].resource;
+  let sum = 0;
+  production.forEach(prod => {
+    let minutes = prod.time / CONSTANTS.FRAMES_PER_MINUTE;
+    let producesPerMinute = prod.produces / minutes;
+    sum += producesPerMinute;
+  });
+  let average = sum / production.length;
   return (
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-      <ResourceIcon resource={resource} size={32} />
+      <div
+        style={{ display: 'flex', flexDirection: 'column', width: '48px', alignItems: 'center' }}
+      >
+        <ResourceIcon resource={resource} size={32} />
+        <Text type={'secondary'}>{average}/m</Text>
+      </div>
       <div
         style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}
       >
