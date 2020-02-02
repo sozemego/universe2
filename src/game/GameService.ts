@@ -14,6 +14,7 @@ import { Planet } from './object/Planet';
 export class GameService {
   static FPS = 1 / 60;
   static FRAMES_PER_MINUTE = 60 * 60;
+  static FRAMES_PER_SECOND = GameService.FRAMES_PER_MINUTE / 60;
   private readonly engine: GameEngine;
   private readonly input: InputHandler;
   private readonly universe: Universe;
