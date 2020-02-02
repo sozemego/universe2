@@ -642,7 +642,7 @@ export interface ConstructableBuildingProps {
 export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) {
   let { population, buildings, populationGrowth } = planetData;
   let count = population.length;
-  let { foodConsumedPerMinute, foodToGrow, foodStored } = populationGrowth;
+  let { foodConsumedPerMinute, foodToGrow, foodStored, growing } = populationGrowth;
   let secondsPassed = useGetGameClockService().secondsThisMinute;
   let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
   let unemployedPopulation = count - employedPopulation;
@@ -744,7 +744,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
           <div style={{ position: 'relative', width: '100%', height: '24px', padding: '4px' }}>
             <Progress
               type={'line'}
-              percent={(secondsPassed / 60) * 100}
+              percent={growing ? (secondsPassed / 60) * 100 : 0}
               format={() => ''}
               strokeColor={'gray'}
               showInfo={false}

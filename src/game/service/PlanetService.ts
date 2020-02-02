@@ -78,18 +78,20 @@ export class PlanetService implements IGameService {
     }
 
     if (this.gameClock.minutePassed) {
-      let hasEnoughFood =
+      if (populationGrowth.growing && populationGrowth.foodStored === populationGrowth.foodToGrow) {
+        populationGrowth.foodStored = 0;
+        populationGrowth.foodConsumedPerMinute = 1;
+        populationGrowth.foodToGrow = population.length;
+        populationGrowth.growing = false;
+        population.push(this._createPopulationUnit());
+        this.assignPopulation(planetData.planet);
+      }
+
+      populationGrowth.growing =
         storage.getTakenByResource(Resource.FOOD) >= populationGrowth.foodConsumedPerMinute;
-      if (hasEnoughFood) {
-        populationGrowth.foodStored += populationGrowth.foodConsumedPerMinute;
+      if (populationGrowth.growing) {
         storage.removeResource(Resource.FOOD, populationGrowth.foodConsumedPerMinute);
-        if (populationGrowth.foodStored === populationGrowth.foodToGrow) {
-          populationGrowth.foodStored = 0;
-          populationGrowth.foodConsumedPerMinute = 1;
-          populationGrowth.foodToGrow = population.length;
-          population.push(this._createPopulationUnit());
-          this.assignPopulation(planetData.planet);
-        }
+        populationGrowth.foodStored += populationGrowth.foodConsumedPerMinute;
       }
     }
   }
@@ -104,6 +106,7 @@ export class PlanetService implements IGameService {
         foodStored: 0,
         foodToGrow: 5,
         foodConsumedPerMinute: 1,
+        growing: false,
       },
       buildings: [],
       storage: new PlanetStorage(50),
@@ -222,6 +225,7 @@ export interface PlanetPopulationUnit {
 }
 
 export interface PopulationGrowth {
+  growing: boolean;
   foodToGrow: number;
   foodStored: number;
   foodConsumedPerMinute: number;
