@@ -614,7 +614,7 @@ export function ConstructableBuilding({ building, planetData }: ConstructableBui
                 {Object.keys(production).map(resource => {
                   let productionData = production[resource as Resource]!;
                   return (
-                    <div>
+                    <div key={resource}>
                       <img
                         src={RESOURCE_DATA[resource as Resource].texture}
                         style={{ width: '24px', height: '24px' }}
