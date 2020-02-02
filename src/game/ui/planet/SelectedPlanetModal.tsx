@@ -387,9 +387,7 @@ export interface BuildingTooltipProps {
 }
 
 export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces } = production;
-  let clockService = useGetGameClockService();
-  let secondsPassed = clockService.secondsThisMinute;
+  let { resource, produces, time, timePassed } = production;
   return (
     <div
       style={{
@@ -422,7 +420,7 @@ export function ProductionSlot({ production }: ProductionSlotProps) {
       </div>
       <Progress
         type="circle"
-        percent={(secondsPassed / 60) * 100}
+        percent={(timePassed / time) * 100}
         format={percent => (
           <Text type={'secondary'} style={{ color: produces ? 'black' : 'red' }}>
             {produces}
@@ -642,8 +640,14 @@ export interface ConstructableBuildingProps {
 export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) {
   let { population, buildings, populationGrowth } = planetData;
   let count = population.length;
-  let { foodConsumedPerMinute, foodToGrow, foodStored, growing } = populationGrowth;
-  let secondsPassed = useGetGameClockService().secondsThisMinute;
+  let {
+    foodConsumedPerMinute,
+    foodToGrow,
+    foodStored,
+    growing,
+    timePassed,
+    time,
+  } = populationGrowth;
   let employedPopulation = buildings.reduce((sum, building) => sum + building.population, 0);
   let unemployedPopulation = count - employedPopulation;
   let totalJobs = buildings.reduce((sum, building) => sum + building.maxPopulation, 0);
@@ -744,7 +748,7 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
           <div style={{ position: 'relative', width: '100%', height: '24px', padding: '4px' }}>
             <Progress
               type={'line'}
-              percent={growing ? (secondsPassed / 60) * 100 : 0}
+              percent={growing ? (timePassed / time) * 100 : 0}
               format={() => ''}
               strokeColor={'gray'}
               showInfo={false}

@@ -1,4 +1,5 @@
 import { BuildingProductionData } from './types';
+import { Resource } from '../Resource';
 
 export class Building {
   readonly id: string;
@@ -24,5 +25,12 @@ export class Building {
     this.production = production;
     this.maxPopulation = maxPopulation;
     this.population = 0;
+  }
+
+  update() {
+    Object.keys(this.production).forEach(resource => {
+      let production = this.production[resource as Resource]!;
+      production.timePassed++;
+    });
   }
 }

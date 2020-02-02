@@ -1,6 +1,7 @@
 import { textures } from './textures';
 import { BuildingDataMap, BuildingType } from '../object/building/types';
 import { Resource } from '../object/Resource';
+import { CONSTANTS } from '../Constants';
 
 export const BUILDINGS: BuildingDataMap = {
   [BuildingType.COLONY_CENTER]: {
@@ -13,10 +14,14 @@ export const BUILDINGS: BuildingDataMap = {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
         produces: 4,
+        time: CONSTANTS.FRAMES_PER_MINUTE,
+        timePassed: 0,
       },
       [Resource.BUILDING_MATERIAL]: {
         resource: Resource.BUILDING_MATERIAL,
-        produces: 2,
+        produces: 4,
+        time: CONSTANTS.FRAMES_PER_MINUTE * 2,
+        timePassed: 0,
       },
     },
     cost: {
@@ -33,7 +38,7 @@ export const BUILDINGS: BuildingDataMap = {
     production: {},
     cost: {
       [Resource.BUILDING_MATERIAL]: 15,
-      time: 240 * 60,
+      time: 2 * CONSTANTS.FRAMES_PER_MINUTE,
       framesPassed: 0,
     },
   },
@@ -47,11 +52,13 @@ export const BUILDINGS: BuildingDataMap = {
       [Resource.FOOD]: {
         resource: Resource.FOOD,
         produces: 3,
+        timePassed: 0,
+        time: CONSTANTS.FRAMES_PER_MINUTE,
       },
     },
     cost: {
       [Resource.BUILDING_MATERIAL]: 25,
-      time: 360 * 60,
+      time: 4 * CONSTANTS.FRAMES_PER_MINUTE,
       framesPassed: 0,
     },
   },

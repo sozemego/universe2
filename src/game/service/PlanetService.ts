@@ -11,6 +11,7 @@ import { Resource } from '../object/Resource';
 import { ObjectFactory } from '../ObjectFactory';
 import { textures } from '../data/textures';
 import { GameClockService } from './GameClockService';
+import { CONSTANTS } from '../Constants';
 
 export class PlanetService implements IGameService {
   private readonly objectList: ObjectList;
@@ -37,16 +38,18 @@ export class PlanetService implements IGameService {
 
   updatePlanet(planetData: PlanetData) {
     let { id, buildings, storage, constructions, population, populationGrowth } = planetData;
-    if (this.gameClock.minutePassed) {
-      buildings.forEach(building => {
-        let { production } = building;
-        Object.keys(production).forEach(resource => {
-          let productionData = production[resource as Resource]!;
+    buildings.forEach(building => {
+      building.update();
+      let { production } = building;
+      Object.keys(production).forEach(resource => {
+        let productionData = production[resource as Resource]!;
+        if (productionData.timePassed === productionData.time) {
           let { produces } = productionData;
           storage.fill(resource as Resource, produces * building.population);
-        });
+          productionData.timePassed = 0;
+        }
       });
-    }
+    });
     constructions.forEach(construction => {
       let { cost } = construction;
       cost.framesPassed += 1;
@@ -77,7 +80,10 @@ export class PlanetService implements IGameService {
       });
     }
 
-    if (this.gameClock.minutePassed) {
+    populationGrowth.timePassed++;
+
+    if (populationGrowth.time === populationGrowth.timePassed) {
+      populationGrowth.timePassed = 0;
       if (populationGrowth.growing && populationGrowth.foodStored === populationGrowth.foodToGrow) {
         populationGrowth.foodStored = 0;
         populationGrowth.foodConsumedPerMinute = 1;
@@ -107,6 +113,8 @@ export class PlanetService implements IGameService {
         foodToGrow: 5,
         foodConsumedPerMinute: 1,
         growing: false,
+        time: CONSTANTS.FRAMES_PER_MINUTE,
+        timePassed: 0,
       },
       buildings: [],
       storage: new PlanetStorage(50),
@@ -229,6 +237,8 @@ export interface PopulationGrowth {
   foodToGrow: number;
   foodStored: number;
   foodConsumedPerMinute: number;
+  time: number;
+  timePassed: number;
 }
 
 export interface BuildingConstruction {
