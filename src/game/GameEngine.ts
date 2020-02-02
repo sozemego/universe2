@@ -3,7 +3,7 @@ import { Scene, TextureLoader, WebGLRenderer } from 'three/src/Three';
 import Stats from 'stats-js';
 import { InputHandler, KEY } from './InputHandler';
 import { GameCamera } from './GameCamera';
-import { GameService } from './GameService';
+import { CONSTANTS } from './Constants';
 
 export class GameEngine {
   private readonly inputHandler: InputHandler;
@@ -97,11 +97,11 @@ export class GameEngine {
 
     this.handleCameraMovement();
 
-    this.camera.update(GameService.FPS);
+    this.camera.update(CONSTANTS.FPS);
     this.camera.updateProjectionMatrix();
     // this.cameraHelper.update();
 
-    this.updateFn(GameService.FPS);
+    this.updateFn(CONSTANTS.FPS);
 
     this.renderer.render(this.scene, this.camera);
 
