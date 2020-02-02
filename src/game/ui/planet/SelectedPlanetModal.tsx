@@ -366,7 +366,10 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
                 producesColor = 'gray';
               }
               return (
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                <div
+                  style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}
+                  key={resource}
+                >
                   <img
                     src={RESOURCE_DATA[resource as Resource].texture}
                     style={{ width: '12px', height: '12px' }}
