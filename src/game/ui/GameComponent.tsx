@@ -60,6 +60,8 @@ export function GameComponent() {
     const universe = new UniverseGenerator(gameObjectFactory).generateUniverse();
     const gameOptions = new GameOptions(dispatch);
 
+    const gameClockService = new GameClockService(dispatch);
+
     const gravityService = new GravityService(universe);
 
     const accelerationService = new AccelerationService(objectList);
@@ -107,7 +109,6 @@ export function GameComponent() {
       input,
       gameOptions
     );
-    const gameClockService = new GameClockService(dispatch);
     const universeBoundsService = new UniverseBoundsService(universe);
     const spawnObjectService = new SpawnObjectService(
       input,
