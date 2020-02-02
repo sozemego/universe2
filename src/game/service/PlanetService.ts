@@ -10,7 +10,6 @@ import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource } from '../object/Resource';
 import { ObjectFactory } from '../ObjectFactory';
 import { textures } from '../data/textures';
-import { GameClockService } from './GameClockService';
 import { CONSTANTS } from '../Constants';
 
 export class PlanetService implements IGameService {
@@ -18,16 +17,10 @@ export class PlanetService implements IGameService {
   private readonly objectFactory: ObjectFactory;
   private readonly planets: Record<string, PlanetData> = {};
   private readonly buildingFactory: BuildingFactory = new BuildingFactory();
-  private readonly gameClock: GameClockService;
 
-  constructor(
-    objectList: ObjectList,
-    objectFactory: ObjectFactory,
-    gameClockService: GameClockService
-  ) {
+  constructor(objectList: ObjectList, objectFactory: ObjectFactory) {
     this.objectList = objectList;
     this.objectFactory = objectFactory;
-    this.gameClock = gameClockService;
   }
 
   update(delta: number) {
@@ -61,7 +54,8 @@ export class PlanetService implements IGameService {
       construction => construction.cost.framesPassed < construction.cost.time
     );
 
-    if (this.gameClock.minutePassed) {
+    planetData.populationUpkeepTime++;
+    if (planetData.populationUpkeepTime === CONSTANTS.FRAMES_PER_MINUTE) {
       let foodNeeded = population.reduce((sum, pop) => sum + pop.foodUsedPerMinute, 0);
       let foodAvailable = storage.getTakenByResource(Resource.FOOD);
       let foodToConsume = Math.min(foodNeeded, foodAvailable);
@@ -120,6 +114,7 @@ export class PlanetService implements IGameService {
       storage: new PlanetStorage(50),
       constructions: [],
       planet,
+      populationUpkeepTime: 0,
     };
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
     this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 10);
@@ -219,6 +214,7 @@ export class PlanetService implements IGameService {
 export interface PlanetData {
   id: string;
   population: PlanetPopulationUnit[];
+  populationUpkeepTime: number;
   populationGrowth: PopulationGrowth;
   buildings: Building[];
   storage: PlanetStorage;
