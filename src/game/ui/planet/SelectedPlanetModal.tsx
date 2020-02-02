@@ -433,7 +433,7 @@ export function PlanetProduction({ planet, planetData }: PlanetProductionModalPr
       >
         {Object.values(productions).map((productionData, index, arr) => (
           <div key={index} style={{ width: '100%' }}>
-            <ProductionSlot2 production={productionData} key={index} />
+            <ProductionSlot production={productionData} key={index} />
             {index !== arr.length - 1 && <hr />}
           </div>
         ))}
@@ -447,59 +447,7 @@ export interface PlanetProductionModalProps {
   planetData: PlanetData;
 }
 
-export function ProductionSlot({ production }: ProductionSlotProps) {
-  let { resource, produces, time, timePassed } = production;
-  return (
-    <div
-      style={{
-        margin: '4px',
-        width: '64px',
-        height: '64x',
-        minWidth: '64px',
-        minHeight: '64px',
-      }}
-    >
-      <div
-        style={{
-          background: `url(${textures.production_slot_bg})`,
-          backgroundSize: 'cover',
-          width: '64px',
-          height: '64px',
-          minWidth: '64px',
-          minHeight: '64px',
-          position: 'absolute',
-        }}
-      >
-        <img
-          src={RESOURCE_DATA[resource].texture}
-          alt={`${resource} texture`}
-          style={{
-            opacity: 0.75,
-            width: '100%',
-          }}
-        />
-      </div>
-      <Progress
-        type="circle"
-        percent={(timePassed / time) * 100}
-        format={percent => (
-          <Text type={'secondary'} style={{ color: produces ? 'black' : 'red' }}>
-            {produces}
-          </Text>
-        )}
-        width={48}
-        strokeColor={'black'}
-        style={{ position: 'relative', top: 8, left: 8 }}
-      />
-    </div>
-  );
-}
-
-export interface ProductionSlotProps {
-  production: BuildingResourceProductionData;
-}
-
-export function ProductionSlot2({ production }: ProductionSlot2Props) {
+export function ProductionSlot({ production }: ProductionSlot2Props) {
   let resource = production[0].resource;
   return (
     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
