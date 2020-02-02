@@ -122,7 +122,6 @@ export class PlanetService implements IGameService {
       planet,
     };
     this.constructBuilding(planet, BuildingType.COLONY_CENTER);
-    this.constructBuilding(planet, BuildingType.FOOD_PROCESSOR);
     this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 10);
 
     let sprite = this.objectFactory.createSprite(
@@ -136,7 +135,7 @@ export class PlanetService implements IGameService {
 
   initialPopulation(): PlanetPopulationUnit[] {
     let populationUnits: PlanetPopulationUnit[] = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 500; i++) {
       populationUnits.push(this._createPopulationUnit());
     }
     return populationUnits;

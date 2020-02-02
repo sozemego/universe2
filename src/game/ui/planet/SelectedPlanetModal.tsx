@@ -386,6 +386,67 @@ export interface BuildingTooltipProps {
   building: Building;
 }
 
+export function PlanetProduction({ planet, planetData }: PlanetProductionModalProps) {
+  let productions: Record<string, BuildingResourceProductionData[]> = {};
+  planetData.buildings
+    .filter(building => building.population)
+    .forEach(building => {
+      let { production } = building;
+      Object.keys(production).forEach(resource => {
+        let productionData = { ...production[resource as Resource]! };
+        let previous = productions[resource as Resource];
+        if (previous) {
+          previous.push(productionData);
+        } else {
+          productions[resource as Resource] = [productionData];
+        }
+      });
+    });
+
+  return (
+    <div
+      style={{
+        background: 'rgb(192,192,192)',
+        // border: '4px solid rgb(119,136,153)',
+        minWidth: `200px`,
+        padding: '12px',
+        boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
+        marginLeft: '12px',
+        flexBasis: 'auto',
+        width: 'auto',
+        overflowY: 'auto',
+      }}
+    >
+      <Text type={'secondary'}>Production</Text>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+          padding: '8px',
+          maxHeight: '300px',
+          maxWidth: '300px',
+          minWidth: '300px',
+        }}
+      >
+        {Object.values(productions).map((productionData, index, arr) => (
+          <div key={index} style={{ width: '100%' }}>
+            <ProductionSlot2 production={productionData} key={index} />
+            {index !== arr.length - 1 && <hr />}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export interface PlanetProductionModalProps {
+  planet: Planet;
+  planetData: PlanetData;
+}
+
 export function ProductionSlot({ production }: ProductionSlotProps) {
   let { resource, produces, time, timePassed } = production;
   return (
@@ -438,55 +499,31 @@ export interface ProductionSlotProps {
   production: BuildingResourceProductionData;
 }
 
-export function PlanetProduction({ planet, planetData }: PlanetProductionModalProps) {
-  let productions: Record<string, BuildingResourceProductionData> = {};
-  planetData.buildings.forEach(building => {
-    let { production, population, maxPopulation } = building;
-    Object.keys(production).forEach(resource => {
-      let productionData = { ...production[resource as Resource]! };
-      let previous = productions[resource];
-      if (previous) {
-        previous.produces += productionData?.produces * population;
-      } else {
-        productionData.produces *= maxPopulation;
-        productions[resource] = productionData;
-      }
-    });
-  });
-
+export function ProductionSlot2({ production }: ProductionSlot2Props) {
+  let resource = production[0].resource;
   return (
-    <div
-      style={{
-        background: 'rgb(192,192,192)',
-        // border: '4px solid rgb(119,136,153)',
-        width: `200px`,
-        padding: '12px',
-        boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
-        marginLeft: '12px',
-      }}
-    >
-      <Text type={'secondary'}>Production</Text>
+    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+      <ResourceIcon resource={resource} size={32} />
       <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          alignItems: 'flex-start',
-          justifyContent: 'flex-start',
-          padding: '8px',
-        }}
+        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap' }}
       >
-        {Object.values(productions).map((productionData, index) => (
-          <ProductionSlot production={productionData} key={index} />
+        {production.map(prod => (
+          <Progress
+            type="circle"
+            percent={(prod.timePassed / prod.time) * 100}
+            format={percent => <Text type={'secondary'}>{prod.produces}</Text>}
+            width={32}
+            strokeColor={'black'}
+            key={prod.resource}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-export interface PlanetProductionModalProps {
-  planet: Planet;
-  planetData: PlanetData;
+export interface ProductionSlot2Props {
+  production: BuildingResourceProductionData[];
 }
 
 export function ConstructableBuildingList({ planetData, onClose }: ConstructableBuildingListProps) {
@@ -786,4 +823,19 @@ export function PlanetPopulation({ planet, planetData }: PlanetPopulationProps) 
 export interface PlanetPopulationProps {
   planet: Planet;
   planetData: PlanetData;
+}
+
+export function ResourceIcon({ resource, size = 24 }: ResourceIconProps) {
+  return (
+    <img
+      src={RESOURCE_DATA[resource].texture}
+      alt={resource + ' icon'}
+      style={{ width: `${size}px`, height: `${size}px` }}
+    />
+  );
+}
+
+export interface ResourceIconProps {
+  resource: Resource;
+  size?: number;
 }
