@@ -74,6 +74,7 @@ export class GameEngine {
     });
 
     inputHandler.onKeyUp(event => this.handleZoom(event.key));
+    inputHandler.onKeyDown(event => this.handleZoom(event.key));
 
     inputHandler.onMouseWheel(delta => this.handleMouseWheelZoom(delta));
 
