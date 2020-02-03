@@ -259,9 +259,11 @@ export function BuildingComponent({ building }: BuildingComponentProps) {
           alt={name}
           style={{ maxWidth: '36px', maxHeight: '36px', width: '36px', height: '36px' }}
         />
-        <Text style={{ fontSize: '0.8rem', marginLeft: '6px' }}>
-          {population}/{maxPopulation}
-        </Text>
+        {maxPopulation > 0 && (
+          <Text style={{ fontSize: '0.8rem', marginLeft: '6px' }}>
+            {population}/{maxPopulation}
+          </Text>
+        )}
       </Tooltip>
     </div>
   );
