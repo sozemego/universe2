@@ -346,7 +346,7 @@ export function BuildingTooltip({ building }: BuildingTooltipProps) {
   return (
     <div>
       <div>{description}</div>
-      {maxPopulation && (
+      {maxPopulation > 0 && (
         <div>
           Population: {population} / {maxPopulation}
         </div>
