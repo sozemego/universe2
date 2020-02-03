@@ -4,6 +4,7 @@ export enum BuildingType {
   COLONY_CENTER = 'COLONY_CENTER',
   HOUSING = 'HOUSING',
   FOOD_PROCESSOR = 'FOOD PROCESSOR',
+  SHIPYARD = 'SHIPYARD',
 }
 
 export type BuildingDataMap = Record<BuildingType, BuildingData>;

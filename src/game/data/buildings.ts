@@ -62,4 +62,18 @@ export const BUILDINGS: BuildingDataMap = {
       framesPassed: 0,
     },
   },
+  [BuildingType.SHIPYARD]: {
+    name: 'Shipyard',
+    type: BuildingType.SHIPYARD,
+    texture: textures.shipyard,
+    populationNeeded: 0,
+    description: 'Constructs space ships for your empire',
+    production: {},
+    cost: {
+      [Resource.BUILDING_MATERIAL]: 25,
+      [Resource.METAL]: 25,
+      time: 6 * CONSTANTS.FRAMES_PER_MINUTE,
+      framesPassed: 0,
+    },
+  },
 };

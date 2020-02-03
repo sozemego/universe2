@@ -116,7 +116,8 @@ export class PlanetService implements IGameService {
       planet,
       populationUpkeepTime: 0,
     };
-    this.constructBuilding(planet, BuildingType.COLONY_CENTER);
+    this.placeBuilding(planet, this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER));
+    this.placeBuilding(planet, this.buildingFactory.createBuilding(BuildingType.SHIPYARD));
     this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 10);
 
     let sprite = this.objectFactory.createSprite(

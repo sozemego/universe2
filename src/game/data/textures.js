@@ -27,6 +27,7 @@ export const textures = {
   panel_blue_empty: 'textures/panel_blue_empty.png',
   panel_brown: 'textures/panel_brown.png',
   production_slot_bg: 'textures/production_slot_bg.png',
+  shipyard: 'textures/shipyard.png',
   unemployed_pop: 'textures/unemployed_pop.png',
   white_star_1: 'textures/white_star_1.png',
 };
