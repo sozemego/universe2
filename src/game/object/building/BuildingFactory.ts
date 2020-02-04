@@ -1,7 +1,7 @@
 import uuid from 'uuid/v4';
-import { BUILDINGS } from '../data/buildings';
-import { Building } from '../object/building/Building';
-import { BuildingConstructionData, BuildingData, BuildingType } from '../object/building/types';
+import { BUILDINGS } from '../../data/buildings';
+import { Building } from './Building';
+import { BuildingConstructionData, BuildingData, BuildingType } from './types';
 
 export class BuildingFactory {
   createBuilding(type: BuildingType): Building {

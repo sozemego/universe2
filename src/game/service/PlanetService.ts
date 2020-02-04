@@ -4,7 +4,7 @@ import { IGameService } from './index';
 import { ObjectList } from '../ObjectList';
 import { Planet } from '../object/Planet';
 import { Building } from '../object/building/Building';
-import { BuildingFactory } from './BuildingFactory';
+import { BuildingFactory } from '../object/building/BuildingFactory';
 import { BuildingConstructionData, BuildingType } from '../object/building/types';
 import { PlanetStorage } from '../object/PlanetStorage';
 import { Resource } from '../object/Resource';
