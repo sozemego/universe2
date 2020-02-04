@@ -11,16 +11,21 @@ import { Resource } from '../object/Resource';
 import { ObjectFactory } from '../ObjectFactory';
 import { textures } from '../data/textures';
 import { CONSTANTS } from '../Constants';
+import { Ship } from '../object/ship/Ship';
+import { ShipType } from '../object/ship/types';
+import { ShipFactory } from '../object/ship/ShipFactory';
 
 export class PlanetService implements IGameService {
   private readonly objectList: ObjectList;
   private readonly objectFactory: ObjectFactory;
+  private readonly shipFactory: ShipFactory;
   private readonly planets: Record<string, PlanetData> = {};
   private readonly buildingFactory: BuildingFactory = new BuildingFactory();
 
-  constructor(objectList: ObjectList, objectFactory: ObjectFactory) {
+  constructor(objectList: ObjectList, objectFactory: ObjectFactory, shipFactory: ShipFactory) {
     this.objectList = objectList;
     this.objectFactory = objectFactory;
+    this.shipFactory = shipFactory;
   }
 
   update(delta: number) {
@@ -115,6 +120,7 @@ export class PlanetService implements IGameService {
       constructions: [],
       planet,
       populationUpkeepTime: 0,
+      ships: [],
     };
     this.placeBuilding(planet, this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER));
     this.placeBuilding(planet, this.buildingFactory.createBuilding(BuildingType.SHIPYARD));
@@ -211,6 +217,14 @@ export class PlanetService implements IGameService {
   getPlanetData(id: string): PlanetData | null {
     return this.planets[id] || null;
   }
+
+  constructShip(planet: Planet | PlanetData, shipType: ShipType) {
+    if (planet instanceof Planet) {
+      planet = this.planets[planet.id];
+    }
+    let ship = this.shipFactory.createShip(shipType);
+    planet.ships.push(ship);
+  }
 }
 
 export interface PlanetData {
@@ -222,6 +236,7 @@ export interface PlanetData {
   storage: PlanetStorage;
   constructions: BuildingConstruction[];
   planet: Planet;
+  ships: Ship[];
 }
 
 export interface PlanetPopulationUnit {

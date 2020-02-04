@@ -3,6 +3,7 @@ export const textures = {
   building_material: 'textures/building_material.png',
   buttonRed: 'textures/buttonRed.png',
   colony_center: 'textures/colony_center.png',
+  colony_ship: 'textures/colony_ship.png',
   food: 'textures/food.png',
   food_processor: 'textures/food_processor.png',
   gear: 'textures/gear.png',
@@ -28,6 +29,7 @@ export const textures = {
   panel_brown: 'textures/panel_brown.png',
   production_slot_bg: 'textures/production_slot_bg.png',
   shipyard: 'textures/shipyard.png',
+  transport_ship: 'textures/transport_ship.png',
   unemployed_pop: 'textures/unemployed_pop.png',
   white_star_1: 'textures/white_star_1.png',
 };

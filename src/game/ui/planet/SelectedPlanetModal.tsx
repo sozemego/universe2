@@ -14,6 +14,7 @@ import { Building } from '../../object/building/Building';
 import { BuildingData, BuildingResourceProductionData } from '../../object/building/types';
 import { BUILDINGS } from '../../data/buildings';
 import { CONSTANTS } from '../../Constants';
+import { SHIPS } from '../../data/ships';
 
 export function SelectedPlanetModal({ planet }: SelectedPlanetModalProps) {
   useRealClock({ interval: 250 });
@@ -92,12 +93,14 @@ export function PlanetColonizationComponentModal({
   planet,
   planetData,
 }: PlanetColonizationComponentModalProps) {
-  let { storage } = planetData;
+  let { storage, buildings } = planetData;
+  let hasShipyard = buildings.findIndex(building => building.name === 'Shipyard') > -1;
   return (
     <div>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
         <PlanetBuildingsModal planetData={planetData} planet={planet} />
         <PlanetProduction planet={planet} planetData={planetData} />
+        {hasShipyard && <PlanetShipyard planetData={planetData} />}
       </div>
       <hr />
       <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -805,4 +808,88 @@ export function ResourceIcon({ resource, size = 24 }: ResourceIconProps) {
 export interface ResourceIconProps {
   resource: Resource;
   size?: number;
+}
+
+export function PlanetShipyard({ planetData }: PlanetShipyardProps) {
+  let { ships } = planetData;
+  let [hover, setHover] = React.useState(false);
+  let [hoverIndex, setHoverIndex] = React.useState(-1);
+  let planetService = useGetPlanetService();
+  return (
+    <div
+      style={{
+        background: 'rgb(192,192,192)',
+        minWidth: `240px`,
+        padding: '12px',
+        boxShadow: '2px 2px 15px 4px rgba(128,128,128, 0.75)',
+        marginLeft: '12px',
+        flexBasis: 'auto',
+        width: 'auto',
+        overflowY: 'auto',
+      }}
+    >
+      <div>
+        <Text type={'secondary'}>Construct ships</Text>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          {Object.values(SHIPS).map((shipData, index) => (
+            <div
+              key={shipData.name}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                border: '1px solid gray',
+                backgroundColor: 'rgb(169,169,169)',
+                boxShadow: `0px 0px 4px 2px ${
+                  hover && index === hoverIndex ? 'white' : 'transparent'
+                }`,
+                margin: '6px',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={() => {
+                setHover(true);
+                setHoverIndex(index);
+              }}
+              onMouseLeave={() => setHover(false)}
+              onClick={() => planetService.constructShip(planetData, shipData.type)}
+            >
+              <img
+                src={shipData.texture}
+                alt={shipData.name + 'texture'}
+                style={{ width: '32px', height: '32px' }}
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{ maxHeight: '210px', overflow: 'auto' }}>
+        <Text type={'secondary'}>Ships</Text>
+        {ships.map(ship => (
+          <div
+            key={ship.id}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              border: '1px solid gray',
+              backgroundColor: 'rgb(169,169,169)',
+              margin: '6px',
+              padding: '4px',
+              cursor: 'pointer',
+              alignItems: 'center',
+            }}
+          >
+            <img
+              src={ship.texture}
+              alt={ship.name + 'texture'}
+              style={{ width: '32px', height: '32px' }}
+            />
+            <Text>{ship.name}</Text>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export interface PlanetShipyardProps {
+  planetData: PlanetData;
 }
