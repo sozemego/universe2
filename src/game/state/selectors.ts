@@ -85,6 +85,10 @@ export function useGetPlanetService() {
   return useSelector((state: AppState) => state.game.services!.planetService);
 }
 
+export function useGetPlanetColonizationService() {
+  return useSelector((state: AppState) => state.game.services!.planetColonizationService);
+}
+
 export function useGetCamera() {
   return useSelector((state: AppState) => state.game.services!.camera);
 }

@@ -1,20 +1,25 @@
 import { Object3D } from 'three';
+import { BaseObject } from '../BaseObject';
+import { ShipType } from './types';
+import { Planet } from '../Planet';
 
-export class Ship {
-  readonly id: string;
+export class Ship extends BaseObject {
   readonly name: string;
-  readonly texture: string;
-  readonly object3D: Object3D;
+  readonly type: ShipType;
+  planet: Planet | null = null;
 
-  constructor(id: string, name: string, texture: string, object3D: Object3D) {
-    this.id = id;
+  constructor(id: string, name: string, texture: string, type: ShipType, object3D: Object3D) {
+    super(id, 0, object3D, texture);
     this.name = name;
-    this.texture = texture;
-    this.object3D = object3D;
+    this.type = type;
     this.object3D.visible = false;
   }
 
   set visible(visible: boolean) {
     this.object3D.visible = visible;
+  }
+
+  get position() {
+    return this.object3D.position;
   }
 }

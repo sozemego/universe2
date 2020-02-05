@@ -34,6 +34,7 @@ import { PlanetService } from '../service/PlanetService';
 import { CameraFollowSolarSystemService } from '../service/CameraFollowSolarSystemService';
 import { NamePlateService } from '../service/NamePlateService';
 import { ShipFactory } from '../object/ship/ShipFactory';
+import { PlanetColonizationService } from '../service/PlanetColonizationService';
 
 export function GameComponent() {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ export function GameComponent() {
     const selectionContainer = new SelectionContainer(dispatch);
     const selectionService = new SelectionService(selectionContainer, objectList);
     const gameObjectFactory = new GameObjectFactory(objectList, objectFactory, selectionContainer);
-    const shipFactory = new ShipFactory(objectFactory);
+    const shipFactory = new ShipFactory(objectList, objectFactory);
     const engine = new GameEngine(container, scene, input, camera);
     const universe = new UniverseGenerator(gameObjectFactory).generateUniverse();
     const gameOptions = new GameOptions(dispatch);
@@ -122,6 +123,7 @@ export function GameComponent() {
     );
     const fixedGravityService = new FixedGravityService(universe);
     const planetService = new PlanetService(objectList, objectFactory, shipFactory);
+    const planetColonizationService = new PlanetColonizationService(objectList, planetService);
     const cameraFollowSolarSystemService = new CameraFollowSolarSystemService(camera, universe);
     const namePlateService = new NamePlateService(universe, objectFactory, camera);
 
@@ -144,6 +146,7 @@ export function GameComponent() {
       gameClockService,
       spawnObjectService,
       planetService,
+      planetColonizationService,
       camera,
     };
 
@@ -168,6 +171,7 @@ export function GameComponent() {
       planetService,
       cameraFollowSolarSystemService,
       namePlateService,
+      planetColonizationService,
     ];
 
     const game = new GameService(

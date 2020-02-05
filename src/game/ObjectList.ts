@@ -28,4 +28,8 @@ export class ObjectList {
   get allObjects() {
     return this.objects;
   }
+
+  getByType<T>(type: any): T[] {
+    return this.allObjects.filter(obj => obj instanceof type);
+  }
 }

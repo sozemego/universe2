@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Tag } from 'antd';
 import { Planet } from '../../object/Planet';
 import { useRealClock } from '../../util/useRealClock';
-import { useGetPlanetService } from '../../state/selectors';
+import { useGetPlanetColonizationService, useGetPlanetService } from '../../state/selectors';
 import { PlanetData } from '../../service/PlanetService';
 import { setSelectedObjectIsModal } from '../../state/state';
 import { BuildingComponent, BuildingSlot } from './SelectedPlanetModal';
@@ -39,6 +39,7 @@ export function SelectedPlanet({ planet }: SelectedPlanetProps) {
       </div>
       <hr />
       {planetData && <PlanetColonizationComponent planet={planet} planetData={planetData} />}
+      {!planetData && <ColonizePlanet planet={planet} />}
     </div>
   );
 }
@@ -51,12 +52,85 @@ export function PlanetColonizationComponent({
   planet,
   planetData,
 }: PlanetColonizationComponentProps) {
-  return <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }} />;
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <PlanetShips planetData={planetData} />
+    </div>
+  );
 }
 
 export interface PlanetColonizationComponentProps {
   planet: Planet;
   planetData: PlanetData;
+}
+
+export function PlanetShips({ planetData }: PlanetShipsProps) {
+  let { ships } = planetData;
+  return (
+    <div
+      style={{
+        maxHeight: '480px',
+        overflowY: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        width: '100%',
+      }}
+    >
+      <Text type={'secondary'}>Ships</Text>
+      {ships.map(ship => (
+        <div
+          key={ship.id}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            border: '1px solid gray',
+            backgroundColor: 'rgb(169,169,169)',
+            margin: '6px',
+            padding: '4px',
+            cursor: 'pointer',
+            alignItems: 'center',
+            width: '95%',
+          }}
+        >
+          <img
+            src={ship.texture}
+            alt={ship.name + 'texture'}
+            style={{ width: '32px', height: '32px' }}
+          />
+          <Text>{ship.name}</Text>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export interface PlanetShipsProps {
+  planetData: PlanetData;
+}
+
+export function ColonizePlanet({ planet }: ColonizePlanetProps) {
+  let planetColonizationService = useGetPlanetColonizationService();
+  let canColonize = planetColonizationService.canColonize(planet);
+  return (
+    <div>
+      <Tag
+        onClick={() => {
+          if (canColonize) {
+            planetColonizationService.colonizePlanet(planet);
+          }
+        }}
+        style={{ cursor: 'pointer' }}
+        color={canColonize ? 'green' : 'red'}
+      >
+        Colonize
+      </Tag>
+    </div>
+  );
+}
+
+export interface ColonizePlanetProps {
+  planet: Planet;
 }
 
 export function PlanetBuildings({ planet, planetData }: PlanetBuildingsProps) {

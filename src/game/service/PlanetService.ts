@@ -124,6 +124,9 @@ export class PlanetService implements IGameService {
     };
     this.placeBuilding(planet, this.buildingFactory.createBuilding(BuildingType.COLONY_CENTER));
     this.placeBuilding(planet, this.buildingFactory.createBuilding(BuildingType.SHIPYARD));
+    this.constructShip(planet, ShipType.TRANSPORT_SHIP);
+    this.constructShip(planet, ShipType.TRANSPORT_SHIP);
+    this.constructShip(planet, ShipType.COLONY_SHIP);
     this.planets[id].storage.fill(Resource.BUILDING_MATERIAL, 25);
     this.planets[id].storage.fill(Resource.FOOD, 50);
 
@@ -223,6 +226,33 @@ export class PlanetService implements IGameService {
       planet = this.planets[planet.id];
     }
     let ship = this.shipFactory.createShip(shipType);
+    this.dockShip(planet, ship);
+  }
+
+  launchShip(planet: Planet, ship: Ship) {
+    let planetData = this.planets[planet.id];
+    if (!planetData) {
+      return;
+    }
+    let { ships } = planetData;
+    let index = ships.findIndex(s => s === ship);
+    if (index > -1) {
+      ships.splice(index, 1);
+      ship.visible = true;
+      ship.position.x = planet.position.x;
+      ship.position.y = planet.position.y;
+      ship.planet = null;
+    }
+  }
+
+  dockShip(planet: Planet | PlanetData, ship: Ship) {
+    if (planet instanceof Planet) {
+      ship.planet = planet;
+      planet = this.planets[planet.id];
+    } else {
+      ship.planet = planet.planet;
+    }
+    ship.visible = false;
     planet.ships.push(ship);
   }
 }

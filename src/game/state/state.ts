@@ -18,6 +18,7 @@ import { GameClockService } from '../service/GameClockService';
 import { SpawnObjectService } from '../service/SpawnObjectService';
 import { PlanetService } from '../service/PlanetService';
 import { GameCamera } from '../GameCamera';
+import { PlanetColonizationService } from '../service/PlanetColonizationService';
 
 const initialState: GameState = {
   selected: null,
@@ -106,6 +107,7 @@ export interface GameServices {
   gameOptions: GameOptions;
   gameClockService: GameClockService;
   planetService: PlanetService;
+  planetColonizationService: PlanetColonizationService;
   camera: GameCamera;
 }
 

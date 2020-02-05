@@ -4,11 +4,14 @@ import { ObjectFactory } from '../../ObjectFactory';
 import { ShipData, ShipType } from './types';
 import { Ship } from './Ship';
 import { SHIPS } from '../../data/ships';
+import { ObjectList } from '../../ObjectList';
 
 export class ShipFactory {
+  private readonly objectList: ObjectList;
   private readonly objectFactory: ObjectFactory;
 
-  constructor(objectFactory: ObjectFactory) {
+  constructor(objectList: ObjectList, objectFactory: ObjectFactory) {
+    this.objectList = objectList;
     this.objectFactory = objectFactory;
   }
 
@@ -21,6 +24,8 @@ export class ShipFactory {
       data.size.x,
       data.size.y
     );
-    return new Ship(id, data.name, data.texture, sprite);
+    let ship = new Ship(id, data.name, data.texture, shipType, sprite);
+    this.objectList.addObject(ship);
+    return ship;
   }
 }
