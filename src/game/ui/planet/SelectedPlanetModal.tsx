@@ -832,32 +832,38 @@ export function PlanetShipyard({ planetData }: PlanetShipyardProps) {
         <Text type={'secondary'}>Construct ships</Text>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
           {Object.values(SHIPS).map((shipData, index) => (
-            <div
+            <Tooltip
+              title={shipData.name}
+              mouseLeaveDelay={0}
+              mouseEnterDelay={0}
               key={shipData.name}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                border: '1px solid gray',
-                backgroundColor: 'rgb(169,169,169)',
-                boxShadow: `0px 0px 4px 2px ${
-                  hover && index === hoverIndex ? 'white' : 'transparent'
-                }`,
-                margin: '6px',
-                cursor: 'pointer',
-              }}
-              onMouseEnter={() => {
-                setHover(true);
-                setHoverIndex(index);
-              }}
-              onMouseLeave={() => setHover(false)}
-              onClick={() => planetService.constructShip(planetData, shipData.type)}
             >
-              <img
-                src={shipData.texture}
-                alt={shipData.name + 'texture'}
-                style={{ width: '32px', height: '32px' }}
-              />
-            </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  border: '1px solid gray',
+                  backgroundColor: 'rgb(169,169,169)',
+                  boxShadow: `0px 0px 4px 2px ${
+                    hover && index === hoverIndex ? 'white' : 'transparent'
+                  }`,
+                  margin: '6px',
+                  cursor: 'pointer',
+                }}
+                onMouseEnter={() => {
+                  setHover(true);
+                  setHoverIndex(index);
+                }}
+                onMouseLeave={() => setHover(false)}
+                onClick={() => planetService.constructShip(planetData, shipData.type)}
+              >
+                <img
+                  src={shipData.texture}
+                  alt={shipData.name + 'texture'}
+                  style={{ width: '32px', height: '32px' }}
+                />
+              </div>
+            </Tooltip>
           ))}
         </div>
       </div>
