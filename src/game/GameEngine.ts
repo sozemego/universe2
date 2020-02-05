@@ -52,12 +52,6 @@ export class GameEngine {
 
     this.camera.position.x = 5000000 / 2;
     this.camera.position.y = 5000000 / 2;
-    this.camera.zoomInDirection(1);
-    this.camera.zoomInDirection(1);
-    this.camera.zoomInDirection(1);
-    this.camera.zoomInDirection(1);
-    this.camera.zoomInDirection(1);
-    this.camera.zoomInDirection(1);
 
     this.pressedKeys = new Set();
 
